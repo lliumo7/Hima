@@ -5,7 +5,7 @@
 <title>حِمى | HIMA</title>
 <meta name="description" content="منظومة ذكية للتأمين وإدارة مخاطر الفعاليات الكبرى والتجمعات الحاشدة">
 <meta name="theme-color" content="#5b35a5">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=4">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,26 +17,34 @@
  <div class="actions"><span class="portal-chip" id="portalChip" hidden>بوابة المستفيد</span><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button><button class="btn ghost exit-btn" id="exitPortalBtn" onclick="exitPortal()" hidden>تغيير البوابة ↗</button></div>
 </header>
 <section class="role-gateway" id="roleGateway">
+ <section class="landing-hero" aria-label="نبذة عن حِمى">
+  <div class="landing-hero-copy">
+   <span class="landing-tag" data-ar="منظومة تأمينية رقمية متكاملة" data-en="Integrated digital insurance ecosystem">منظومة تأمينية رقمية متكاملة</span>
+   <h2 data-ar="من التذكرة إلى المطالبة، في رحلة واحدة" data-en="From ticket to claim, in one journey">من التذكرة إلى المطالبة، في رحلة واحدة</h2>
+   <p data-ar="تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارات تأمينية مترابطة وسجل رقمي موحد للحوادث والمطالبات." data-en="HIMA connects event organizers, ticket holders and insurers through linked insurance journeys and a unified digital incident and claims record.">تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارات تأمينية مترابطة وسجل رقمي موحد للحوادث والمطالبات.</p>
+   <div class="landing-benefits"><span><b>✓</b><span data-ar="حماية اختيارية للحضور" data-en="Optional attendee protection">حماية اختيارية للحضور</span></span><span><b>✓</b><span data-ar="إدارة مخاطر الفعاليات" data-en="Event risk management">إدارة مخاطر الفعاليات</span></span><span><b>✓</b><span data-ar="بصمة الحادث التأمينية" data-en="Insurance incident fingerprint">بصمة الحادث التأمينية</span></span></div>
+  </div>
+  <div class="landing-hero-mark"><strong>حِمى</strong><small>H I M A</small></div>
+ </section>
  <div class="gateway-heading">
-  <span class="pill">HIMA • حِمى</span>
-  <h2 id="gatewayTitle">مرحبًا بك في حِمى</h2>
-  <p id="gatewaySub">اختَر نوع حسابك للانتقال إلى المساحة المناسبة لك.</p>
+  <h2 id="gatewayTitle">اختر نوع الدخول</h2>
+  <p id="gatewaySub">حدد الجهة التي تمثلك للوصول إلى خدمات حِمى.</p>
  </div>
  <div class="role-grid">
   <button class="role-card customer-role" onclick="enterPortal('customer')">
-   <span class="role-icon">♙</span><span class="role-title" id="customerRoleTitle">المستفيد</span>
+   <span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c.7-4.1 3.4-6 8-6s7.3 1.9 8 6"/></svg></span><span class="role-title" id="customerRoleTitle">المستفيد</span>
    <span class="role-desc" id="customerRoleDesc">استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية الاختيارية.</span>
-   <span class="role-action" id="customerRoleAction">الدخول كمستفيد <b>←</b></span>
+   <span class="role-action" id="customerRoleAction">دخول المستفيد <b>←</b></span>
   </button>
   <button class="role-card organizer-role" onclick="enterPortal('organizer')">
-   <span class="role-icon">▥</span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
+   <span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h3M8 17h7"/></svg></span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
    <span class="role-desc" id="organizerRoleDesc">سجّل فعاليتك، قيّم المخاطر، وتابع طلبات ووثائق التأمين.</span>
-   <span class="role-action" id="organizerRoleAction">الدخول كمنظم <b>←</b></span>
+   <span class="role-action" id="organizerRoleAction">دخول المنظم <b>←</b></span>
   </button>
   <button class="role-card insurer-role" onclick="enterPortal('insurer')">
-   <span class="role-icon">⬡</span><span class="role-title" id="insurerRoleTitle">شركة التأمين</span>
+   <span class="role-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 20 5v6c0 5.1-3.3 8.7-8 11-4.7-2.3-8-5.9-8-11V5z"/><path d="m8.5 12 2.3 2.3 4.8-5"/></svg></span><span class="role-title" id="insurerRoleTitle">شركة التأمين</span>
    <span class="role-desc" id="insurerRoleDesc">راجع طلبات التأمين، التغطيات، الحوادث والمطالبات.</span>
-   <span class="role-action" id="insurerRoleAction">الدخول لشركة التأمين <b>←</b></span>
+   <span class="role-action" id="insurerRoleAction">دخول شركة التأمين <b>←</b></span>
   </button>
  </div>
  <div class="gateway-note">نموذج تجريبي: الدخول لا يتطلب حسابًا حقيقيًا، والبيانات والإجراءات المعروضة افتراضية.</div>
@@ -99,7 +107,7 @@
 <section class="page" id="booking">
  <div class="grid">
   <div class="card span7"><h3 data-ar="اختيار الفعالية والتذكرة" data-en="Choose event and ticket">اختيار الفعالية والتذكرة</h3><div class="notice">الفعالية المختارة: <b id="selectedEventName">لم يتم اختيار فعالية بعد</b> <button class="text-btn" onclick="showPage('events')">تغيير الفعالية</button></div>
-   <div class="ticket"><div class="tickethead"><span class="pill">HIMA EVENT</span><span class="muted" data-ar="تصور حجز مقترح" data-en="Proposed booking concept">تصور حجز مقترح</span></div><h2 id="bookingEvent">مباراة الهلال × النصر</h2><p class="muted" data-ar="الرياض • ملعب افتراضي • 24 نوفمبر 2026" data-en="Riyadh • Demo stadium • 24 Nov 2026">الرياض • ملعب افتراضي • 24 نوفمبر 2026</p></div>
+   <div class="ticket"><div class="tickethead"><span class="pill">HIMA EVENT</span><span class="muted" data-ar="تصور حجز مقترح" data-en="Proposed booking concept">تصور حجز مقترح</span></div><h2 id="bookingEvent">اختاري فعالية من قائمة الفعاليات</h2><p class="muted" data-ar="سيظهر موقع الفعالية وموعدها بعد اختيارها." data-en="The event location and date will appear after you select an event.">سيظهر موقع الفعالية وموعدها بعد اختيارها.</p></div>
    <div class="field"><label data-ar="فئة التذكرة" data-en="Ticket category">فئة التذكرة</label><select id="ticketType" onchange="updateTotal()"><option value="150">الفئة العادية — 150 ر.س</option><option value="250">الفئة المميزة — 250 ر.س</option><option value="350">الفئة الذهبية — 350 ر.س</option></select></div>
    <div class="check"><input type="checkbox" id="addCover" onchange="updateTotal()"><div><b data-ar="إضافة حماية حِمى الاختيارية — 5 ر.س" data-en="Add optional HIMA protection — SAR 5">إضافة حماية حِمى الاختيارية — 5 ر.س</b><div class="muted" style="font-size:13px" data-ar="تأمين تجريبي ضد الحوادث الشخصية أثناء الفعالية، وفق المنافع والحدود والاستثناءات الافتراضية." data-en="Demo personal accident cover during the event, subject to illustrative benefits, limits and exclusions.">تأمين تجريبي ضد الحوادث الشخصية أثناء الفعالية، وفق المنافع والحدود والاستثناءات الافتراضية.</div></div></div>
    <div class="notice"><b data-ar="قبل الاختيار" data-en="Before selecting">قبل الاختيار</b><br><span data-ar="راجع المنافع وحدود التغطية والاستثناءات ومدة الحماية والجهة المؤمنة. لا تضاف الحماية إلا بموافقتك." data-en="Review benefits, limits, exclusions, coverage period and insurer. Cover is not added without your consent.">راجع المنافع وحدود التغطية والاستثناءات ومدة الحماية والجهة المؤمنة. لا تضاف الحماية إلا بموافقتك.</span></div>
@@ -141,5 +149,5 @@
 </section>
 <footer class="foot" id="footerText">حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.</footer>
 </div>
-<script src="app.js"></script>
+<script src="app.js?v=4"></script>
 </body></html>
