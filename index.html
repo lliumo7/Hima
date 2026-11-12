@@ -14,7 +14,7 @@
 <div class="app">
 <header class="top">
  <div class="brand"><div class="logo">ح</div><div><h1 id="brandTitle">حِمى | HIMA</h1><small id="brandSub">منظومة التأمين الذكي وإدارة مخاطر الفعاليات</small></div></div>
- <div class="actions"><span class="portal-chip" id="portalChip" hidden>بوابة المستفيد</span><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button><button class="btn ghost exit-btn" id="exitPortalBtn" onclick="exitPortal()" hidden>تغيير البوابة ↗</button></div>
+ <div class="actions"><span class="portal-chip" id="portalChip" hidden>بوابة المستفيد</span><button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="فتح القائمة" aria-expanded="false" hidden><span></span><span></span><span></span></button><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button><button class="btn ghost exit-btn" id="exitPortalBtn" onclick="exitPortal()" hidden>تغيير البوابة ↗</button></div>
 </header>
 <section class="role-gateway" id="roleGateway">
  <section class="landing-hero" aria-label="نبذة عن حِمى">
@@ -53,16 +53,21 @@
  <div><span class="tag" id="heroTag">نموذج أولي تفاعلي • بيانات افتراضية</span><h2 id="heroTitle">من التذكرة إلى المطالبة، في رحلة واحدة</h2><p id="heroText">تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.</p><div class="steps"><span class="step" id="heroStep1">إدارة مخاطر المنظم</span><span class="step" id="heroStep2">حماية اختيارية للحضور</span><span class="step" id="heroStep3">بصمة الحادث التأمينية</span></div></div>
  <div class="hero-mark">حِمى<br><span style="font-size:22px;letter-spacing:5px">HIMA</span></div>
 </section>
-<nav class="nav" id="nav">
+<nav class="nav" id="nav" aria-label="التنقل الرئيسي">
  <button class="active" data-page="overview" data-portal="customer" onclick="showPage('overview')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
- <button data-page="events" data-portal="customer" onclick="showPage('events')" data-ar="استكشف الفعاليات" data-en="Explore events">استكشف الفعاليات</button>
- <button data-page="booking" data-portal="customer" onclick="showPage('booking')" data-ar="إتمام الحجز" data-en="Booking">إتمام الحجز</button>
- <button data-page="wallet" data-portal="customer" onclick="showPage('wallet')" data-ar="تذاكري وحماياتي" data-en="My tickets">تذاكري وحماياتي</button>
- <button data-page="incident" data-portal="customer" onclick="showPage('incident')" data-ar="المطالبات" data-en="Claims">المطالبات</button>
- <button data-page="account" data-portal="customer" onclick="showPage('account')" data-ar="حسابي" data-en="My account">حسابي</button>
- <button data-page="organizer" data-portal="organizer" onclick="showPage('organizer')" data-ar="بوابة المنظم" data-en="Organizer portal">بوابة المنظم</button>
- <button data-page="insurer" data-portal="insurer" onclick="showPage('insurer')" data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</button>
+ <button data-page="events" data-portal="customer" onclick="showPage('events')" data-ar="الفعاليات" data-en="Events">الفعاليات</button>
+ <button data-page="wallet" data-portal="customer" onclick="showPage('wallet')" data-ar="تذاكري" data-en="My tickets">تذاكري</button>
+ <button data-page="incident" data-portal="customer" onclick="showPage('incident')" data-ar="مطالباتي" data-en="My claims">مطالباتي</button>
+ <button data-page="account" data-portal="customer" onclick="showPage('account')" data-ar="حسابي" data-en="Account">حسابي</button>
 </nav>
+<div class="menu-scrim" id="menuScrim" onclick="closeMenu()" hidden></div>
+<aside class="quick-menu" id="quickMenu" aria-label="القائمة الإضافية" aria-hidden="true" hidden>
+ <div class="quick-menu-head"><div><b data-ar="قائمة حِمى" data-en="HIMA menu">قائمة حِمى</b><small id="quickMenuRole">بوابة المستفيد</small></div><button class="menu-close" onclick="closeMenu()" aria-label="إغلاق القائمة">×</button></div>
+ <button class="quick-menu-item" onclick="menuGo('wallet')"><span class="quick-menu-icon">♧</span><span><b data-ar="حماياتي وشهاداتي" data-en="My coverage & certificates">حماياتي وشهاداتي</b><small data-ar="تفاصيل الحماية والوثائق" data-en="Coverage and certificates">تفاصيل الحماية والوثائق</small></span><i>←</i></button>
+ <button class="quick-menu-item" onclick="menuGo('account')"><span class="quick-menu-icon">⚙</span><span><b data-ar="الإعدادات" data-en="Settings">الإعدادات</b><small data-ar="بيانات الحساب وتفضيلاته" data-en="Account details and preferences">بيانات الحساب وتفضيلاته</small></span><i>←</i></button>
+ <button class="quick-menu-item" onclick="resetDemo();closeMenu()"><span class="quick-menu-icon">↻</span><span><b data-ar="إعادة ضبط التجربة" data-en="Reset demo">إعادة ضبط التجربة</b><small data-ar="إعادة البيانات التجريبية إلى البداية" data-en="Restore demo data">إعادة البيانات التجريبية إلى البداية</small></span><i>←</i></button>
+ <button class="quick-menu-item switch-menu-item" onclick="closeMenu();exitPortal()"><span class="quick-menu-icon">⇄</span><span><b data-ar="تغيير البوابة" data-en="Switch portal">تغيير البوابة</b><small data-ar="العودة لاختيار نوع الدخول" data-en="Return to portal selection">العودة لاختيار نوع الدخول</small></span><i>←</i></button>
+</aside>
 
 <section class="page" id="overview">
  <div class="welcome-row"><div><span class="pill">HIMA • حِمى</span><h2 class="welcome-title">أهلًا بك في حِمى</h2><p class="muted">اكتشف الفعاليات، اختر تذكرتك، وأضف الحماية التأمينية الاختيارية بخطوات واضحة.</p></div><button class="btn" onclick="showPage('events')">استكشف الفعاليات <span aria-hidden="true">←</span></button></div>
