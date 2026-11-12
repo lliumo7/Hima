@@ -14,24 +14,49 @@
 <div class="app">
 <header class="top">
  <div class="brand"><div class="logo">ح</div><div><h1 id="brandTitle">حِمى | HIMA</h1><small id="brandSub">منظومة التأمين الذكي وإدارة مخاطر الفعاليات</small></div></div>
- <div class="actions"><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button></div>
+ <div class="actions"><span class="portal-chip" id="portalChip" hidden>بوابة المستفيد</span><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button><button class="btn ghost exit-btn" id="exitPortalBtn" onclick="exitPortal()" hidden>تغيير البوابة ↗</button></div>
 </header>
+<section class="role-gateway" id="roleGateway">
+ <div class="gateway-heading">
+  <span class="pill">HIMA • حِمى</span>
+  <h2 id="gatewayTitle">مرحبًا بك في حِمى</h2>
+  <p id="gatewaySub">اختَر نوع حسابك للانتقال إلى المساحة المناسبة لك.</p>
+ </div>
+ <div class="role-grid">
+  <button class="role-card customer-role" onclick="enterPortal('customer')">
+   <span class="role-icon">♙</span><span class="role-title" id="customerRoleTitle">المستفيد</span>
+   <span class="role-desc" id="customerRoleDesc">استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية الاختيارية.</span>
+   <span class="role-action" id="customerRoleAction">الدخول كمستفيد <b>←</b></span>
+  </button>
+  <button class="role-card organizer-role" onclick="enterPortal('organizer')">
+   <span class="role-icon">▥</span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
+   <span class="role-desc" id="organizerRoleDesc">سجّل فعاليتك، قيّم المخاطر، وتابع طلبات ووثائق التأمين.</span>
+   <span class="role-action" id="organizerRoleAction">الدخول كمنظم <b>←</b></span>
+  </button>
+  <button class="role-card insurer-role" onclick="enterPortal('insurer')">
+   <span class="role-icon">⬡</span><span class="role-title" id="insurerRoleTitle">شركة التأمين</span>
+   <span class="role-desc" id="insurerRoleDesc">راجع طلبات التأمين، التغطيات، الحوادث والمطالبات.</span>
+   <span class="role-action" id="insurerRoleAction">الدخول لشركة التأمين <b>←</b></span>
+  </button>
+ </div>
+ <div class="gateway-note">نموذج تجريبي: الدخول لا يتطلب حسابًا حقيقيًا، والبيانات والإجراءات المعروضة افتراضية.</div>
+</section>
 <section class="hero">
  <div><span class="tag" id="heroTag">نموذج أولي تفاعلي • بيانات افتراضية</span><h2 id="heroTitle">من التذكرة إلى المطالبة، في رحلة واحدة</h2><p id="heroText">تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.</p><div class="steps"><span class="step" id="heroStep1">إدارة مخاطر المنظم</span><span class="step" id="heroStep2">حماية اختيارية للحضور</span><span class="step" id="heroStep3">بصمة الحادث التأمينية</span></div></div>
  <div class="hero-mark">حِمى<br><span style="font-size:22px;letter-spacing:5px">HIMA</span></div>
 </section>
 <nav class="nav" id="nav">
- <button class="active" data-page="overview" onclick="showPage('overview')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
- <button data-page="events" onclick="showPage('events')" data-ar="استكشف الفعاليات" data-en="Explore events">استكشف الفعاليات</button>
- <button data-page="booking" onclick="showPage('booking')" data-ar="إتمام الحجز" data-en="Booking">إتمام الحجز</button>
- <button data-page="wallet" onclick="showPage('wallet')" data-ar="تذاكري وحماياتي" data-en="My tickets">تذاكري وحماياتي</button>
- <button data-page="incident" onclick="showPage('incident')" data-ar="المطالبات" data-en="Claims">المطالبات</button>
- <button data-page="account" onclick="showPage('account')" data-ar="حسابي" data-en="My account">حسابي</button>
- <button data-page="organizer" onclick="showPage('organizer')" data-ar="بوابة المنظم" data-en="Organizer portal">بوابة المنظم</button>
- <button data-page="insurer" onclick="showPage('insurer')" data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</button>
+ <button class="active" data-page="overview" data-portal="customer" onclick="showPage('overview')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
+ <button data-page="events" data-portal="customer" onclick="showPage('events')" data-ar="استكشف الفعاليات" data-en="Explore events">استكشف الفعاليات</button>
+ <button data-page="booking" data-portal="customer" onclick="showPage('booking')" data-ar="إتمام الحجز" data-en="Booking">إتمام الحجز</button>
+ <button data-page="wallet" data-portal="customer" onclick="showPage('wallet')" data-ar="تذاكري وحماياتي" data-en="My tickets">تذاكري وحماياتي</button>
+ <button data-page="incident" data-portal="customer" onclick="showPage('incident')" data-ar="المطالبات" data-en="Claims">المطالبات</button>
+ <button data-page="account" data-portal="customer" onclick="showPage('account')" data-ar="حسابي" data-en="My account">حسابي</button>
+ <button data-page="organizer" data-portal="organizer" onclick="showPage('organizer')" data-ar="بوابة المنظم" data-en="Organizer portal">بوابة المنظم</button>
+ <button data-page="insurer" data-portal="insurer" onclick="showPage('insurer')" data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</button>
 </nav>
 
-<section class="page active" id="overview">
+<section class="page" id="overview">
  <div class="welcome-row"><div><span class="pill">HIMA • حِمى</span><h2 class="welcome-title">أهلًا بك في حِمى</h2><p class="muted">اكتشف الفعاليات، اختر تذكرتك، وأضف الحماية التأمينية الاختيارية بخطوات واضحة.</p></div><button class="btn" onclick="showPage('events')">استكشف الفعاليات <span aria-hidden="true">←</span></button></div>
  <div class="home-shortcuts">
   <button class="shortcut" onclick="showPage('events')"><span class="shortcut-icon">⌕</span><b>استكشف الفعاليات</b><small>مباريات، حفلات، ألعاب والمزيد</small></button>
