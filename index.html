@@ -36,7 +36,9 @@
    <div class="drawer-group-title">خدمات منظم الفعالية</div>
    <button class="drawer-link" onclick="goFromDrawer('organizer')"><span class="drawer-icon">▥</span><span class="link-label" data-ar="لوحة المنظم" data-en="Organizer dashboard">لوحة المنظم</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('organizer','eventDetails')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="بيانات الفعالية" data-en="Event details">بيانات الفعالية</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('organizer','organizerIndicators')"><span class="drawer-icon">◉</span><span class="link-label" data-ar="تقييم المخاطر والمؤشرات" data-en="Risk assessment & indicators">تقييم المخاطر والمؤشرات</span><span class="link-arrow">‹</span></button>
+   <button class="drawer-link" onclick="goFromDrawer('organizer','organizerIndicators')"><span class="drawer-icon">◉</span><span class="link-label" data-ar="تحليل المخاطر ومؤشرات السلامة" data-en="Risk & safety indicators">تحليل المخاطر ومؤشرات السلامة</span><span class="link-arrow">‹</span></button>
+   <button class="drawer-link" onclick="goFromDrawer('organizer','eventDetails')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="طلب تأمين الفعالية" data-en="Request event insurance">طلب تأمين الفعالية</span><span class="link-arrow">‹</span></button>
+   <button class="drawer-link" onclick="goFromDrawer('organizer','organizerRequests')"><span class="drawer-icon">▤</span><span class="link-label" data-ar="متابعة طلباتي" data-en="Track my requests">متابعة طلباتي</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('organizer','policyDetails')"><span class="drawer-icon">◇</span><span class="link-label" data-ar="وثائق التأمين" data-en="Insurance policies">وثائق التأمين</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('incident','incidentList')"><span class="drawer-icon">⚠</span><span class="link-label" data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('account')"><span class="drawer-icon">♙</span><span class="link-label" data-ar="حساب المنظم" data-en="Organizer account">حساب المنظم</span><span class="link-arrow">‹</span></button>
@@ -44,7 +46,8 @@
   <div class="drawer-group" data-portal-menu="insurer">
    <div class="drawer-group-title">خدمات شركة التأمين</div>
    <button class="drawer-link" onclick="goFromDrawer('insurer')"><span class="drawer-icon">▤</span><span class="link-label" data-ar="لوحة الشركة" data-en="Company dashboard">لوحة الشركة</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('insurer','claimsList')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="إدارة المطالبات" data-en="Claims management">إدارة المطالبات</span><span class="link-arrow">‹</span></button>
+   <button class="drawer-link" onclick="goFromDrawer('insurer','eventUnderwritingCard')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="طلبات تأمين الفعاليات" data-en="Event insurance requests">طلبات تأمين الفعاليات</span><span class="link-arrow">‹</span></button>
+   <button class="drawer-link" onclick="goFromDrawer('insurer','claimsList')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="مطالبات المستفيدين" data-en="Attendee claims">مطالبات المستفيدين</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('insurerPolicies')"><span class="drawer-icon">◇</span><span class="link-label" data-ar="الوثائق والتغطيات" data-en="Policies & coverage">الوثائق والتغطيات</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('incident','incidentList')"><span class="drawer-icon">⚠</span><span class="link-label" data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</span><span class="link-arrow">‹</span></button>
    <button class="drawer-link" onclick="goFromDrawer('insurer','reviewControls')"><span class="drawer-icon">▥</span><span class="link-label" data-ar="ضوابط المراجعة والتقارير" data-en="Review controls & reports">ضوابط المراجعة والتقارير</span><span class="link-arrow">‹</span></button>
@@ -150,16 +153,47 @@
 </section>
 
 <section class="page" id="organizer">
+ <div class="page-intro"><span class="pill">بوابة منظم الفعالية</span><h2>إدارة فعالياتك وتأمينها</h2><p class="muted">سجّل فعاليتك، قيّم جاهزية السلامة، واطلب تغطية تأمينية مستقلة للفعالية.</p></div>
+ <div class="stats organizer-overview-stats">
+  <div class="statbox"><div class="statlabel">فعالياتي المسجلة</div><div class="stat" id="orgEventCount">0</div></div>
+  <div class="statbox"><div class="statlabel">طلبات التأمين</div><div class="stat" id="orgRequestCount">0</div></div>
+  <div class="statbox"><div class="statlabel">طلبات قيد المراجعة</div><div class="stat" id="orgPendingCount">0</div></div>
+  <div class="statbox"><div class="statlabel">وثائق صادرة</div><div class="stat" id="orgPolicyCount">0</div></div>
+ </div>
  <div class="grid">
-  <div class="card span7" id="eventDetails"><h3 data-ar="بيانات الفعالية" data-en="Event details">بيانات الفعالية</h3>
-   <div class="field"><label>نوع الفعالية</label><select id="organizerType" onchange="renderOrganizerEvents()"><option value="sports">المباريات الرياضية</option><option value="concert">الحفلات الغنائية</option><option value="gaming">الألعاب والرياضات الإلكترونية</option><option value="festival">المهرجانات</option><option value="exhibition">المعارض</option><option value="entertainment">الفعاليات الترفيهية</option></select></div><div class="field"><label>الفعالية</label><select id="organizerEvent" onchange="syncOrganizerEvent()"></select></div>
-   <div class="grid"><div class="field span6"><label>المنطقة</label><select id="organizerRegion" onchange="updateOrganizerCities()"></select></div><div class="field span6"><label>المدينة</label><select id="organizerCity" onchange="syncOrganizerEvent()"></select></div></div><input type="hidden" id="eventName"><input type="hidden" id="eventType"><input type="hidden" id="eventLocation">
-   <div class="grid"><div class="field span6"><label data-ar="سعة الموقع" data-en="Venue capacity">سعة الموقع</label><input id="capacity" type="number" value="25000" min="1"></div><div class="field span6"><label data-ar="الحضور المتوقع" data-en="Expected attendance">الحضور المتوقع</label><input id="attendance" type="number" value="20000" min="0"></div></div>
-   <div class="grid"><div class="field span6"><label data-ar="مستوى الازدحام" data-en="Crowd level">مستوى الازدحام</label><select id="crowd"><option value="1">منخفض</option><option value="2" selected>متوسط</option><option value="3">مرتفع</option></select></div><div class="field span6"><label data-ar="جاهزية السلامة" data-en="Safety readiness">جاهزية السلامة</label><select id="safety"><option value="3">مكتملة</option><option value="2" selected>جزئية</option><option value="1">تحتاج تحسين</option></select></div></div>
-   <div class="field" id="policyDetails"><label data-ar="بيانات وثيقة المسؤولية المدنية (تجريبية)" data-en="Civil liability policy details (demo)">بيانات وثيقة المسؤولية المدنية (تجريبية)</label><input id="policyRef" value="POL-HIMA-DEMO-001"></div>
-   <button class="btn" onclick="calculateRisk()" data-ar="حساب مؤشر المخاطر التوضيحي" data-en="Calculate illustrative risk">حساب مؤشر المخاطر التوضيحي</button>
+  <div class="card span7" id="eventDetails">
+   <div class="row"><h3>تسجيل فعالية وطلب تأمين</h3><span class="pill">تأمين الفعالية</span></div>
+   <p class="muted">هذه التغطية تخص مخاطر تنظيم الفعالية ومسؤولية المنظم، وهي منفصلة عن حماية تذكرة المستفيد.</p>
+   <div class="field"><label>اسم الفعالية</label><input id="orgEventName" placeholder="مثال: مباراة نهائي البطولة"></div>
+   <div class="grid"><div class="field span6"><label>نوع الفعالية</label><select id="organizerType"><option value="sports">مباراة رياضية</option><option value="concert">حفلة غنائية</option><option value="gaming">ألعاب ورياضات إلكترونية</option><option value="festival">مهرجان</option><option value="exhibition">معرض</option><option value="entertainment">فعالية ترفيهية</option></select></div><div class="field span6"><label>المنطقة</label><select id="organizerRegion"></select></div></div>
+   <div class="grid"><div class="field span6"><label>المدينة</label><select id="organizerCity"></select></div><div class="field span6"><label>تاريخ الفعالية</label><input id="orgEventDate" type="date"></div></div>
+   <div class="grid"><div class="field span6"><label>سعة الموقع</label><input id="capacity" type="number" min="1" value="25000"></div><div class="field span6"><label>الحضور المتوقع</label><input id="attendance" type="number" min="0" value="18000"></div></div>
+   <select id="organizerEvent" hidden></select><input type="hidden" id="eventName"><input type="hidden" id="eventType"><input type="hidden" id="eventLocation"><div class="field"><label>وصف الفعالية ومعلومات إضافية</label><textarea id="orgEventDescription" rows="3" placeholder="اكتب نبذة عن الفعالية وموقع إقامتها..."></textarea></div>
+   <h3 class="subheading">مؤشرات السلامة</h3>
+   <div class="grid"><div class="field span6"><label>مستوى الازدحام المتوقع</label><select id="crowd"><option value="1">منخفض</option><option value="2" selected>متوسط</option><option value="3">مرتفع</option></select></div><div class="field span6"><label>جاهزية السلامة</label><select id="safety"><option value="3">مكتملة</option><option value="2" selected>جزئية</option><option value="1">تحتاج تحسين</option></select></div></div>
+   <div class="check-grid"><label><input type="checkbox" id="orgMedical"> توفر فريق إسعافي</label><label><input type="checkbox" id="orgEmergency"> خطة ومخارج طوارئ</label><label><input type="checkbox" id="orgSecurity"> خطة أمن وتنظيم حشود</label></div>
+   <div class="notice" id="riskResult">أدخل بيانات الفعالية ثم احسب المؤشر التوضيحي لمراجعة عوامل المخاطر.</div>
+   <button class="btn secondary" type="button" onclick="calculateRisk()">تحليل المخاطر ومؤشرات السلامة</button>
+   <h3 class="subheading">التغطيات التأمينية المطلوبة للفعالية</h3>
+   <p class="muted">حدد أنواع الحماية التي ترغب أن تدرسها شركة التأمين. الموافقة والشروط والسعر النهائي من اختصاص شركة التأمين.</p>
+   <div class="coverage-options">
+    <label><input type="checkbox" name="orgCoverage" value="المسؤولية المدنية تجاه الغير" checked> المسؤولية المدنية تجاه الغير</label>
+    <label><input type="checkbox" name="orgCoverage" value="الحوادث الشخصية للفئات المشمولة"> الحوادث الشخصية للفئات المشمولة</label>
+    <label><input type="checkbox" name="orgCoverage" value="الممتلكات والمعدات المؤمنة"> الممتلكات والمعدات المؤمنة</label>
+    <label><input type="checkbox" name="orgCoverage" value="إلغاء الفعالية وفق الشروط"> إلغاء الفعالية وفق الشروط</label>
+   </div>
+   <div class="field"><label>ملاحظات للجهة التأمينية</label><textarea id="orgNotes" rows="2" placeholder="أي تفاصيل أو متطلبات إضافية..."></textarea></div>
+   <button class="btn" type="button" onclick="submitOrganizerRequest()">إرسال طلب التغطية لشركة التأمين</button>
+   <div id="orgSubmitMsg" class="notice hide"></div>
   </div>
-  <div class="card span5" id="organizerIndicators"><h3 data-ar="مؤشرات المنظم" data-en="Organizer indicators">مؤشرات المنظم</h3><div class="stats" style="grid-template-columns:1fr 1fr"><div class="statbox"><div class="statlabel" data-ar="السعة" data-en="Capacity">السعة</div><div class="stat" id="statCapacity">25,000</div></div><div class="statbox"><div class="statlabel" data-ar="الحضور" data-en="Attendance">الحضور</div><div class="stat" id="statAttendance">20,000</div></div></div><div class="notice warn" id="riskResult">مؤشر توضيحي غير معاير، ولا يستخدم للتسعير أو قرارات السلامة الفعلية.</div><div class="field"><label data-ar="حالة وثيقة المسؤولية" data-en="Liability policy status">حالة وثيقة المسؤولية</label><span class="pill amber" id="policyStatus">بيانات افتراضية للمراجعة</span></div><p class="muted" style="font-size:12px" data-ar="المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا." data-en="Demo indicator only; not an engineering or underwriting assessment.">المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا.</p></div>
+  <div class="card span5" id="organizerIndicators">
+   <h3>ملخص تقييم الفعالية</h3>
+   <div class="stats" style="grid-template-columns:1fr 1fr"><div class="statbox"><div class="statlabel">السعة</div><div class="stat" id="statCapacity">25,000</div></div><div class="statbox"><div class="statlabel">الحضور المتوقع</div><div class="stat" id="statAttendance">18,000</div></div></div>
+   <div class="notice warn" id="riskSummary">لم يتم إجراء التحليل بعد.</div>
+   <h3 class="subheading">رحلة طلب التأمين</h3>
+   <ol class="workflow-list"><li>تسجيل بيانات الفعالية</li><li>تقييم أولي للمخاطر والسلامة</li><li>إرسال طلب التغطية</li><li>مراجعة شركة التأمين والتسعير</li><li>الموافقة وإصدار الوثيقة أو الرفض مع السبب</li></ol>
+   <h3 class="subheading">طلباتي السابقة</h3><div id="organizerRequests" class="request-list empty">لم ترسل طلبات بعد.</div>
+  </div>
  </div>
 </section>
 
@@ -254,9 +288,9 @@
 </section>
 
 <section class="page" id="insurer">
- <div class="page-intro"><span class="pill">بوابة شركة التأمين</span><h2>إدارة ومراجعة المطالبات</h2><p class="muted">راجع بيانات العميل والتذكرة والحادث والمرفقات، ثم سجّل قرار شركة التأمين.</p></div>
- <div class="claim-insurer-stats" id="claimInsurerStats"></div>
- <div class="grid"><div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="المطالبات الواردة" data-en="Incoming claims">المطالبات الواردة</h3><span class="pill amber">مراجعة بشرية</span></div><div id="claimsList" class="claim-review-list empty">لا توجد مطالبات واردة بعد.</div></div>
+ <div class="page-intro"><span class="pill">بوابة شركة التأمين</span><h2>إدارة شركة التأمين</h2><p class="muted">راجع طلبات تأمين الفعاليات الواردة من المنظمين، ثم راجع مطالبات المستفيدين كلٌّ في مساره المستقل.</p></div>
+ <div class="card span12" id="eventUnderwritingCard"><div class="row"><h3>طلبات تأمين الفعاليات من المنظمين</h3><span class="pill amber">مراجعة اكتتابية</span></div><p class="muted">طلبات مستقلة عن مطالبات المستفيدين وتأمين التذاكر. راجع بيانات الفعالية ومؤشرات السلامة والتغطيات المطلوبة قبل اتخاذ القرار.</p><div id="eventUnderwritingStats" class="stats" style="grid-template-columns:repeat(3,1fr)"></div><div id="eventUnderwritingList" class="request-list empty">لا توجد طلبات تأمين فعاليات واردة. أرسل طلبًا من بوابة المنظم لتظهر تفاصيله هنا.</div></div><div class="claim-insurer-stats" id="claimInsurerStats"></div>
+ <div class="grid"><div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="مطالبات المستفيدين الواردة" data-en="Incoming attendee claims">مطالبات المستفيدين الواردة</h3><span class="pill amber">مراجعة بشرية</span></div><div id="claimsList" class="claim-review-list empty">لا توجد مطالبات واردة بعد.</div></div>
   <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا." data-en="Acceptance or rejection is decided by an insurer reviewer after examining incident details and documents. The system does not make automated decisions.">قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا.</p></div>
  </div>
 </section>
@@ -268,7 +302,7 @@
    <div class="tablewrap"><table><thead><tr><th>رقم الوثيقة</th><th>نوع التغطية</th><th>الجهة</th><th>الحالة</th></tr></thead><tbody>
     <tr><td><b>POL-HIMA-DEMO-001</b></td><td>المسؤولية المدنية للمنظم</td><td>منظم فعالية تجريبية</td><td><span class="pill amber">بيانات افتراضية</span></td></tr>
     <tr><td><b>HIMA-CERT-DEMO-001</b></td><td>الحوادث الشخصية للحضور</td><td>حامل تذكرة تجريبية</td><td><span class="pill green">شهادة تجريبية</span></td></tr>
-   </tbody></table></div>
+   </tbody></table></div><h3 class="subheading">وثائق تأمين الفعاليات الصادرة في هذه التجربة</h3><div id="eventPolicyList" class="request-list empty">لا توجد وثائق فعاليات صادرة بعد.</div>
    <div class="notice">البيانات المعروضة للتوضيح فقط، ولا تمثل وثائق تأمين فعلية أو تغطية سارية.</div>
   </div>
  </div>

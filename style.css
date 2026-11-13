@@ -971,3 +971,25 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
   #overview .welcome-row p{font-size:13px}
   #overview .welcome-row > .btn{width:100%;min-height:48px}
 }
+
+
+/* HIMA organizer + insurer underwriting workspace */
+.organizer-overview-stats{grid-template-columns:repeat(4,minmax(0,1fr));margin:16px 0 22px}
+.subheading{margin:22px 0 12px;padding-top:14px;border-top:1px solid var(--line,#eee)}
+.coverage-options,.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 18px}
+.coverage-options label,.check-grid label{display:flex;align-items:flex-start;gap:9px;padding:12px;border:1px solid var(--line,#e8e2ef);border-radius:13px;background:rgba(124,80,180,.035);font-size:13px}
+.coverage-options input,.check-grid input{accent-color:#7546a5;margin-top:3px}
+.workflow-list{padding-inline-start:22px;line-height:2.1;color:var(--muted,#777);font-size:13px}
+.request-list{display:grid;gap:12px;margin-top:14px}
+.request-card{border:1px solid var(--line,#e8e2ef);border-radius:16px;padding:16px;background:var(--surface,#fff)}
+.request-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.request-card h4{margin:0 0 5px}
+.request-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.request-meta div{padding:9px;border-radius:10px;background:rgba(124,80,180,.055);font-size:12px}
+.request-meta small{display:block;color:var(--muted,#777);margin-bottom:4px}
+.request-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.request-actions .btn{min-height:38px}
+.request-details{font-size:13px;line-height:1.9;color:var(--muted,#777);margin-top:10px}
+.request-coverage{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+.request-coverage span{font-size:11px;padding:5px 9px;border-radius:20px;background:#f2ecfa;color:#573482}
+@media(max-width:700px){.organizer-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.coverage-options,.check-grid,.request-meta{grid-template-columns:1fr}.request-card-head{flex-direction:column}}
