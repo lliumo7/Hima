@@ -584,3 +584,148 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
     grid-row: 2 !important;
   }
 }
+
+/* HIMA V16 — independent scroll panes: summaries stay anchored while only
+   the working column scrolls. This replaces the earlier sticky-position
+   attempts that still moved with the document on iPad Safari. */
+#booking .booking-layout,
+#payment .payment-layout,
+#incident .claim-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(270px, .95fr) !important;
+  align-items: stretch !important;
+  gap: 17px !important;
+  height: clamp(430px, calc(100dvh - 250px), 690px) !important;
+  min-height: 0 !important;
+  max-height: calc(100dvh - 150px) !important;
+  overflow: hidden !important;
+}
+#booking .booking-main-scroll,
+#payment .payment-main-scroll,
+#incident .claim-main-scroll {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: thin;
+  scrollbar-color: #c8b4e5 transparent;
+  padding: 0 2px 10px 2px;
+  align-self: stretch !important;
+}
+#booking .booking-form-card,
+#payment .payment-method-card,
+#incident .claim-form-card {
+  margin: 0 !important;
+  min-height: min-content;
+}
+#booking .booking-summary-card,
+#payment .payment-summary-card,
+#incident .claim-side-card {
+  position: relative !important;
+  inset: auto !important;
+  top: auto !important;
+  align-self: stretch !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  z-index: 1 !important;
+  scrollbar-width: thin;
+  scrollbar-color: #c8b4e5 transparent;
+}
+#incident .claim-lower-sections {
+  margin-top: 17px !important;
+  padding-bottom: 12px;
+}
+
+/* The page itself must not become the scroll container for these workspaces. */
+#booking.page.active,
+#payment.page.active,
+#incident.page.active {
+  overflow: visible;
+}
+
+/* Narrow phones: keep the summary in a compact top pane and scroll the form
+   below it, rather than letting the summary travel down the page. */
+@media (max-width: 680px) {
+  #booking .booking-layout,
+  #payment .payment-layout,
+  #incident .claim-workspace {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: minmax(125px, 31%) minmax(0, 1fr) !important;
+    height: clamp(390px, calc(100dvh - 235px), 620px) !important;
+    max-height: calc(100dvh - 170px) !important;
+  }
+  #booking .booking-main-scroll,
+  #payment .payment-main-scroll,
+  #incident .claim-main-scroll {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+  }
+  #booking .booking-summary-card,
+  #payment .payment-summary-card,
+  #incident .claim-side-card {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 12px 14px !important;
+  }
+}
+/* Reserve the fixed bottom navigation and browser-safe area on tablet screens. */
+#payment .payment-layout,
+#incident .claim-workspace {
+  height: clamp(360px, calc(100dvh - 360px), 650px) !important;
+}
+#booking .booking-layout {
+  height: clamp(420px, calc(100dvh - 220px), 700px) !important;
+}
+@media (max-width: 680px) {
+  #booking .booking-layout,
+  #payment .payment-layout,
+  #incident .claim-workspace {
+    height: clamp(340px, calc(100dvh - 310px), 560px) !important;
+  }
+}
+/* V16.1: force a bounded grid row; otherwise the grid item's min-content
+   height can exceed the viewport and make the side panel appear to move. */
+#booking .booking-layout,
+#payment .payment-layout,
+#incident .claim-workspace {
+  grid-template-rows: minmax(0, 1fr) !important;
+}
+#booking .booking-layout > .booking-summary-card,
+#payment .payment-layout > .payment-summary-card,
+#incident .claim-workspace > .claim-side-card {
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-height: none !important;
+}
+#booking .booking-layout > .booking-main-scroll,
+#payment .payment-layout > .payment-main-scroll,
+#incident .claim-workspace > .claim-main-scroll {
+  min-height: 0 !important;
+  height: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (max-width: 680px) {
+  #booking .booking-layout,
+  #payment .payment-layout,
+  #incident .claim-workspace {
+    grid-template-rows: minmax(125px, 31%) minmax(0, 1fr) !important;
+  }
+}
+/* Final safe-area adjustment for iPad portrait: keep the fixed bottom bar clear. */
+#payment .payment-layout,
+#incident .claim-workspace {
+  height: clamp(340px, calc(100dvh - 390px), 640px) !important;
+}

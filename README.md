@@ -1,38 +1,23 @@
-# حِمى | HIMA — V10
-هذه النسخة تعيد صفحة اختيار البوابة أولاً، ثم تعرض مساحة مستقلة لكل طرف.
+# حِمى | HIMA — V16 Independent Scroll
 
-## البوابات
-- المستفيد: قائمة جانبية خاصة به + شريط تنقل سفلي بأيقونات التطبيق.
-- منظم الفعالية: قائمة جانبية خاصة بالمنظم، تربط بيانات الفعالية ومؤشرات المخاطر والوثائق وسجل الحوادث.
-- شركة التأمين: قائمة جانبية خاصة بالشركة، تربط المطالبات والوثائق والتغطيات وسجل الحوادث وضوابط المراجعة.
+هذه النسخة مبنية على النسخة المعتمدة الأخيرة للمستخدم (V15) مع إصلاح جذري لطريقة التمرير في صفحات الحجز والمطالبات والدفع.
 
-## الرفع على GitHub Pages
-ارفعي الملفات الأربعة في نفس المجلد الرئيسي للمستودع:
-- index.html
-- style.css
-- app.js
-- README.md
+## التعديل الأساسي
+- تم فصل عمود المحتوى عن ملخصه الجانبي في ثلاث صفحات: الحجز، المطالبات، والدفع.
+- التمرير يحدث داخل عمود المحتوى فقط؛ ملخص الطلب/المطالبة يبقى في موضعه ولا يتحرك مع التمرير.
+- تم نقل قسم «مطالباتي» وسجل الحوادث إلى عمود المحتوى القابل للتمرير في صفحة المطالبات، حتى يمكن الوصول إليهما دون تحريك الملخص.
+- في الشاشات الضيقة، يظهر الملخص في مساحة علوية مختصرة، ويكون التمرير في مساحة النموذج أسفلها.
+- تمت المحافظة على عناصر الصفحة ووظائفها الحالية، بما في ذلك معرفات الحقول وأزرار الحجز والإرسال والدفع.
 
-لا ترفعي index.html وحده لأن التنسيق والوظائف موجودة في الملفين الآخرين.
-النموذج تجريبي ببيانات افتراضية ولا ينفذ إصدار وثائق أو قرارات تعويض فعلية.
+## الاختبار
+تم اختبار التمرير آليًا باستخدام Chromium بمقاسات محاكاة للآيباد (1024×768 و768×1024) والهاتف (390×844). في صفحات الحجز والمطالبات والدفع:
+- تغير موضع الملخص أثناء تمرير عمود المحتوى: 0px.
+- تغير تمرير الصفحة الخارجية أثناء الاختبار: 0px.
+- تم التأكد من أن عمود المطالبات يحتوي كذلك على «مطالباتي» وسجل الحوادث.
 
+ملاحظة: الاختبار محاكاة متصفح بمقاسات الأجهزة، وليس اختبارًا مباشرًا على جهاز iPad فعلي أو Safari.
 
-تم تحسين صفحة اختيار البوابة في V10 مع الحفاظ على البوابات والقوائم المنفصلة.
-
-
-## V11 updates
-- The attendee claim summary / next-steps card is sticky on desktop so it remains visible while scrolling, without overlaying the rest of the page; on small screens it returns to normal document flow.
-- Booking now proceeds to a separate demo payment page with Apple Pay, Mada, and bank-card options. Confirming the simulated payment creates the ticket and redirects to the ticket wallet. No real payment is processed.
-
-
-## V12 hotfix
-- Fixed the attendee "Continue to payment" action with explicit global binding, visible validation feedback, guarded summary rendering, and a clear error message if navigation fails.
-- Kept the claim summary / "What happens after submission?" panel sticky at iPad and tablet widths instead of disabling sticky positioning under 800px.
-- Updated local asset cache versions to v12.
-- All payment processing remains a prototype simulation; no real payment gateway is connected.
-
-## V15 sticky summaries
-- Claim summary and payment summary use independent sticky positioning inside separate workspaces.
-- The claim history and incident register are outside the sticky workspace, preventing the claim summary from overlaying them.
-- Tablet widths preserve the two-column layout; narrow phones place the summary first in a compact sticky panel.
-- Payment summary is sticky as well, not only the claim summary.
+## الملفات
+- `index.html`
+- `style.css`
+- `app.js`

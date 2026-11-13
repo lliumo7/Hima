@@ -5,7 +5,7 @@
 <title>حِمى | HIMA</title>
 <meta name="description" content="منظومة ذكية للتأمين وإدارة مخاطر الفعاليات الكبرى والتجمعات الحاشدة">
 <meta name="theme-color" content="#5b35a5">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=16">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -164,8 +164,9 @@
 </section>
 
 <section class="page" id="booking">
- <div class="grid">
-  <div class="card span7"><h3 data-ar="اختيار الفعالية والتذكرة" data-en="Choose event and ticket">اختيار الفعالية والتذكرة</h3><div class="notice">الفعالية المختارة: <b id="selectedEventName">لم يتم اختيار فعالية بعد</b> <button class="text-btn" onclick="showPage('events')">تغيير الفعالية</button></div>
+ <div class="booking-layout">
+  <div class="booking-main-scroll">
+  <div class="card booking-form-card"><h3 data-ar="اختيار الفعالية والتذكرة" data-en="Choose event and ticket">اختيار الفعالية والتذكرة</h3><div class="notice">الفعالية المختارة: <b id="selectedEventName">لم يتم اختيار فعالية بعد</b> <button class="text-btn" onclick="showPage('events')">تغيير الفعالية</button></div>
    <div class="ticket"><div class="tickethead"><span class="pill">HIMA EVENT</span><span class="muted" data-ar="تصور حجز مقترح" data-en="Proposed booking concept">تصور حجز مقترح</span></div><h2 id="bookingEvent">مباراة الهلال × النصر</h2><p class="muted" data-ar="الرياض • ملعب افتراضي • 24 نوفمبر 2026" data-en="Riyadh • Demo stadium • 24 Nov 2026">الرياض • ملعب افتراضي • 24 نوفمبر 2026</p></div>
    <div class="field"><label data-ar="فئة التذكرة" data-en="Ticket category">فئة التذكرة</label><select id="ticketType" onchange="updateTotal()"><option value="150">الفئة العادية — 150 ر.س</option><option value="250">الفئة المميزة — 250 ر.س</option><option value="350">الفئة الذهبية — 350 ر.س</option></select></div>
    <section class="cover-details" aria-labelledby="coverDetailsTitle">
@@ -188,14 +189,16 @@
     <p class="package-note">الأسعار ومستويات الباقات افتراضية لغرض تجربة التطبيق فقط، ولا تعبّر عن تسعير أو حدود تغطية تأمينية معتمدة.</p>
    </section>
   </div>
-  <div class="card span5"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="باقة حماية حِمى" data-en="HIMA protection package">باقة حماية حِمى</span><b id="coverPrice">0 ر.س</b></div><div class="row package-summary-row"><span>الباقة المختارة</span><b id="coverPackageSummary">بدون حماية</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="goToPayment()" data-ar="متابعة للدفع" data-en="Continue to payment">متابعة للدفع</button><div id="bookingMsg" class="notice hide"></div></div>
+  </div>
+  <aside class="card booking-summary-card"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="باقة حماية حِمى" data-en="HIMA protection package">باقة حماية حِمى</span><b id="coverPrice">0 ر.س</b></div><div class="row package-summary-row"><span>الباقة المختارة</span><b id="coverPackageSummary">بدون حماية</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="goToPayment()" data-ar="متابعة للدفع" data-en="Continue to payment">متابعة للدفع</button><div id="bookingMsg" class="notice hide"></div></aside>
  </div>
 </section>
 
 <section class="page" id="payment">
  <div class="page-intro"><span class="pill">إتمام الحجز</span><h2>الدفع</h2><p class="muted">راجعي تفاصيل طلبك، ثم اختاري وسيلة الدفع المناسبة لإكمال الحجز التجريبي.</p></div>
- <div class="grid payment-layout">
-  <div class="card span7"><div class="payment-step-heading"><span class="claim-step">1</span><div><h3>اختيار وسيلة الدفع</h3><p class="muted">اختاري إحدى وسائل الدفع المتاحة في النموذج.</p></div></div>
+ <div class="payment-layout">
+  <div class="payment-main-scroll">
+  <div class="card payment-method-card"><div class="payment-step-heading"><span class="claim-step">1</span><div><h3>اختيار وسيلة الدفع</h3><p class="muted">اختاري إحدى وسائل الدفع المتاحة في النموذج.</p></div></div>
    <div class="payment-methods" role="radiogroup" aria-label="وسيلة الدفع">
     <label class="payment-method"><input type="radio" name="paymentMethod" value="Apple Pay" checked><span class="payment-method-icon apple-pay"> Pay</span><span><b>Apple Pay</b><small>الدفع باستخدام Apple Pay</small></span><i></i></label>
     <label class="payment-method"><input type="radio" name="paymentMethod" value="مدى"><span class="payment-method-icon mada">مدى</span><span><b>بطاقة مدى</b><small>بطاقات مدى البنكية</small></span><i></i></label>
@@ -205,7 +208,8 @@
    <button class="btn payment-confirm-btn" onclick="confirmPayment()">تأكيد الدفع وإتمام الحجز</button><button class="text-btn payment-back-btn" onclick="showPage('booking')">العودة لمراجعة الحجز</button>
    <div id="paymentMsg" class="notice hide" aria-live="polite"></div>
   </div>
-  <aside class="card span5 payment-summary-card"><h3>ملخص الطلب</h3><div class="row"><span>الفعالية</span><b id="paymentEventName">—</b></div><div class="row"><span>فئة التذكرة</span><b id="paymentTicketType">—</b></div><div class="row"><span>قيمة التذكرة</span><b id="paymentBasePrice">—</b></div><div class="row"><span>باقة الحماية</span><b id="paymentCoverPackage">بدون حماية</b></div><div class="row"><span>قيمة الحماية</span><b id="paymentCoverPrice">0 ر.س</b></div><hr><div class="row payment-total"><b>الإجمالي المستحق</b><b id="paymentTotal">—</b></div></aside>
+  </div>
+  <aside class="card payment-summary-card"><h3>ملخص الطلب</h3><div class="row"><span>الفعالية</span><b id="paymentEventName">—</b></div><div class="row"><span>فئة التذكرة</span><b id="paymentTicketType">—</b></div><div class="row"><span>قيمة التذكرة</span><b id="paymentBasePrice">—</b></div><div class="row"><span>باقة الحماية</span><b id="paymentCoverPackage">بدون حماية</b></div><div class="row"><span>قيمة الحماية</span><b id="paymentCoverPrice">0 ر.س</b></div><hr><div class="row payment-total"><b>الإجمالي المستحق</b><b id="paymentTotal">—</b></div></aside>
  </div>
 </section>
 
@@ -215,8 +219,9 @@
 
 <section class="page" id="incident">
  <div class="page-intro"><span class="pill">بوابة المستفيد</span><h2>تقديم مطالبة تأمينية</h2><p class="muted">اختر تذكرتك المؤمّن عليها، وسجّل تفاصيل الحادث وأرفق المستندات لإرسال المطالبة إلى شركة التأمين للمراجعة.</p></div>
- <div class="grid claim-workspace claim-layout">
-  <div class="card span7 claim-form-card" id="claimSubmissionCard">
+ <div class="claim-workspace claim-layout">
+  <div class="claim-main-scroll">
+  <div class="card claim-form-card" id="claimSubmissionCard">
    <div class="claim-section-title"><span class="claim-step">1</span><div><h3>اختر التذكرة المؤمّن عليها</h3><p class="muted">تظهر هنا التذاكر الصادرة التي تتضمن حماية حِمى.</p></div></div>
    <div class="field"><label for="claimTicket">التذكرة</label><select id="claimTicket" required onchange="renderClaimTicketSummary()"><option value="">اختر التذكرة</option></select></div>
    <div id="claimTicketSummary" class="claim-ticket-summary notice">ستظهر تفاصيل التذكرة المختارة هنا.</div>
@@ -234,16 +239,17 @@
    <button class="btn claim-submit-btn" onclick="submitClaim()">تأكيد إرسال المطالبة <span aria-hidden="true">←</span></button>
    <div id="claimMsg" class="notice hide" aria-live="polite"></div>
   </div>
-  <aside class="card span5 claim-side-card">
+  <div class="grid claim-lower-sections">
+   <div class="card span12" id="customerClaimsCard"><div class="row"><h3>مطالباتي</h3><span class="pill">سجل الطلبات</span></div><div id="customerClaimsList" class="empty">لا توجد مطالبات مرسلة حتى الآن.</div></div>
+   <div class="card span12" id="incidentRegister"><h3 data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
+  </div>
+  </div>
+  <aside class="card claim-side-card">
    <h3>ملخص المطالبة</h3>
    <div id="claimLiveSummary" class="claim-summary-empty">أكمِل بيانات الحادث لتظهر تفاصيل مطالبتك هنا.</div>
    <div class="claim-status-guide"><h3>ماذا يحدث بعد الإرسال؟</h3><div class="claim-mini-step"><span class="mini-step-dot active">1</span><div><b>تم إرسال المطالبة</b><small>يتم تسجيل طلبك وإعطاؤه رقمًا خاصًا.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">2</span><div><b>مراجعة شركة التأمين</b><small>تتم مراجعة تفاصيل الحادث والمستندات.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">3</span><div><b>صدور القرار</b><small>يظهر لك القبول أو الرفض مع توضيح القرار.</small></div></div></div>
    <div class="notice">يمكنك متابعة حالة المطالبة وقرار شركة التأمين من قسم «مطالباتي» في هذه الصفحة.</div>
   </aside>
- </div>
- <div class="grid claim-lower-sections">
-  <div class="card span12" id="customerClaimsCard"><div class="row"><h3>مطالباتي</h3><span class="pill">سجل الطلبات</span></div><div id="customerClaimsList" class="empty">لا توجد مطالبات مرسلة حتى الآن.</div></div>
-  <div class="card span12" id="incidentRegister"><h3 data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
  </div>
 </section>
 
@@ -270,5 +276,5 @@
 
 <footer class="foot" id="footerText">حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.</footer>
 </div>
-<script src="app.js?v=12"></script>
+<script src="app.js?v=16"></script>
 </body></html>
