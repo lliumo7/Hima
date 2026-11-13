@@ -759,3 +759,93 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
 .category-card{min-height:160px}
 .category-filter{white-space:nowrap}
 @media(max-width:700px){.event-art{height:145px;min-height:145px}.event-art .event-photo{min-height:145px}.category-card .category-photo-wrap{height:65px}}
+
+
+/* HIMA V16.1 — event catalogue photo/label display correction.
+   Scope: event cards and category photo presentation only. */
+#events .event-art {
+  position: relative !important;
+  display: block !important;
+  height: 184px !important;
+  min-height: 184px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background: #e9e1f4 !important;
+}
+#events .event-art > .event-photo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+}
+#events .event-art > .event-category-label {
+  position: absolute !important;
+  z-index: 2 !important;
+  top: 12px !important;
+  right: 12px !important;
+  left: auto !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: auto !important;
+  max-width: calc(100% - 24px) !important;
+  min-height: 0 !important;
+  padding: 6px 11px !important;
+  border: 1px solid rgba(255,255,255,.62) !important;
+  border-radius: 999px !important;
+  background: rgba(54,29,101,.78) !important;
+  color: #fff !important;
+  font-size: 12px !important;
+  line-height: 1.45 !important;
+  font-weight: 700 !important;
+  white-space: normal !important;
+  text-align: center !important;
+  box-shadow: 0 3px 12px rgba(20,10,40,.18) !important;
+  backdrop-filter: blur(7px) !important;
+}
+#events .event-art::after {
+  content: "" !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  inset: 48% 0 0 !important;
+  background: linear-gradient(180deg, transparent, rgba(20,10,40,.28)) !important;
+  pointer-events: none !important;
+}
+#events .event-card {
+  overflow: hidden !important;
+}
+#events .category-card .category-photo-wrap {
+  display: block !important;
+  width: 100% !important;
+  height: 76px !important;
+  overflow: hidden !important;
+  border-radius: 12px !important;
+}
+#events .category-card .category-photo {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+@media (max-width: 700px) {
+  #events .event-art {
+    height: 148px !important;
+    min-height: 148px !important;
+  }
+  #events .event-art > .event-photo {
+    min-height: 0 !important;
+  }
+  #events .event-art > .event-category-label {
+    top: 8px !important;
+    right: 8px !important;
+    max-width: calc(100% - 16px) !important;
+    padding: 5px 8px !important;
+    font-size: 10px !important;
+  }
+  #events .category-card .category-photo-wrap {
+    height: 65px !important;
+  }
+}
