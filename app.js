@@ -1,5 +1,5 @@
 
-const state={lang:'ar',ticket:null,incidents:[],claims:[],risk:0,portal:null};
+const state={lang:'ar',ticket:null,pendingBooking:null,incidents:[],claims:[],risk:0,portal:null};
 const $=id=>document.getElementById(id);
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='wallet')renderWallet();if(id==='incident')renderIncidents();if(id==='insurer')renderClaims();window.scrollTo({top:0,behavior:'smooth'})}
 function toggleLang(){state.lang=state.lang==='ar'?'en':'ar';document.documentElement.lang=state.lang;document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';$('langBtn').textContent=state.lang==='ar'?'English':'العربية';document.querySelectorAll('[data-ar]').forEach(el=>el.textContent=el.dataset[state.lang]);document.querySelectorAll('.nav button').forEach(b=>{const icon=b.querySelector('.nav-icon');b.textContent=b.dataset[state.lang];if(icon)b.prepend(icon)});document.querySelectorAll('.bottom-link small[data-ar]').forEach(el=>el.textContent=el.dataset[state.lang]);$('brandTitle').textContent=state.lang==='ar'?'حِمى | HIMA':'HIMA | حِمى';$('brandSub').textContent=state.lang==='ar'?'منظومة التأمين الذكي وإدارة مخاطر الفعاليات':'Smart insurance & event risk management';$('resetBtn').textContent=state.lang==='ar'?'إعادة ضبط التجربة':'Reset demo';$('heroTag').textContent=state.lang==='ar'?'منصة موحدة للفعاليات والتأمين':'One connected platform for events & insurance';$('heroTitle').textContent=state.lang==='ar'?'مرحبًا بك في حِمى':'Welcome to HIMA';$('heroText').textContent=state.lang==='ar'?'منظومة رقمية متكاملة تربط منظم الفعالية، وشركة التأمين، والمستفيد في تجربة واحدة لإدارة المخاطر والتأمين ومتابعة الحوادث والمطالبات بكفاءة وثقة.':'A connected digital platform bringing event organizers, insurers and attendees together to manage risk, insurance, incidents and claims with clarity and confidence.';$('heroStep1').textContent=state.lang==='ar'?'إدارة مخاطر ذكية':'Smart risk management';$('heroStep2').textContent=state.lang==='ar'?'تغطية تأمينية مرنة':'Flexible insurance coverage';$('heroStep3').textContent=state.lang==='ar'?'متابعة المطالبات بسهولة':'Simple claims tracking';$('footerText').textContent=state.lang==='ar'?'حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.':'HIMA — prototype for testing and development only. Not an insurance policy, offer or live integration.';
@@ -16,7 +16,7 @@ function renderWallet(){
  let el=$('walletContent');
  if(!state.ticket){el.className='empty';el.textContent=state.lang==='ar'?'لا توجد تذاكر بعد. انتقل إلى «حجز التذكرة» لإنشاء تذكرة تجريبية.':'No tickets yet. Go to Ticket booking to create a demo ticket.';return}
  const t=state.ticket;el.className='ticket wallet-ticket';
- el.innerHTML=`<div class="tickethead"><div><span class="pill green">HIMA • DEMO</span><h2>${escapeHtml(t.event)}</h2><p class="muted">${escapeHtml(t.location||'')} • ${escapeHtml(t.date||'')}</p><p class="muted">${escapeHtml(t.venue||'')}</p></div><div class="qr" aria-label="نمط QR توضيحي"></div></div><hr style="border:0;border-top:1px dashed #c9b8e2"><div class="row"><span>رقم التذكرة</span><b class="ticketcode">${escapeHtml(t.id)}</b></div><div class="row"><span>فئة التذكرة</span><b>${escapeHtml(t.type)}</b></div><div class="row"><span>قيمة التذكرة</span><b>${t.base} ر.س</b></div><div class="row"><span>باقة حماية حِمى</span><b>${t.cover?escapeHtml(t.coverPackage)+' — '+t.coverPrice+' ر.س':'غير مضافة'}</b></div><div class="row"><b>الإجمالي التجريبي</b><b>${t.total} ر.س</b></div>${t.cover?`<div class="notice good"><b>شهادة حماية تجريبية</b><br>الباقة: ${escapeHtml(t.coverPackage)}<br>المرجع: ${escapeHtml(t.certificate)}<br>هذه ليست وثيقة تأمين فعلية، وتخضع التغطية الفعلية لشروط الوثيقة عند توفرها.</div>`:`<div class="notice warn">لم تتم إضافة الحماية الاختيارية إلى هذه التذكرة.</div>`}<div class="wallet-actions"><button class="btn secondary" onclick="showPage('events')">استكشاف فعاليات أخرى</button><button class="btn" onclick="showPage('incident')">الانتقال إلى بصمة الحادث / المطالبة</button></div>`
+ el.innerHTML=`<div class="tickethead"><div><span class="pill green">HIMA • DEMO</span><h2>${escapeHtml(t.event)}</h2><p class="muted">${escapeHtml(t.location||'')} • ${escapeHtml(t.date||'')}</p><p class="muted">${escapeHtml(t.venue||'')}</p></div><div class="qr" aria-label="نمط QR توضيحي"></div></div><hr style="border:0;border-top:1px dashed #c9b8e2"><div class="row"><span>رقم التذكرة</span><b class="ticketcode">${escapeHtml(t.id)}</b></div><div class="row"><span>فئة التذكرة</span><b>${escapeHtml(t.type)}</b></div><div class="row"><span>قيمة التذكرة</span><b>${t.base} ر.س</b></div><div class="row"><span>باقة حماية حِمى</span><b>${t.cover?escapeHtml(t.coverPackage)+' — '+t.coverPrice+' ر.س':'غير مضافة'}</b></div><div class="row"><b>الإجمالي التجريبي</b><b>${t.total} ر.س</b></div><div class="row"><span>وسيلة الدفع</span><b>${escapeHtml(t.paymentMethod||'—')}</b></div><div class="row"><span>حالة الدفع</span><b class="pill green">${escapeHtml(t.paymentStatus||'—')}</b></div>${t.cover?`<div class="notice good"><b>شهادة حماية تجريبية</b><br>الباقة: ${escapeHtml(t.coverPackage)}<br>المرجع: ${escapeHtml(t.certificate)}<br>هذه ليست وثيقة تأمين فعلية، وتخضع التغطية الفعلية لشروط الوثيقة عند توفرها.</div>`:`<div class="notice warn">لم تتم إضافة الحماية الاختيارية إلى هذه التذكرة.</div>`}<div class="wallet-actions"><button class="btn secondary" onclick="showPage('events')">استكشاف فعاليات أخرى</button><button class="btn" onclick="showPage('incident')">الانتقال إلى بصمة الحادث / المطالبة</button></div>`
 }
 function renderClaimTicketOptions(){
  const select=$('claimTicket');if(!select)return;
@@ -205,7 +205,7 @@ function exitPortal(){
 function showPage(id){
  const target=$(id);if(!target)return;
  const allowed={
-  customer:['overview','events','booking','wallet','incident','account'],
+  customer:['overview','events','booking','payment','wallet','incident','account'],
   organizer:['organizer','incident','account'],
   insurer:['insurer','insurerPolicies','incident','account']
  };
@@ -213,21 +213,33 @@ function showPage(id){
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
  if(id==='wallet')renderWallet();
+ if(id==='payment')renderPaymentSummary();
  if(id==='incident'){renderIncidents();if(state.portal==='customer'){renderClaimTicketOptions();renderClaims();}}
  if(id==='insurer')renderClaims();
  if(id==='events'){renderCategoryCards();renderEventCatalog()}
  openPortalNavState(id);
  window.scrollTo({top:0,behavior:'smooth'});
 }
-function issueTicket(){
+function goToPayment(){
  const msg=$('bookingMsg');
  if(!state.selectedEvent){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='اختاري فعالية من صفحة استكشف الفعاليات أولًا.';return}
- if(!$('agreeDemo').checked){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى تأكيد فهمك أن هذه تجربة افتراضية قبل إصدار التذكرة.';return}
- const base=+$('ticketType').value,pack=getSelectedCoverPackage(),cover=!!pack,stamp=String(Date.now()).slice(-6);
- state.ticket={id:'TKT-HIMA-'+stamp,event:state.selectedEvent.name,type:$('ticketType').selectedOptions[0].text,base,cover,coverPackage:pack?pack.name:null,coverLevel:pack?pack.level:null,coverPrice:pack?pack.price:0,total:base+(pack?pack.price:0),date:state.selectedEvent.date,certificate:cover?'HIMA-CERT-DEMO-'+stamp:null,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`,venue:state.selectedEvent.venue};
- renderWallet();showPage('wallet');
+ if(!$('agreeDemo').checked){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى تأكيد فهمك أن هذه تجربة افتراضية قبل المتابعة للدفع.';return}
+ const base=+$('ticketType').value,pack=getSelectedCoverPackage();
+ state.pendingBooking={event:state.selectedEvent,type:$('ticketType').selectedOptions[0].text,base,cover:!!pack,coverPackage:pack?pack.name:null,coverLevel:pack?pack.level:null,coverPrice:pack?pack.price:0,total:base+(pack?pack.price:0),date:state.selectedEvent.date,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`,venue:state.selectedEvent.venue};
+ renderPaymentSummary();$('paymentMsg').classList.add('hide');showPage('payment');
 }
-function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();renderClaimTicketOptions();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
+function renderPaymentSummary(){
+ const b=state.pendingBooking;if(!b)return;
+ $('paymentEventName').textContent=b.event.name;$('paymentTicketType').textContent=b.type;$('paymentBasePrice').textContent=b.base+' ر.س';$('paymentCoverPackage').textContent=b.coverPackage||'بدون حماية';$('paymentCoverPrice').textContent=b.coverPrice+' ر.س';$('paymentTotal').textContent=b.total+' ر.س';
+}
+function confirmPayment(){
+ const b=state.pendingBooking,msg=$('paymentMsg');if(!b){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='لا يوجد طلب جاهز للدفع. عودي إلى اختيار الفعالية والتذكرة.';return}
+ const method=document.querySelector('input[name="paymentMethod"]:checked')?.value||'Apple Pay';
+ const stamp=String(Date.now()).slice(-6);
+ state.ticket={id:'TKT-HIMA-'+stamp,event:b.event.name,type:b.type,base:b.base,cover:b.cover,coverPackage:b.coverPackage,coverLevel:b.coverLevel,coverPrice:b.coverPrice,total:b.total,date:b.date,certificate:b.cover?'HIMA-CERT-DEMO-'+stamp:null,location:b.location,venue:b.venue,paymentMethod:method,paymentStatus:'مدفوع تجريبيًا'};
+ state.pendingBooking=null;renderWallet();showPage('wallet');
+}
+function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.pendingBooking=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();renderClaimTicketOptions();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
 // Initialize guided experience and region selectors.
 fillRegions($('filterRegion'));updateCityOptions();fillRegions($('organizerRegion'),false);if($('organizerRegion'))$('organizerRegion').value='الرياض';updateOrganizerCities();renderOrganizerEvents();renderCategoryCards();renderEventCatalog();
 // Extend icon set for the new primary navigation.

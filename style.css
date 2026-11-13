@@ -459,3 +459,32 @@ body.portal-customer #incidentEntryCard,body.portal-customer #incidentRegister{d
 body.portal-organizer #customerClaimsCard,body.portal-insurer #customerClaimsCard{display:none!important}
 body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{display:none!important}
 @media(max-width:760px){.claim-side-card{position:static}.claim-fields-grid .field{grid-column:span 12}.claim-insurer-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.claim-review-grid{grid-template-columns:1fr}.customer-claim-info{grid-template-columns:1fr}.claim-progress{flex-wrap:wrap}.progress-node{white-space:normal;text-align:center}}
+
+/* HIMA V11 — keep claim context visible and separate the payment step */
+.claim-layout{align-items:start}
+.claim-side-card{position:sticky;top:88px;align-self:start;height:max-content;max-height:calc(100vh - 110px);overflow-y:auto;overscroll-behavior:contain;z-index:2}
+.payment-layout{align-items:start}
+.payment-step-heading{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.payment-step-heading h3{margin:0 0 4px}
+.payment-step-heading p{margin:0}
+.payment-methods{display:grid;gap:12px}
+.payment-method{display:flex;align-items:center;gap:14px;min-height:76px;padding:14px 16px;border:1px solid var(--line);border-radius:15px;background:var(--surface);cursor:pointer;transition:border-color .18s,background .18s}
+.payment-method:has(input:checked){border:2px solid var(--purple);background:var(--lav-2);padding:13px 15px}
+.payment-method input{accent-color:var(--purple);width:18px;height:18px;flex:0 0 18px}
+.payment-method-icon{width:54px;height:42px;flex:0 0 54px;display:grid;place-items:center;border-radius:11px;background:#f5f2fa;color:#201638;font-weight:900;font-size:17px}
+.payment-method-icon.apple-pay{font-size:16px;letter-spacing:-1px}
+.payment-method-icon.mada{color:#168b75;font-weight:900}
+.payment-method-icon.bank-card{color:var(--purple);font-size:24px}
+.payment-method>span:nth-of-type(2){display:flex;flex-direction:column;gap:4px;flex:1}
+.payment-method small{color:var(--muted);font-size:12px}
+.payment-method i{width:18px;height:18px;border:1px solid #cfc2df;border-radius:50%;position:relative}
+.payment-method:has(input:checked) i{border:6px solid var(--purple)}
+.payment-demo-note{margin:20px 0 14px}
+.payment-confirm-btn{width:100%;min-height:50px}
+.payment-back-btn{display:block;margin:13px auto 0}
+.payment-summary-card{position:sticky;top:88px;align-self:start}
+.payment-summary-card .row{gap:15px;padding:12px 0;border-bottom:1px solid var(--line)}
+.payment-summary-card .row b{text-align:left;overflow-wrap:anywhere}
+.payment-summary-card hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.payment-summary-card .payment-total{font-size:19px;border:0}
+@media(max-width:800px){.claim-side-card{position:static;max-height:none;overflow:visible}.payment-summary-card{position:static}.claim-layout,.payment-layout{align-items:stretch}}

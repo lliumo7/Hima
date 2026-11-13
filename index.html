@@ -188,7 +188,24 @@
     <p class="package-note">الأسعار ومستويات الباقات افتراضية لغرض تجربة التطبيق فقط، ولا تعبّر عن تسعير أو حدود تغطية تأمينية معتمدة.</p>
    </section>
   </div>
-  <div class="card span5"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="باقة حماية حِمى" data-en="HIMA protection package">باقة حماية حِمى</span><b id="coverPrice">0 ر.س</b></div><div class="row package-summary-row"><span>الباقة المختارة</span><b id="coverPackageSummary">بدون حماية</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="issueTicket()" data-ar="تأكيد الحجز التجريبي" data-en="Confirm demo booking">تأكيد الحجز التجريبي</button><div id="bookingMsg" class="notice hide"></div></div>
+  <div class="card span5"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="باقة حماية حِمى" data-en="HIMA protection package">باقة حماية حِمى</span><b id="coverPrice">0 ر.س</b></div><div class="row package-summary-row"><span>الباقة المختارة</span><b id="coverPackageSummary">بدون حماية</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="goToPayment()" data-ar="متابعة للدفع" data-en="Continue to payment">متابعة للدفع</button><div id="bookingMsg" class="notice hide"></div></div>
+ </div>
+</section>
+
+<section class="page" id="payment">
+ <div class="page-intro"><span class="pill">إتمام الحجز</span><h2>الدفع</h2><p class="muted">راجعي تفاصيل طلبك، ثم اختاري وسيلة الدفع المناسبة لإكمال الحجز التجريبي.</p></div>
+ <div class="grid payment-layout">
+  <div class="card span7"><div class="payment-step-heading"><span class="claim-step">1</span><div><h3>اختيار وسيلة الدفع</h3><p class="muted">اختاري إحدى وسائل الدفع المتاحة في النموذج.</p></div></div>
+   <div class="payment-methods" role="radiogroup" aria-label="وسيلة الدفع">
+    <label class="payment-method"><input type="radio" name="paymentMethod" value="Apple Pay" checked><span class="payment-method-icon apple-pay"> Pay</span><span><b>Apple Pay</b><small>الدفع باستخدام Apple Pay</small></span><i></i></label>
+    <label class="payment-method"><input type="radio" name="paymentMethod" value="مدى"><span class="payment-method-icon mada">مدى</span><span><b>بطاقة مدى</b><small>بطاقات مدى البنكية</small></span><i></i></label>
+    <label class="payment-method"><input type="radio" name="paymentMethod" value="بطاقة بنكية"><span class="payment-method-icon bank-card">▰</span><span><b>بطاقة بنكية</b><small>بطاقة ائتمانية أو خصم</small></span><i></i></label>
+   </div>
+   <div class="notice warn payment-demo-note">هذه محاكاة لواجهة الدفع فقط؛ لن يتم خصم أي مبلغ أو الاتصال ببوابة دفع فعلية.</div>
+   <button class="btn payment-confirm-btn" onclick="confirmPayment()">تأكيد الدفع وإتمام الحجز</button><button class="text-btn payment-back-btn" onclick="showPage('booking')">العودة لمراجعة الحجز</button>
+   <div id="paymentMsg" class="notice hide" aria-live="polite"></div>
+  </div>
+  <aside class="card span5 payment-summary-card"><h3>ملخص الطلب</h3><div class="row"><span>الفعالية</span><b id="paymentEventName">—</b></div><div class="row"><span>فئة التذكرة</span><b id="paymentTicketType">—</b></div><div class="row"><span>قيمة التذكرة</span><b id="paymentBasePrice">—</b></div><div class="row"><span>باقة الحماية</span><b id="paymentCoverPackage">بدون حماية</b></div><div class="row"><span>قيمة الحماية</span><b id="paymentCoverPrice">0 ر.س</b></div><hr><div class="row payment-total"><b>الإجمالي المستحق</b><b id="paymentTotal">—</b></div></aside>
  </div>
 </section>
 

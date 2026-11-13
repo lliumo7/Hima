@@ -18,3 +18,8 @@
 
 
 تم تحسين صفحة اختيار البوابة في V10 مع الحفاظ على البوابات والقوائم المنفصلة.
+
+
+## V11 updates
+- The attendee claim summary / next-steps card is sticky on desktop so it remains visible while scrolling, without overlaying the rest of the page; on small screens it returns to normal document flow.
+- Booking now proceeds to a separate demo payment page with Apple Pay, Mada, and bank-card options. Confirming the simulated payment creates the ticket and redirects to the ticket wallet. No real payment is processed.
