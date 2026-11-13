@@ -507,24 +507,80 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
 }
 
 
-/* HIMA V13 — keep the claim summary pinned while the attendee reviews the full claim page.
-   A small script toggles .claim-summary-pinned after the card reaches the viewport offset. */
+
+
+/* HIMA V14 — stable sticky claim summary, constrained to the claim form section.
+   It stays beside the form while the form is reviewed, then releases naturally
+   before the sections below (e.g. My Claims), so it never overlays them. */
 @media (min-width: 761px) {
-  #incident .claim-layout > .claim-side-card {
-    position: static !important;
-    max-height: none !important;
+  #incident .claim-layout {
+    align-items: start !important;
     overflow: visible !important;
   }
-  #incident .claim-side-card.claim-summary-pinned {
-    position: fixed !important;
-    top: 88px !important;
-    z-index: 25 !important;
-    max-height: calc(100dvh - 176px) !important;
+  #incident .claim-layout > .claim-side-card {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    top: 86px !important;
+    align-self: start !important;
+    height: max-content !important;
+    max-height: calc(100dvh - 190px) !important;
     overflow-y: auto !important;
     overscroll-behavior: contain !important;
+    z-index: 4 !important;
   }
-  #incident .claim-side-placeholder {
-    visibility: hidden;
-    pointer-events: none;
+}
+
+/* HIMA V15 — persistent side summaries on claim and payment screens.
+   Each sticky card is now constrained to its own two-column workspace, so it
+   stays visible while its companion form scrolls and releases before lower
+   sections. Tablet layouts keep the two columns; narrow phones stack safely. */
+#incident .claim-workspace,
+#payment .payment-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 7fr) minmax(250px, 5fr) !important;
+  align-items: start !important;
+  gap: 17px !important;
+  overflow: visible !important;
+}
+#incident .claim-workspace > .claim-form-card,
+#payment .payment-layout > .card:first-child {
+  grid-column: 1 !important;
+  min-width: 0;
+}
+#incident .claim-workspace > .claim-side-card,
+#payment .payment-layout > .payment-summary-card {
+  grid-column: 2 !important;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  top: 88px !important;
+  align-self: start !important;
+  height: max-content !important;
+  max-height: calc(100dvh - 108px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  z-index: 5 !important;
+  scrollbar-width: thin;
+}
+#incident .claim-lower-sections {
+  margin-top: 17px;
+}
+
+@media (max-width: 680px) {
+  #incident .claim-workspace,
+  #payment .payment-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  #incident .claim-workspace > .claim-side-card,
+  #payment .payment-layout > .payment-summary-card {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    top: 8px !important;
+    max-height: min(36dvh, 280px) !important;
+    margin-bottom: 2px;
+  }
+  #incident .claim-workspace > .claim-form-card,
+  #payment .payment-layout > .card:first-child {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
   }
 }

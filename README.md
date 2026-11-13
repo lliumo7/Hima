@@ -30,3 +30,9 @@
 - Kept the claim summary / "What happens after submission?" panel sticky at iPad and tablet widths instead of disabling sticky positioning under 800px.
 - Updated local asset cache versions to v12.
 - All payment processing remains a prototype simulation; no real payment gateway is connected.
+
+## V15 sticky summaries
+- Claim summary and payment summary use independent sticky positioning inside separate workspaces.
+- The claim history and incident register are outside the sticky workspace, preventing the claim summary from overlaying them.
+- Tablet widths preserve the two-column layout; narrow phones place the summary first in a compact sticky panel.
+- Payment summary is sticky as well, not only the claim summary.

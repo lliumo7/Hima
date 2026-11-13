@@ -215,7 +215,7 @@
 
 <section class="page" id="incident">
  <div class="page-intro"><span class="pill">بوابة المستفيد</span><h2>تقديم مطالبة تأمينية</h2><p class="muted">اختر تذكرتك المؤمّن عليها، وسجّل تفاصيل الحادث وأرفق المستندات لإرسال المطالبة إلى شركة التأمين للمراجعة.</p></div>
- <div class="grid claim-layout">
+ <div class="grid claim-workspace claim-layout">
   <div class="card span7 claim-form-card" id="claimSubmissionCard">
    <div class="claim-section-title"><span class="claim-step">1</span><div><h3>اختر التذكرة المؤمّن عليها</h3><p class="muted">تظهر هنا التذاكر الصادرة التي تتضمن حماية حِمى.</p></div></div>
    <div class="field"><label for="claimTicket">التذكرة</label><select id="claimTicket" required onchange="renderClaimTicketSummary()"><option value="">اختر التذكرة</option></select></div>
@@ -240,6 +240,8 @@
    <div class="claim-status-guide"><h3>ماذا يحدث بعد الإرسال؟</h3><div class="claim-mini-step"><span class="mini-step-dot active">1</span><div><b>تم إرسال المطالبة</b><small>يتم تسجيل طلبك وإعطاؤه رقمًا خاصًا.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">2</span><div><b>مراجعة شركة التأمين</b><small>تتم مراجعة تفاصيل الحادث والمستندات.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">3</span><div><b>صدور القرار</b><small>يظهر لك القبول أو الرفض مع توضيح القرار.</small></div></div></div>
    <div class="notice">يمكنك متابعة حالة المطالبة وقرار شركة التأمين من قسم «مطالباتي» في هذه الصفحة.</div>
   </aside>
+ </div>
+ <div class="grid claim-lower-sections">
   <div class="card span12" id="customerClaimsCard"><div class="row"><h3>مطالباتي</h3><span class="pill">سجل الطلبات</span></div><div id="customerClaimsList" class="empty">لا توجد مطالبات مرسلة حتى الآن.</div></div>
   <div class="card span12" id="incidentRegister"><h3 data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
  </div>
