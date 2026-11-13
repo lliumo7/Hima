@@ -5,7 +5,7 @@
 <title>حِمى | HIMA</title>
 <meta name="description" content="منظومة ذكية للتأمين وإدارة مخاطر الفعاليات الكبرى والتجمعات الحاشدة">
 <meta name="theme-color" content="#5b35a5">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -57,34 +57,53 @@
   </div>
  </aside>
 </div>
+<section class="hero landing-hero" id="landingHero">
+ <div class="hero-copy">
+  <span class="tag" id="heroTag">منصة موحدة للفعاليات والتأمين</span>
+  <h2 id="heroTitle">مرحبًا بك في حِمى</h2>
+  <p id="heroText">منظومة رقمية متكاملة تربط منظم الفعالية، وشركة التأمين، والمستفيد في تجربة واحدة لإدارة المخاطر والتأمين ومتابعة الحوادث والمطالبات بكفاءة وثقة.</p>
+  <div class="steps">
+   <span class="step" id="heroStep1">إدارة مخاطر ذكية</span>
+   <span class="step" id="heroStep2">تغطية تأمينية مرنة</span>
+   <span class="step" id="heroStep3">متابعة المطالبات بسهولة</span>
+  </div>
+ </div>
+ <div class="hero-visual" aria-hidden="true">
+  <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+  <div class="hero-shield"><span>حِمى</span><small>HIMA</small></div>
+  <span class="hero-float float-calendar">▦</span><span class="hero-float float-shield">♢</span><span class="hero-float float-chart">▥</span>
+ </div>
+</section>
 <section class="role-gateway" id="roleGateway">
  <div class="gateway-heading">
-  <span class="pill">HIMA • حِمى</span>
-  <h2 id="gatewayTitle">مرحبًا بك في حِمى</h2>
-  <p id="gatewaySub">اختَر نوع حسابك للانتقال إلى المساحة المناسبة لك.</p>
+  <span class="section-kicker">ابدأ من المساحة المناسبة لك</span>
+  <h2 id="gatewayTitle">اختر بوابتك للدخول</h2>
+  <p id="gatewaySub">كل طرف لديه مساحة مستقلة وأدوات مصممة لتلبية احتياجاته.</p>
  </div>
  <div class="role-grid">
   <button class="role-card customer-role" onclick="enterPortal('customer')">
    <span class="role-icon">♙</span><span class="role-title" id="customerRoleTitle">المستفيد</span>
-   <span class="role-desc" id="customerRoleDesc">استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية الاختيارية.</span>
+   <span class="role-desc" id="customerRoleDesc">استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية المناسبة لك.</span>
    <span class="role-action" id="customerRoleAction">الدخول كمستفيد <b>←</b></span>
   </button>
   <button class="role-card organizer-role" onclick="enterPortal('organizer')">
-   <span class="role-icon">▥</span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
-   <span class="role-desc" id="organizerRoleDesc">سجّل فعاليتك، قيّم المخاطر، وتابع طلبات ووثائق التأمين.</span>
+   <span class="role-icon">▦</span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
+   <span class="role-desc" id="organizerRoleDesc">أدر فعالياتك، قيّم المخاطر، وارفع طلبات ووثائق التأمين.</span>
    <span class="role-action" id="organizerRoleAction">الدخول كمنظم <b>←</b></span>
   </button>
   <button class="role-card insurer-role" onclick="enterPortal('insurer')">
    <span class="role-icon">⬡</span><span class="role-title" id="insurerRoleTitle">شركة التأمين</span>
-   <span class="role-desc" id="insurerRoleDesc">راجع طلبات التأمين، التغطيات، الحوادث والمطالبات.</span>
+   <span class="role-desc" id="insurerRoleDesc">راجع طلبات التأمين، وأدر التغطيات والحوادث والمطالبات.</span>
    <span class="role-action" id="insurerRoleAction">الدخول لشركة التأمين <b>←</b></span>
   </button>
  </div>
- <div class="gateway-note">نموذج تجريبي: الدخول لا يتطلب حسابًا حقيقيًا، والبيانات والإجراءات المعروضة افتراضية.</div>
-</section>
-<section class="hero">
- <div><span class="tag" id="heroTag">نموذج أولي تفاعلي • بيانات افتراضية</span><h2 id="heroTitle">من التذكرة إلى المطالبة، في رحلة واحدة</h2><p id="heroText">تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.</p><div class="steps"><span class="step" id="heroStep1">إدارة مخاطر المنظم</span><span class="step" id="heroStep2">حماية اختيارية للحضور</span><span class="step" id="heroStep3">بصمة الحادث التأمينية</span></div></div>
- <div class="hero-mark">حِمى<br><span style="font-size:22px;letter-spacing:5px">HIMA</span></div>
+ <div class="gateway-benefits">
+  <div><span>♧</span><b>ثلاث بوابات مترابطة</b><small>تجربة موحدة وفعالة</small></div>
+  <div><span>▱</span><b>منصة متكاملة</b><small>لإدارة الفعاليات والتأمين</small></div>
+  <div><span>ϟ</span><b>إجراءات رقمية</b><small>سريعة ومبسطة</small></div>
+  <div><span>♢</span><b>موثوق وأمن</b><small>لحماية جميع الأطراف</small></div>
+ </div>
+ <div class="gateway-note">نموذج تجريبي — لا يتطلب حسابًا حقيقيًا، والبيانات والإجراءات المعروضة افتراضية.</div>
 </section>
 <nav class="nav" id="nav">
  <button class="active" data-page="overview" data-portal="customer" onclick="showPage('overview')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
@@ -204,5 +223,5 @@
 
 <footer class="foot" id="footerText">حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.</footer>
 </div>
-<script src="app.js?v=9"></script>
+<script src="app.js?v=10"></script>
 </body></html>
