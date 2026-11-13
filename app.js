@@ -275,3 +275,93 @@ closeDrawer();document.body.classList.remove('portal-active','portal-customer','
 
 // Ensure inline booking controls can always invoke the payment transition.
 window.goToPayment=goToPayment;
+
+
+/* HIMA V13 — reliable claim-summary pinning on iPad/desktop.
+   The placeholder preserves the grid slot while the summary is fixed to the viewport. */
+(function initClaimSummaryPinning(){
+  const cardSelector = '#incident .claim-side-card';
+  let pinnedCard = null;
+  let placeholder = null;
+  let documentTop = null;
+  let left = null;
+  let width = null;
+  let gridColumn = null;
+  let gridRow = null;
+  let ticking = false;
+
+  function clearPin(){
+    if (!pinnedCard) return;
+    pinnedCard.classList.remove('claim-summary-pinned');
+    pinnedCard.style.left = '';
+    pinnedCard.style.width = '';
+    pinnedCard.style.insetInlineStart = '';
+    if (placeholder && placeholder.parentNode) placeholder.remove();
+    pinnedCard = null;
+    placeholder = null;
+    documentTop = left = width = gridColumn = gridRow = null;
+  }
+
+  function pageIsActive(){
+    const page = document.getElementById('incident');
+    return !!(page && page.classList.contains('active') &&
+      document.body.classList.contains('portal-customer'));
+  }
+
+  function update(){
+    ticking = false;
+    const card = document.querySelector(cardSelector);
+    if (!pageIsActive() || !card || window.innerWidth < 761) {
+      clearPin();
+      return;
+    }
+
+    if (pinnedCard && pinnedCard !== card) clearPin();
+
+    if (!pinnedCard) {
+      const rect = card.getBoundingClientRect();
+      const pinTop = 88;
+      if (rect.top > pinTop) return;
+
+      const computed = window.getComputedStyle(card);
+      documentTop = rect.top + window.scrollY;
+      left = rect.left;
+      width = rect.width;
+      gridColumn = computed.gridColumn;
+      gridRow = computed.gridRow;
+
+      placeholder = document.createElement('div');
+      placeholder.className = 'claim-side-placeholder';
+      placeholder.style.gridColumn = gridColumn;
+      placeholder.style.gridRow = gridRow;
+      placeholder.style.width = width + 'px';
+      placeholder.style.height = rect.height + 'px';
+      card.parentNode.insertBefore(placeholder, card);
+
+      pinnedCard = card;
+      card.style.left = left + 'px';
+      card.style.width = width + 'px';
+      card.classList.add('claim-summary-pinned');
+    } else if (window.scrollY + 88 < documentTop) {
+      clearPin();
+    }
+  }
+
+  function schedule(){
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+
+  window.addEventListener('scroll', schedule, {passive:true});
+  window.addEventListener('resize', function(){
+    clearPin();
+    schedule();
+  }, {passive:true});
+
+  const observer = new MutationObserver(schedule);
+  observer.observe(document.body, {subtree:true, attributes:true, attributeFilter:['class']});
+  document.addEventListener('click', function(){ window.setTimeout(schedule, 80); });
+  window.addEventListener('load', schedule);
+  schedule();
+})();

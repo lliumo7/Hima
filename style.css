@@ -505,3 +505,26 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
   z-index:3;
  }
 }
+
+
+/* HIMA V13 — keep the claim summary pinned while the attendee reviews the full claim page.
+   A small script toggles .claim-summary-pinned after the card reaches the viewport offset. */
+@media (min-width: 761px) {
+  #incident .claim-layout > .claim-side-card {
+    position: static !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  #incident .claim-side-card.claim-summary-pinned {
+    position: fixed !important;
+    top: 88px !important;
+    z-index: 25 !important;
+    max-height: calc(100dvh - 176px) !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain !important;
+  }
+  #incident .claim-side-placeholder {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
