@@ -1,12 +1,12 @@
 
 const state={lang:'ar',ticket:null,incidents:[],claims:[],risk:0,portal:null};
 const $=id=>document.getElementById(id);
-function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='wallet')renderWallet();if(id==='incident')renderIncidents();if(id==='insurer')renderClaims();closeMenu();window.scrollTo({top:0,behavior:'smooth'})}
-function toggleLang(){state.lang=state.lang==='ar'?'en':'ar';document.documentElement.lang=state.lang;document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';$('langBtn').textContent=state.lang==='ar'?'English':'العربية';document.querySelectorAll('[data-ar]').forEach(el=>el.textContent=el.dataset[state.lang]);document.querySelectorAll('.nav button').forEach(b=>{const icon=b.querySelector('.nav-icon');b.textContent=b.dataset[state.lang];if(icon)b.prepend(icon)});$('brandTitle').textContent=state.lang==='ar'?'حِمى | HIMA':'HIMA | حِمى';$('brandSub').textContent=state.lang==='ar'?'منظومة التأمين الذكي وإدارة مخاطر الفعاليات':'Smart insurance & event risk management';$('resetBtn').textContent=state.lang==='ar'?'إعادة ضبط التجربة':'Reset demo';$('heroTag').textContent=state.lang==='ar'?'نموذج أولي تفاعلي • بيانات افتراضية':'Interactive prototype • Demo data';$('heroTitle').textContent=state.lang==='ar'?'من التذكرة إلى المطالبة، في رحلة واحدة':'From ticket to claim, in one journey';$('heroText').textContent=state.lang==='ar'?'تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.':'HIMA connects event organizers, ticket holders and insurers through two distinct insurance paths and a linked incident and claim record.';$('heroStep1').textContent=state.lang==='ar'?'إدارة مخاطر المنظم':'Organizer risk management';$('heroStep2').textContent=state.lang==='ar'?'حماية اختيارية للحضور':'Optional attendee protection';$('heroStep3').textContent=state.lang==='ar'?'بصمة الحادث التأمينية':'Insurance incident fingerprint';$('footerText').textContent=state.lang==='ar'?'حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.':'HIMA — prototype for testing and development only. Not an insurance policy, offer or live integration.';
-const gatewayText={ar:{title:'اختر نوع الدخول',sub:'حدد الجهة التي تمثلك للوصول إلى خدمات حِمى.',customer:'المستفيد',customerDesc:'استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية الاختيارية.',customerAction:'دخول المستفيد',organizer:'منظم الفعالية',organizerDesc:'سجّل فعاليتك، قيّم المخاطر، وتابع طلبات ووثائق التأمين.',organizerAction:'دخول المنظم',insurer:'شركة التأمين',insurerDesc:'راجع طلبات التأمين، التغطيات، الحوادث والمطالبات.',insurerAction:'دخول شركة التأمين'},en:{title:'Choose your portal',sub:'Select the role that best describes you to access HIMA services.',customer:'Attendee',customerDesc:'Explore events, book tickets and add optional insurance protection.',customerAction:'Enter attendee portal',organizer:'Event organizer',organizerDesc:'Register events, assess risks and track insurance requests and policies.',organizerAction:'Enter organizer portal',insurer:'Insurance company',insurerDesc:'Review insurance requests, coverage, incidents and claims.',insurerAction:'Enter insurer portal'}};
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(id==='wallet')renderWallet();if(id==='incident')renderIncidents();if(id==='insurer')renderClaims();window.scrollTo({top:0,behavior:'smooth'})}
+function toggleLang(){state.lang=state.lang==='ar'?'en':'ar';document.documentElement.lang=state.lang;document.documentElement.dir=state.lang==='ar'?'rtl':'ltr';$('langBtn').textContent=state.lang==='ar'?'English':'العربية';document.querySelectorAll('[data-ar]').forEach(el=>el.textContent=el.dataset[state.lang]);document.querySelectorAll('.nav button').forEach(b=>{const icon=b.querySelector('.nav-icon');b.textContent=b.dataset[state.lang];if(icon)b.prepend(icon)});document.querySelectorAll('.bottom-link small[data-ar]').forEach(el=>el.textContent=el.dataset[state.lang]);$('brandTitle').textContent=state.lang==='ar'?'حِمى | HIMA':'HIMA | حِمى';$('brandSub').textContent=state.lang==='ar'?'منظومة التأمين الذكي وإدارة مخاطر الفعاليات':'Smart insurance & event risk management';$('resetBtn').textContent=state.lang==='ar'?'إعادة ضبط التجربة':'Reset demo';$('heroTag').textContent=state.lang==='ar'?'نموذج أولي تفاعلي • بيانات افتراضية':'Interactive prototype • Demo data';$('heroTitle').textContent=state.lang==='ar'?'من التذكرة إلى المطالبة، في رحلة واحدة':'From ticket to claim, in one journey';$('heroText').textContent=state.lang==='ar'?'تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.':'HIMA connects event organizers, ticket holders and insurers through two distinct insurance paths and a linked incident and claim record.';$('heroStep1').textContent=state.lang==='ar'?'إدارة مخاطر المنظم':'Organizer risk management';$('heroStep2').textContent=state.lang==='ar'?'حماية اختيارية للحضور':'Optional attendee protection';$('heroStep3').textContent=state.lang==='ar'?'بصمة الحادث التأمينية':'Insurance incident fingerprint';$('footerText').textContent=state.lang==='ar'?'حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.':'HIMA — prototype for testing and development only. Not an insurance policy, offer or live integration.';
+const gatewayText={ar:{title:'مرحبًا بك في حِمى',sub:'اختَر نوع حسابك للانتقال إلى المساحة المناسبة لك.',customer:'المستفيد',customerDesc:'استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية الاختيارية.',customerAction:'الدخول كمستفيد',organizer:'منظم الفعالية',organizerDesc:'سجّل فعاليتك، قيّم المخاطر، وتابع طلبات ووثائق التأمين.',organizerAction:'الدخول كمنظم',insurer:'شركة التأمين',insurerDesc:'راجع طلبات التأمين، التغطيات، الحوادث والمطالبات.',insurerAction:'الدخول لشركة التأمين'},en:{title:'Welcome to HIMA',sub:'Choose your account type to enter the right workspace.',customer:'Attendee',customerDesc:'Explore events, book tickets and add optional insurance protection.',customerAction:'Enter as attendee',organizer:'Event organizer',organizerDesc:'Register events, assess risks and track insurance requests and policies.',organizerAction:'Enter as organizer',insurer:'Insurance company',insurerDesc:'Review insurance requests, coverage, incidents and claims.',insurerAction:'Enter insurer portal'}};
 const gt=gatewayText[state.lang];if($('gatewayTitle'))$('gatewayTitle').textContent=gt.title;if($('gatewaySub'))$('gatewaySub').textContent=gt.sub;
 ['customer','organizer','insurer'].forEach(k=>{const t=$(k+'RoleTitle'),d=$(k+'RoleDesc'),a=$(k+'RoleAction');if(t)t.textContent=gt[k];if(d)d.textContent=gt[k+'Desc'];if(a)a.textContent=gt[k+'Action']});
-renderWallet();renderIncidents();renderClaims()}
+const activeRole=state.portal||'customer';const roleNames={customer:['بوابة المستفيد','Attendee portal'],organizer:['بوابة منظم الفعالية','Event organizer portal'],insurer:['بوابة شركة التأمين','Insurance company portal']};if($('portalBadge'))$('portalBadge').textContent=roleNames[activeRole][state.lang==='ar'?0:1];if($('portalChip'))$('portalChip').textContent=roleNames[activeRole][state.lang==='ar'?0:1];if($('drawerSubtitle'))$('drawerSubtitle').textContent=roleNames[activeRole][state.lang==='ar'?0:1];if($('drawerTitle'))$('drawerTitle').textContent=state.lang==='ar'?'قائمة حِمى':'HIMA menu';renderWallet();renderIncidents();renderClaims()}
 function calculateRisk(){let cap=+$('capacity').value||1,att=+$('attendance').value||0,crowd=+$('crowd').value,safety=+$('safety').value;let ratio=Math.min(1.5,att/cap);let score=Math.round(Math.min(100,ratio*45+crowd*12+(4-safety)*12));state.risk=score;$('statCapacity').textContent=cap.toLocaleString();$('statAttendance').textContent=att.toLocaleString();let label=score>=70?'مرتفع':score>=45?'متوسط':'منخفض';$('riskResult').innerHTML=`<b>المؤشر التوضيحي: ${score}/100 — ${label}</b><br>نتيجة افتراضية تعتمد على مدخلات السعة والحضور والازدحام وجاهزية السلامة. لا تستخدم للتسعير أو قرارات السلامة الفعلية.`}
 function updateTotal(){let base=+$('ticketType').value,cover=$('addCover').checked?5:0;$('basePrice').textContent=base+' ر.س';$('coverPrice').textContent=cover+' ر.س';$('totalPrice').textContent=(base+cover)+' ر.س'}
 function issueTicket(){let msg=$('bookingMsg');if(!$('agreeDemo').checked){msg.classList.remove('hide');msg.className='notice warn';msg.textContent='يرجى تأكيد فهمك أن هذه تجربة افتراضية قبل إصدار التذكرة.';return}let base=+$('ticketType').value,cover=$('addCover').checked;state.ticket={id:'TKT-HIMA-0001',event:$('eventName').value||'فعالية تجريبية',type:$('ticketType').selectedOptions[0].text,base,cover,coverPrice:cover?5:0,total:base+(cover?5:0),date:'24 نوفمبر 2026',certificate:cover?'HIMA-CERT-DEMO-001':null};msg.classList.remove('hide');msg.className='notice good';msg.textContent='تم إنشاء تذكرة تجريبية بنجاح. يمكنك مشاهدتها في محفظة التذاكر.';renderWallet()}
@@ -76,55 +76,71 @@ function chooseHimaEvent(id){const ev=HIMA_EVENTS.find(e=>e.id===id);if(!ev)retu
 function renderOrganizerEvents(){const cat=$('organizerType')?.value||'sports',sel=$('organizerEvent');if(!sel)return;const list=HIMA_EVENTS.filter(e=>e.category===cat);sel.innerHTML=list.map(e=>`<option value="${e.id}">${e.name} — ${e.city}</option>`).join('');syncOrganizerEvent()}
 function updateOrganizerCities(){const region=$('organizerRegion')?.value||Object.keys(HIMA_REGIONS)[0],sel=$('organizerCity');if(!sel)return;sel.innerHTML=(HIMA_REGIONS[region]||[]).map(c=>`<option>${c}</option>`).join('');syncOrganizerEvent()}
 function syncOrganizerEvent(){const ev=HIMA_EVENTS.find(e=>e.id===$('organizerEvent')?.value);if(!ev)return;$('eventName').value=ev.name;$('eventType').value=ev.kind;$('eventLocation').value=`${$('organizerRegion')?.value||ev.region} — ${$('organizerCity')?.value||ev.city} — ${ev.venue}`}
+function openDrawer(){
+ const overlay=$('drawerOverlay'),trigger=$('menuTrigger');
+ if(!overlay||!trigger)return;
+ overlay.classList.add('open');overlay.setAttribute('aria-hidden','false');
+ trigger.setAttribute('aria-expanded','true');document.body.classList.add('drawer-open');
+ const role=state.portal||'customer';
+ const names={customer:'بوابة المستفيد',organizer:'بوابة منظم الفعالية',insurer:'بوابة شركة التأمين'};
+ $('drawerSubtitle').textContent=state.lang==='ar'?names[role]:(role==='customer'?'Attendee portal':role==='organizer'?'Event organizer portal':'Insurance company portal');
+}
+function closeDrawer(){
+ const overlay=$('drawerOverlay'),trigger=$('menuTrigger');
+ if(!overlay||!trigger)return;
+ overlay.classList.remove('open');overlay.setAttribute('aria-hidden','true');
+ trigger.setAttribute('aria-expanded','false');document.body.classList.remove('drawer-open');
+}
+function toggleDrawer(){ $('drawerOverlay')?.classList.contains('open')?closeDrawer():openDrawer() }
+function goFromDrawer(page,anchor){
+ closeDrawer();showPage(page);
+ if(anchor){setTimeout(()=>{const el=$(anchor);if(el)el.scrollIntoView({behavior:'smooth',block:'center'})},80)}
+}
 function enterPortal(role){
  state.portal=role;
  document.body.classList.remove('portal-customer','portal-organizer','portal-insurer');
  document.body.classList.add('portal-active','portal-'+role);
  $('roleGateway').hidden=true;
- $('exitPortalBtn').hidden=false;
- $('portalChip').hidden=false;
+ $('exitPortalBtn').hidden=false;$('portalChip').hidden=false;$('menuTrigger').hidden=false;
  const labels={customer:'بوابة المستفيد',organizer:'بوابة منظم الفعالية',insurer:'بوابة شركة التأمين'};
  $('portalChip').textContent=labels[role]||'';
- if($('quickMenuRole'))$('quickMenuRole').textContent=labels[role]||'';
- $('menuToggle').hidden=role!=='customer';
- document.querySelectorAll('.nav button').forEach(b=>{b.hidden=b.dataset.portal!==role});
+ if($('drawerSubtitle'))$('drawerSubtitle').textContent=labels[role]||'';
  const first={customer:'overview',organizer:'organizer',insurer:'insurer'}[role]||'overview';
  showPage(first);
+ openPortalNavState(first);
+}
+function openPortalNavState(id){
+ document.querySelectorAll('.bottom-link').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
 }
 function exitPortal(){
+ closeDrawer();
  state.portal=null;
  document.body.classList.remove('portal-active','portal-customer','portal-organizer','portal-insurer');
  $('roleGateway').hidden=false;
- $('exitPortalBtn').hidden=true;
- $('portalChip').hidden=true;
- $('menuToggle').hidden=true;
- closeMenu();
+ $('exitPortalBtn').hidden=true;$('portalChip').hidden=true;$('menuTrigger').hidden=true;
  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
- document.querySelectorAll('.nav button').forEach(b=>{b.hidden=false;b.classList.remove('active')});
+ document.querySelectorAll('.nav button,.bottom-link').forEach(b=>b.classList.remove('active'));
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function showPage(id){
- const target=document.getElementById(id);
- if(!target)return;
- const allowed={customer:['overview','events','booking','wallet','incident','account'],organizer:['organizer'],insurer:['insurer']};
+ const target=$(id);if(!target)return;
+ const allowed={
+  customer:['overview','events','booking','wallet','incident','account'],
+  organizer:['organizer','incident','account'],
+  insurer:['insurer','insurerPolicies','incident','account']
+ };
  if(state.portal && !allowed[state.portal]?.includes(id))return;
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
  if(id==='wallet')renderWallet();
- if(id==='incident')renderIncidents();
+ if(id==='incident'){renderIncidents();if(state.portal==='customer')renderClaims()}
  if(id==='insurer')renderClaims();
  if(id==='events'){renderCategoryCards();renderEventCatalog()}
- closeMenu();
+ openPortalNavState(id);
  window.scrollTo({top:0,behavior:'smooth'});
 }
 function issueTicket(){const msg=$('bookingMsg');if(!state.selectedEvent){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='اختاري فعالية من صفحة استكشف الفعاليات أولًا.';return}if(!$('agreeDemo').checked){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى تأكيد فهمك أن هذه تجربة افتراضية قبل إصدار التذكرة.';return}const base=+$('ticketType').value,cover=$('addCover').checked;state.ticket={id:'TKT-HIMA-'+String(Date.now()).slice(-6),event:state.selectedEvent.name,type:$('ticketType').selectedOptions[0].text,base,cover,coverPrice:cover?5:0,total:base+(cover?5:0),date:state.selectedEvent.date,certificate:cover?'HIMA-CERT-DEMO-'+String(Date.now()).slice(-5):null,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`};msg.className='notice good';msg.classList.remove('hide');msg.textContent='تم إنشاء تذكرة تجريبية بنجاح. يمكنك مشاهدتها في محفظة التذاكر.';renderWallet()}
 function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;$('addCover').checked=false;updateTotal();renderWallet();renderIncidents();renderClaims();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
-
-function toggleMenu(){const menu=$('quickMenu'),scrim=$('menuScrim');if(!menu||!scrim)return;const opening=menu.hidden;menu.hidden=!opening;scrim.hidden=!opening;document.body.classList.toggle('menu-open',opening);$('menuToggle').setAttribute('aria-expanded',String(opening));menu.setAttribute('aria-hidden',String(!opening));}
-function closeMenu(){const menu=$('quickMenu'),scrim=$('menuScrim');if(menu)menu.hidden=true;if(scrim)scrim.hidden=true;document.body.classList.remove('menu-open');if($('menuToggle'))$('menuToggle').setAttribute('aria-expanded','false');if(menu)menu.setAttribute('aria-hidden','true');}
-function menuGo(page){closeMenu();showPage(page);}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
-
 // Initialize guided experience and region selectors.
 fillRegions($('filterRegion'));updateCityOptions();fillRegions($('organizerRegion'),false);if($('organizerRegion'))$('organizerRegion').value='الرياض';updateOrganizerCities();renderOrganizerEvents();renderCategoryCards();renderEventCatalog();
 // Extend icon set for the new primary navigation.
@@ -132,3 +148,6 @@ himaIcons.events=himaIcons.booking;himaIcons.account=himaIcons.wallet;
 
 // Start at the role-selection gateway; users choose a portal before seeing its workspace.
 document.body.classList.remove('portal-active');document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));if($('roleGateway'))$('roleGateway').hidden=false;
+
+// V9 startup: return to the portal-selection landing page.
+closeDrawer();document.body.classList.remove('portal-active','portal-customer','portal-organizer','portal-insurer');state.portal=null;if($('roleGateway'))$('roleGateway').hidden=false;if($('menuTrigger'))$('menuTrigger').hidden=true;if($('customerBottomNav'))$('customerBottomNav').style.display='none';

@@ -192,145 +192,98 @@ body.portal-insurer .nav button[data-portal="insurer"]{display:inline-flex!impor
  .role-gateway{margin:20px auto 30px!important;padding:20px!important}
 }
 
-/* HIMA landing gateway — aligned with the existing site visual language */
-body:not(.portal-active) .role-gateway{
- max-width:none!important;margin:22px 0 34px!important;padding:0!important;
- border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;
+
+/* HIMA V9 — separate portal workspaces and consistent app navigation */
+.menu-trigger{
+ width:46px;height:46px;flex:0 0 46px;display:grid;place-items:center;
+ border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--purple);
+ font-size:24px;line-height:1;box-shadow:var(--shadow-soft)
 }
-.landing-hero{
- position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 190px;align-items:center;gap:24px;
- min-height:250px;margin:0 0 26px;padding:32px 36px;border-radius:24px;color:#fff;
- background:linear-gradient(112deg,#32156f 0%,#4b2497 48%,#9275c9 100%);box-shadow:0 16px 36px rgba(67,36,130,.18)
+.menu-trigger:focus-visible,.drawer-link:focus-visible,.drawer-close:focus-visible{outline:3px solid #bba5e8;outline-offset:2px}
+.drawer-overlay{
+ position:fixed;inset:0;z-index:80;background:rgba(35,22,55,.42);
+ backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+ opacity:0;visibility:hidden;transition:opacity .2s ease,visibility .2s ease
 }
-.landing-hero:before,.landing-hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;pointer-events:none}
-.landing-hero:before{width:390px;height:390px;inset-inline-end:4%;top:-230px;border:1px solid #ffffff25;box-shadow:0 0 0 35px #ffffff0a,0 0 0 75px #ffffff08}
-.landing-hero:after{width:270px;height:170px;inset-inline-end:18%;bottom:-125px;background:#c9b7ed25;filter:blur(8px)}
-.landing-hero-copy{min-width:0}
-.landing-tag{display:inline-flex;padding:7px 12px;border:1px solid #ffffff45;border-radius:999px;background:#ffffff17;color:#f5efff;font-size:12px;font-weight:700}
-.landing-hero h2{max-width:800px;margin:13px 0 8px;color:#fff;font-size:clamp(25px,3vw,35px);line-height:1.4}
-.landing-hero p{max-width:850px;margin:0;color:#f1eafb;font-size:14px;line-height:1.9}
-.landing-benefits{display:flex;flex-wrap:wrap;gap:9px 20px;margin-top:19px}
-.landing-benefits>span{display:inline-flex;align-items:center;gap:7px;color:#fff;font-size:13px}
-.landing-benefits b{display:grid;place-items:center;width:20px;height:20px;border:1px solid #ffffff75;border-radius:50%;font-size:12px}
-.landing-hero-mark{display:flex;flex-direction:column;align-items:center;justify-content:center;width:156px;height:156px;margin-inline:auto;border:1px solid #ffffff45;border-radius:38px;background:linear-gradient(145deg,#ffffff26,#ffffff0c);box-shadow:inset 0 1px 0 #ffffff55,0 15px 32px #1c0c4a30;color:#fff;transform:rotate(3deg)}
-.landing-hero-mark strong{font-size:43px}.landing-hero-mark small{margin-top:14px;font-size:16px;font-weight:700;letter-spacing:4px}
-.gateway-heading{text-align:start!important;max-width:none!important;margin:0 0 17px!important}
-.gateway-heading h2{margin:0 0 4px!important;font-size:25px!important;color:var(--ink)!important}
-.gateway-heading p{margin:0!important;font-size:14px!important;color:var(--muted)!important}
-.role-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
-.role-card{min-height:235px!important;padding:22px!important;border-radius:19px!important;gap:10px!important}
-.role-icon{width:50px!important;height:50px!important;border-radius:15px!important}
-.role-icon svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.role-title{font-size:20px!important}
-.role-desc{font-size:13px!important;line-height:1.8!important}
-.role-action{margin-top:5px;padding:11px 13px!important;border:0!important;border-radius:11px;background:#f1eafb;color:#5e359e!important}
-.gateway-note{margin-top:15px!important}
-@media(max-width:850px){
- .landing-hero{grid-template-columns:minmax(0,1fr) 120px;min-height:220px;padding:24px}
- .landing-hero-mark{width:112px;height:112px;border-radius:27px}.landing-hero-mark strong{font-size:34px}.landing-hero-mark small{font-size:12px}
- .role-grid{grid-template-columns:1fr!important}
- .role-card{min-height:0!important}
+.drawer-overlay.open{opacity:1;visibility:visible}
+.drawer-panel{
+ position:absolute;right:0;top:0;height:100%;height:100dvh;
+ width:min(430px,88vw);max-height:none;overflow:auto;overscroll-behavior:contain;
+ background:#fff;border:1px solid var(--line);border-radius:22px 0 0 22px;
+ padding:20px 18px calc(24px + env(safe-area-inset-bottom));
+ box-shadow:-18px 0 55px rgba(32,18,54,.18);
+ transform:translateX(105%);transition:transform .24s ease
 }
+.drawer-overlay.open .drawer-panel{transform:translateX(0)}
+.drawer-head{
+ position:sticky;top:-20px;z-index:2;display:flex;align-items:center;justify-content:space-between;
+ gap:12px;padding:16px 4px 14px;margin:0 0 10px;background:#fff;border-bottom:1px solid var(--line)
+}
+.drawer-title{font-weight:850;font-size:19px;margin:0;color:var(--ink)}
+.drawer-subtitle{font-size:12px;color:var(--muted);margin-top:3px}
+.drawer-close{width:40px;height:40px;border:0;border-radius:12px;background:var(--lav);color:var(--purple);font-size:22px}
+.drawer-group{padding:9px 0 12px;border-bottom:1px solid var(--line)}
+.drawer-group-title{font-size:12px;font-weight:850;color:var(--muted);margin:4px 9px 8px}
+.drawer-link{
+ width:100%;display:flex;align-items:center;gap:12px;padding:11px 10px;margin:2px 0;
+ border:0;border-radius:13px;background:transparent;color:var(--ink);text-align:right;
+ font-weight:700;font-size:14px;cursor:pointer
+}
+.drawer-link:hover,.drawer-link:focus-visible{background:var(--lav-2);color:var(--purple)}
+.drawer-icon{width:36px;height:36px;flex:0 0 36px;border-radius:12px;background:var(--lav);color:var(--purple);display:grid;place-items:center;font-size:18px}
+.link-label{flex:1}.link-arrow{color:#9b8ab5;font-size:20px}
+.drawer-tools{border-bottom:0}
+body.drawer-open{overflow:hidden}
+body:not(.portal-active) .menu-trigger,
+body:not(.portal-active) .bottom-nav{display:none!important}
+body.portal-active .menu-trigger{display:grid!important}
+body.portal-active .nav{display:none!important}
+body.portal-customer .bottom-nav{display:flex!important}
+body.portal-organizer .bottom-nav,
+body.portal-insurer .bottom-nav{display:none!important}
+.drawer-group[data-portal-menu]{display:none}
+body.portal-customer .drawer-group[data-portal-menu="customer"],
+body.portal-organizer .drawer-group[data-portal-menu="organizer"],
+body.portal-insurer .drawer-group[data-portal-menu="insurer"]{display:block}
+.bottom-nav{
+ position:fixed;left:50%;bottom:calc(10px + env(safe-area-inset-bottom));transform:translateX(-50%);
+ z-index:25;width:min(760px,calc(100% - 24px));display:none;align-items:stretch;justify-content:space-around;
+ gap:3px;padding:7px 8px;background:rgba(255,255,255,.97);border:1px solid var(--line);
+ border-radius:19px;box-shadow:0 10px 32px rgba(44,25,76,.16);backdrop-filter:blur(14px)
+}
+.bottom-link{
+ flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+ border:0;border-radius:12px;background:transparent;color:#766b89;padding:7px 3px;font-weight:700
+}
+.bottom-link>span{font-size:21px;line-height:1.2}
+.bottom-link small{font-size:10px;white-space:nowrap}
+.bottom-link.active{background:var(--lav);color:var(--purple)}
+body.portal-customer{padding-bottom:calc(92px + env(safe-area-inset-bottom))}
+body.portal-customer .foot{margin-bottom:20px}
+body.portal-organizer #claimSubmissionCard,
+body.portal-insurer #claimSubmissionCard{display:none!important}
+body.portal-active .exit-btn{display:inline-flex!important}
+body.portal-active .portal-chip{display:inline-flex!important}
+body:not(.portal-active) #resetBtn,
+body:not(.portal-active) #exitPortalBtn,
+body:not(.portal-active) #portalChip{display:none!important}
+#insurerPolicies .tablewrap{overflow-x:auto}
 @media(max-width:600px){
- body:not(.portal-active) .role-gateway{margin:13px 0 24px!important}
- .landing-hero{grid-template-columns:1fr;min-height:0;margin-bottom:20px;padding:22px;border-radius:19px}
- .landing-hero-mark{display:none}.landing-hero h2{font-size:24px}.landing-hero p{font-size:13px}
- .landing-benefits{gap:8px 12px}.landing-benefits>span{font-size:11px}
- .gateway-heading h2{font-size:21px!important}.role-grid{gap:10px!important}
- .role-card{padding:17px!important}.role-icon{width:44px!important;height:44px!important}.role-title{font-size:18px!important}
+ .app{padding:10px 10px 28px}
+ .top{align-items:center;gap:8px;padding:10px;border-radius:16px}
+ .menu-trigger{order:0;width:42px;height:42px;flex-basis:42px}
+ .brand{gap:8px;flex:1}
+ .brand h1{font-size:16px}
+ .brand small{font-size:10px;max-width:180px}
+ .actions{gap:5px;flex-wrap:nowrap}
+ .actions .btn{padding:8px 9px;font-size:11px}
+ .portal-chip{display:none!important}
+ .drawer-panel{width:min(420px,92vw);padding:14px 13px calc(20px + env(safe-area-inset-bottom));border-radius:19px 0 0 19px}
+ .drawer-head{top:-14px;padding-top:14px}
+ .drawer-link{padding:10px 8px}
+ .bottom-nav{bottom:calc(7px + env(safe-area-inset-bottom));width:calc(100% - 16px);padding:5px}
+ .bottom-link small{font-size:9px}
 }
+@media(prefers-reduced-motion:reduce){.drawer-overlay,.drawer-panel{transition:none}}
 
-
-/* HIMA V6 — app-style navigation and compact quick menu */
-.menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:5px;width:43px;height:43px;padding:10px;border:1px solid var(--line);border-radius:13px;background:#fff;color:var(--purple);box-shadow:var(--shadow-soft)}
-.menu-toggle span{display:block;width:20px;height:2px;border-radius:3px;background:currentColor}
-body.portal-active .menu-toggle{display:flex}
-body.portal-customer #resetBtn{display:none}
-.quick-menu{position:fixed;z-index:1002;top:16px;inset-inline-start:16px;width:min(350px,calc(100vw - 28px));padding:17px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 22px 70px rgba(34,20,62,.22);transform:translateY(-8px);animation:menuIn .18s ease-out}
-@keyframes menuIn{to{transform:translateY(0)}}
-.menu-scrim{position:fixed;z-index:1001;inset:0;background:rgba(28,18,44,.34);backdrop-filter:blur(2px)}
-.quick-menu-head{display:flex;align-items:center;justify-content:space-between;padding:4px 3px 14px;margin-bottom:8px;border-bottom:1px solid var(--line)}
-.quick-menu-head b{display:block;font-size:17px}.quick-menu-head small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
-.menu-close{width:34px;height:34px;border:0;border-radius:10px;background:var(--lav-2);color:var(--purple);font-size:24px;line-height:1}
-.quick-menu-item{display:flex;align-items:center;gap:11px;width:100%;padding:12px 8px;border:0;border-radius:12px;background:transparent;color:var(--ink);text-align:start}
-.quick-menu-item:hover{background:var(--lav-2)}
-.quick-menu-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:var(--lav);color:var(--purple);font-size:20px}
-.quick-menu-item span:nth-child(2){display:block;flex:1;min-width:0}.quick-menu-item b{display:block;font-size:13px}.quick-menu-item small{display:block;margin-top:2px;color:var(--muted);font-size:11px}.quick-menu-item i{font-style:normal;color:var(--purple)}
-.switch-menu-item{margin-top:7px;border-top:1px solid var(--line);border-radius:0 0 12px 12px;padding-top:15px}
-/* Desktop/tablet: clean horizontal navigation. The booking step is reached from event cards. */
-body.portal-customer .nav{display:flex!important;justify-content:flex-start;gap:7px;overflow-x:auto}
-body.portal-customer .nav button{flex:1 1 0;min-width:0;white-space:nowrap}
-body.portal-organizer .nav,body.portal-insurer .nav{display:none!important}
-body.portal-active .top{position:relative}
-@media(max-width:900px){
- .app{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
- body.portal-customer .nav{position:fixed!important;z-index:999;inset-inline:10px;bottom:calc(8px + env(safe-area-inset-bottom));top:auto!important;width:auto;display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;margin:0;padding:7px 5px;border:1px solid #e6def0;border-radius:19px;background:rgba(255,255,255,.97);box-shadow:0 9px 30px rgba(42,24,74,.18);backdrop-filter:blur(14px);overflow:visible}
- body.portal-customer .nav button{display:flex!important;flex:initial;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:7px 2px;border-radius:12px;font-size:10px;line-height:1.35;white-space:normal;text-align:center}
- body.portal-customer .nav button.active{box-shadow:none;background:#eee6fa;color:var(--purple)}
- body.portal-customer .nav .nav-icon{width:20px;height:20px}.nav-icon svg{width:19px;height:19px}
- body.portal-active .top{align-items:center}
- .quick-menu{top:auto;bottom:calc(82px + env(safe-area-inset-bottom));inset-inline-start:10px}
-}
-@media(max-width:600px){
- .app{padding-bottom:calc(98px + env(safe-area-inset-bottom))}
- body.portal-customer .nav{inset-inline:8px;bottom:calc(7px + env(safe-area-inset-bottom));padding:6px 4px;border-radius:17px}
- body.portal-customer .nav button{font-size:9px;padding:6px 1px}
- body.portal-customer .nav .nav-icon{width:19px;height:19px}
- .menu-toggle{width:39px;height:39px}
- .quick-menu{width:min(330px,calc(100vw - 20px));bottom:calc(76px + env(safe-area-inset-bottom));inset-inline-start:8px}
-}
-body.menu-open{overflow:hidden}
-
-/* HIMA V7 — final app-style layout agreed with the user */
-/* Keep the customer header quiet: brand, language and hamburger only. */
-body.portal-customer #portalChip,
-body.portal-customer #resetBtn,
-body.portal-customer #exitPortalBtn{display:none!important}
-body.portal-customer .top{align-items:center;min-height:76px}
-body.portal-customer .actions{gap:10px;flex-wrap:nowrap}
-body.portal-customer .menu-toggle{order:0}
-body.portal-customer #langBtn{order:1}
-
-/* The customer navigation is a true fixed app bar on every screen size. */
-body.portal-customer .app{padding-bottom:125px!important}
-body.portal-customer .nav{
- position:fixed!important;z-index:999;left:50%!important;right:auto!important;bottom:18px!important;top:auto!important;
- transform:translateX(-50%);width:min(980px,calc(100vw - 64px))!important;max-width:980px;
- display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0!important;padding:9px 10px!important;
- border:1px solid #e6def0;border-radius:20px;background:rgba(255,255,255,.97);box-shadow:0 10px 34px rgba(42,24,74,.17);
- backdrop-filter:blur(16px);overflow:visible
-}
-body.portal-customer .nav button{
- display:flex!important;align-items:center;justify-content:center;flex-direction:row;gap:9px;min-width:0;width:100%;
- padding:11px 9px!important;border-radius:13px;font-size:13px;white-space:nowrap;text-align:center
-}
-body.portal-customer .nav button.active{background:linear-gradient(120deg,var(--purple),var(--purple-2));color:#fff;box-shadow:0 5px 14px #56319e25}
-body.portal-customer .nav .nav-icon{width:20px;height:20px;flex:0 0 20px}
-body.portal-customer .nav .nav-icon svg{width:20px;height:20px}
-
-/* Drawer opens below the header, anchored to the right in Arabic. */
-body.portal-customer .quick-menu{top:92px;bottom:auto;inset-inline-start:24px;width:min(350px,calc(100vw - 32px));max-height:calc(100dvh - 120px);overflow-y:auto}
-body.portal-customer .menu-scrim{z-index:1000}
-body.portal-customer .quick-menu{z-index:1002}
-
-@media(max-width:1100px){
- body.portal-customer .app{padding-bottom:116px!important}
- body.portal-customer .nav{width:calc(100vw - 34px)!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;gap:3px;padding:7px 5px!important;border-radius:18px}
- body.portal-customer .nav button{flex-direction:column;gap:3px;padding:7px 2px!important;font-size:11px;line-height:1.35;white-space:normal}
- body.portal-customer .nav .nav-icon{width:21px;height:21px;flex-basis:21px}
- body.portal-customer .nav .nav-icon svg{width:20px;height:20px}
- body.portal-customer .quick-menu{top:86px;inset-inline-start:16px;bottom:auto}
-}
-@media(max-width:600px){
- body.portal-customer .app{padding:10px 10px calc(108px + env(safe-area-inset-bottom))!important}
- body.portal-customer .top{padding:11px 12px;gap:8px}
- body.portal-customer .brand small{display:none}
- body.portal-customer .actions{gap:6px}
- body.portal-customer #langBtn{padding:8px 10px;font-size:11px}
- body.portal-customer .menu-toggle{width:39px;height:39px;flex:0 0 39px}
- body.portal-customer .nav{left:50%!important;right:auto!important;width:calc(100vw - 16px)!important;bottom:calc(7px + env(safe-area-inset-bottom))!important;padding:6px 3px!important;border-radius:16px}
- body.portal-customer .nav button{font-size:9px;padding:6px 1px!important;gap:2px}
- body.portal-customer .nav .nav-icon{width:19px;height:19px;flex-basis:19px}
- body.portal-customer .nav .nav-icon svg{width:18px;height:18px}
- body.portal-customer .quick-menu{top:76px;inset-inline-start:8px;width:min(330px,calc(100vw - 16px));max-height:calc(100dvh - 95px)}
-}
+body.portal-insurer #incidentEntryCard{display:none!important}
