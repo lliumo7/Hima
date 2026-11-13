@@ -747,3 +747,15 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
 #events .event-card-foot{margin-top:12px;padding-top:11px}
 @media(max-width:900px){.events-hero{min-height:158px;padding:22px}}
 @media(max-width:600px){.events-hero{align-items:flex-start;flex-direction:column;gap:14px;min-height:0;padding:19px;background-position:30% center}.events-hero>.btn{width:100%}.events-hero h2{font-size:23px}.events-hero p{font-size:12px}.event-art{height:105px;min-height:105px}.event-category-label{top:8px;inset-inline-start:8px;padding:4px 8px;font-size:9px}#events .event-card-body{padding:10px}#events .event-card h4{font-size:12px}}
+
+
+/* HIMA V16 photo rendering fix: images are embedded in app.js and do not depend on a separate assets folder. */
+.event-art{position:relative;display:block;height:180px;min-height:180px;padding:0;overflow:hidden;background:#4b2497;color:#fff}
+.event-art .event-photo{display:block;width:100%;height:100%;min-height:180px;object-fit:cover;object-position:center}
+.event-art::after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(180deg,transparent,rgba(24,12,45,.34));pointer-events:none}
+.event-category-label{position:absolute;z-index:1;top:13px;right:13px;max-width:75%;padding:7px 12px;border:1px solid rgba(255,255,255,.55);border-radius:24px;background:rgba(76,37,139,.78);color:#fff;font-size:11px;font-weight:700;backdrop-filter:blur(6px)}
+.category-card .category-photo-wrap{display:block;width:100%;height:76px;overflow:hidden;border-radius:12px;background:#eee6fa}
+.category-card .category-photo{display:block;width:100%;height:100%;object-fit:cover}
+.category-card{min-height:160px}
+.category-filter{white-space:nowrap}
+@media(max-width:700px){.event-art{height:145px;min-height:145px}.event-art .event-photo{min-height:145px}.category-card .category-photo-wrap{height:65px}}

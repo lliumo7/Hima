@@ -28,3 +28,6 @@
 - إضافة بانر ترحيبي بصري لصفحة استكشاف الفعاليات، وتحسين شكل بطاقات الفعاليات مع الإبقاء على الفلاتر والأسعار وأزرار الاختيار وآلية الحجز كما هي.
 - الصور الحالية توضيحية مولّدة بأسلوب فوتوغرافي وليست صورًا موثقة لفعاليات قائمة؛ يمكن استبدالها بصور الفعاليات الفعلية عند توفرها.
 - أضيف مجلد `assets/events/` ويجب الاحتفاظ به بجانب `index.html` عند رفع الموقع.
+
+
+Photo display fix: event and home category images are embedded directly in app.js as data URIs. This avoids broken relative asset paths when publishing on GitHub Pages, including deployments where only index.html, style.css and app.js are uploaded.
