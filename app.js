@@ -220,17 +220,39 @@ function showPage(id){
  openPortalNavState(id);
  window.scrollTo({top:0,behavior:'smooth'});
 }
-function goToPayment(){
+function showBookingFeedback(message){
  const msg=$('bookingMsg');
- if(!state.selectedEvent){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='اختاري فعالية من صفحة استكشف الفعاليات أولًا.';return}
- if(!$('agreeDemo').checked){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى تأكيد فهمك أن هذه تجربة افتراضية قبل المتابعة للدفع.';return}
- const base=+$('ticketType').value,pack=getSelectedCoverPackage();
- state.pendingBooking={event:state.selectedEvent,type:$('ticketType').selectedOptions[0].text,base,cover:!!pack,coverPackage:pack?pack.name:null,coverLevel:pack?pack.level:null,coverPrice:pack?pack.price:0,total:base+(pack?pack.price:0),date:state.selectedEvent.date,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`,venue:state.selectedEvent.venue};
- renderPaymentSummary();$('paymentMsg').classList.add('hide');showPage('payment');
+ if(!msg)return;
+ msg.className='notice warn';msg.classList.remove('hide');msg.textContent=message;
+ msg.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function goToPayment(){
+ try{
+  const msg=$('bookingMsg');
+  if(!state.selectedEvent){
+   // Recover the selected catalogue item if the page was restored with its form values.
+   const eventText=$('eventName')?.value?.trim();
+   state.selectedEvent=HIMA_EVENTS.find(e=>e.name===eventText)||null;
+  }
+  if(!state.selectedEvent){showBookingFeedback('اختاري فعالية من صفحة استكشف الفعاليات أولًا.');return}
+  if(!$('agreeDemo')?.checked){showBookingFeedback('يرجى تحديد مربع الإقرار بأن هذه تجربة افتراضية قبل المتابعة للدفع.');return}
+  const ticketSelect=$('ticketType');
+  if(!ticketSelect){showBookingFeedback('تعذر قراءة فئة التذكرة. أعيدي اختيار التذكرة ثم حاولي مرة أخرى.');return}
+  const base=Number(ticketSelect.value),pack=getSelectedCoverPackage();
+  state.pendingBooking={event:state.selectedEvent,type:ticketSelect.selectedOptions?.[0]?.text||'فئة التذكرة',base,cover:!!pack,coverPackage:pack?pack.name:null,coverLevel:pack?pack.level:null,coverPrice:pack?pack.price:0,total:base+(pack?pack.price:0),date:state.selectedEvent.date,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`,venue:state.selectedEvent.venue};
+  renderPaymentSummary();
+  $('paymentMsg')?.classList.add('hide');
+  showPage('payment');
+  if(!$('payment')?.classList.contains('active'))throw new Error('تعذر فتح صفحة الدفع من بوابة المستفيد.');
+ }catch(error){
+  console.error('HIMA payment navigation:',error);
+  showBookingFeedback('تعذر الانتقال إلى الدفع. تأكدي من اختيار التذكرة ثم أعيدي المحاولة.');
+ }
 }
 function renderPaymentSummary(){
  const b=state.pendingBooking;if(!b)return;
- $('paymentEventName').textContent=b.event.name;$('paymentTicketType').textContent=b.type;$('paymentBasePrice').textContent=b.base+' ر.س';$('paymentCoverPackage').textContent=b.coverPackage||'بدون حماية';$('paymentCoverPrice').textContent=b.coverPrice+' ر.س';$('paymentTotal').textContent=b.total+' ر.س';
+ const values={paymentEventName:b.event?.name||'',paymentTicketType:b.type||'',paymentBasePrice:(b.base??0)+' ر.س',paymentCoverPackage:b.coverPackage||'بدون حماية',paymentCoverPrice:(b.coverPrice??0)+' ر.س',paymentTotal:(b.total??0)+' ر.س'};
+ Object.entries(values).forEach(([id,value])=>{const el=$(id);if(el)el.textContent=value});
 }
 function confirmPayment(){
  const b=state.pendingBooking,msg=$('paymentMsg');if(!b){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='لا يوجد طلب جاهز للدفع. عودي إلى اختيار الفعالية والتذكرة.';return}
@@ -250,3 +272,6 @@ document.body.classList.remove('portal-active');document.querySelectorAll('.page
 
 // V9 startup: return to the portal-selection landing page.
 closeDrawer();document.body.classList.remove('portal-active','portal-customer','portal-organizer','portal-insurer');state.portal=null;if($('roleGateway'))$('roleGateway').hidden=false;if($('menuTrigger'))$('menuTrigger').hidden=true;if($('customerBottomNav'))$('customerBottomNav').style.display='none';
+
+// Ensure inline booking controls can always invoke the payment transition.
+window.goToPayment=goToPayment;

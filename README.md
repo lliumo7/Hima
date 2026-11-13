@@ -23,3 +23,10 @@
 ## V11 updates
 - The attendee claim summary / next-steps card is sticky on desktop so it remains visible while scrolling, without overlaying the rest of the page; on small screens it returns to normal document flow.
 - Booking now proceeds to a separate demo payment page with Apple Pay, Mada, and bank-card options. Confirming the simulated payment creates the ticket and redirects to the ticket wallet. No real payment is processed.
+
+
+## V12 hotfix
+- Fixed the attendee "Continue to payment" action with explicit global binding, visible validation feedback, guarded summary rendering, and a clear error message if navigation fails.
+- Kept the claim summary / "What happens after submission?" panel sticky at iPad and tablet widths instead of disabling sticky positioning under 800px.
+- Updated local asset cache versions to v12.
+- All payment processing remains a prototype simulation; no real payment gateway is connected.

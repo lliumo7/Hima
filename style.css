@@ -488,3 +488,20 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
 .payment-summary-card hr{border:0;border-top:1px solid var(--line);margin:12px 0}
 .payment-summary-card .payment-total{font-size:19px;border:0}
 @media(max-width:800px){.claim-side-card{position:static;max-height:none;overflow:visible}.payment-summary-card{position:static}.claim-layout,.payment-layout{align-items:stretch}}
+
+
+/* V12 hotfix: keep the claim guidance card sticky on iPad/tablet widths too.
+   The previous <=800px rule disabled sticky positioning, which made the
+   "what happens after submission" panel scroll away on the attendee portal. */
+@media(max-width:800px){
+ .claim-side-card{
+  position:sticky!important;
+  top:76px!important;
+  align-self:start!important;
+  height:max-content;
+  max-height:calc(100dvh - 92px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  z-index:3;
+ }
+}
