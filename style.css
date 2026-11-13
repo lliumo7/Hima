@@ -849,3 +849,125 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
     height: 65px !important;
   }
 }
+
+
+/* HIMA V17 — premium welcome banner only */
+#overview .welcome-row{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:214px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  margin:7px 0 24px;
+  padding:34px clamp(26px,4vw,48px);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:26px;
+  background:
+    radial-gradient(circle at 77% 12%,rgba(190,160,255,.25),transparent 32%),
+    linear-gradient(112deg,#28134f 0%,#452080 52%,#6841ad 100%);
+  box-shadow:0 18px 42px rgba(49,29,86,.17);
+}
+#overview .welcome-row::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0 auto 0 0;
+  width:39%;
+  background:
+    linear-gradient(90deg,rgba(42,20,82,.08) 0%,rgba(42,20,82,.38) 52%,#452080 100%),
+    linear-gradient(0deg,rgba(37,17,73,.2),rgba(37,17,73,.2)),
+    url("assets/events/hero.jpg") center/cover no-repeat;
+  opacity:.9;
+  clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);
+}
+#overview .welcome-row::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:270px;
+  height:270px;
+  left:25%;
+  top:-165px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  box-shadow:0 0 0 22px rgba(255,255,255,.025),0 0 0 46px rgba(255,255,255,.02);
+}
+#overview .welcome-row > div{
+  position:relative;
+  z-index:1;
+  max-width:720px;
+}
+#overview .welcome-row .pill{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 13px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:999px;
+  background:rgba(255,255,255,.11);
+  color:#f3eaff;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.2px;
+  backdrop-filter:blur(8px);
+}
+#overview .welcome-title{
+  margin:13px 0 7px;
+  color:#fff;
+  font-size:clamp(29px,3.4vw,40px);
+  line-height:1.3;
+  letter-spacing:-.6px;
+  text-shadow:0 2px 14px rgba(20,8,45,.18);
+}
+#overview .welcome-row p{
+  margin:0;
+  max-width:680px;
+  color:rgba(255,255,255,.82);
+  font-size:15px;
+  line-height:1.9;
+}
+#overview .welcome-row > .btn{
+  position:relative;
+  z-index:2;
+  flex:0 0 auto;
+  min-height:52px;
+  padding:13px 21px;
+  border:1px solid rgba(255,255,255,.72);
+  border-radius:14px;
+  background:#fff;
+  color:#452080;
+  box-shadow:0 9px 24px rgba(20,8,45,.2);
+  white-space:nowrap;
+}
+#overview .welcome-row > .btn:hover{
+  background:#f5efff;
+  box-shadow:0 12px 28px rgba(20,8,45,.25);
+}
+@media(max-width:900px){
+  #overview .welcome-row{min-height:205px;padding:28px}
+  #overview .welcome-row::before{width:45%}
+}
+@media(max-width:600px){
+  #overview .welcome-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:18px;
+    min-height:0;
+    padding:23px 21px;
+    border-radius:21px;
+  }
+  #overview .welcome-row::before{
+    width:100%;
+    opacity:.34;
+    clip-path:none;
+    background:
+      linear-gradient(90deg,rgba(42,20,82,.28),rgba(69,32,128,.88)),
+      url("assets/events/hero.jpg") center/cover no-repeat;
+  }
+  #overview .welcome-title{font-size:29px}
+  #overview .welcome-row p{font-size:13px}
+  #overview .welcome-row > .btn{width:100%;min-height:48px}
+}
