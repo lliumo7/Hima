@@ -5,7 +5,7 @@
 <title>حِمى | HIMA</title>
 <meta name="description" content="منظومة ذكية للتأمين وإدارة مخاطر الفعاليات الكبرى والتجمعات الحاشدة">
 <meta name="theme-color" content="#5b35a5">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,166 +13,60 @@
 <body>
 <div class="app">
 <header class="top">
- <button class="menu-trigger" id="menuTrigger" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="himaDrawer" onclick="toggleDrawer()" hidden>☰</button>
  <div class="brand"><div class="logo">ح</div><div><h1 id="brandTitle">حِمى | HIMA</h1><small id="brandSub">منظومة التأمين الذكي وإدارة مخاطر الفعاليات</small></div></div>
- <div class="actions"><span class="portal-chip" id="portalChip" hidden>بوابة المستفيد</span><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button><button class="btn ghost exit-btn" id="exitPortalBtn" onclick="exitPortal()" hidden>تغيير البوابة ↗</button></div>
+ <div class="actions"><button class="btn secondary" id="langBtn" onclick="toggleLang()">English</button><button class="btn ghost" onclick="resetDemo()" id="resetBtn">إعادة ضبط التجربة</button></div>
 </header>
-<div class="drawer-overlay" id="drawerOverlay" onclick="if(event.target===this)closeDrawer()" aria-hidden="true">
- <aside class="drawer-panel" id="himaDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
-  <div class="drawer-head">
-   <div><h2 class="drawer-title" id="drawerTitle">قائمة حِمى</h2><div class="drawer-subtitle" id="drawerSubtitle">بوابة المستفيد</div></div>
-   <button class="drawer-close" type="button" aria-label="إغلاق القائمة" onclick="closeDrawer()">×</button>
-  </div>
-  <div class="drawer-group" data-portal-menu="customer">
-   <div class="drawer-group-title">خدمات المستفيد</div>
-   <button class="drawer-link" onclick="goFromDrawer('overview')"><span class="drawer-icon">⌂</span><span class="link-label" data-ar="الرئيسية" data-en="Home">الرئيسية</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('events')"><span class="drawer-icon">⌕</span><span class="link-label" data-ar="استكشف الفعاليات" data-en="Explore events">استكشف الفعاليات</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('booking')"><span class="drawer-icon">▣</span><span class="link-label" data-ar="إتمام الحجز" data-en="Complete booking">إتمام الحجز</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('wallet')"><span class="drawer-icon">▤</span><span class="link-label" data-ar="تذاكري وحماياتي" data-en="My tickets & protection">تذاكري وحماياتي</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('incident')"><span class="drawer-icon">♧</span><span class="link-label" data-ar="مطالباتي وبصمة الحادث" data-en="My claims & incident">مطالباتي وبصمة الحادث</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('account')"><span class="drawer-icon">♙</span><span class="link-label" data-ar="حسابي" data-en="My account">حسابي</span><span class="link-arrow">‹</span></button>
-  </div>
-  <div class="drawer-group" data-portal-menu="organizer">
-   <div class="drawer-group-title">خدمات منظم الفعالية</div>
-   <button class="drawer-link" onclick="goFromDrawer('organizer')"><span class="drawer-icon">▥</span><span class="link-label" data-ar="لوحة المنظم" data-en="Organizer dashboard">لوحة المنظم</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('organizer','eventDetails')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="بيانات الفعالية" data-en="Event details">بيانات الفعالية</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('organizer','organizerIndicators')"><span class="drawer-icon">◉</span><span class="link-label" data-ar="تقييم المخاطر والمؤشرات" data-en="Risk assessment & indicators">تقييم المخاطر والمؤشرات</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('organizer','policyDetails')"><span class="drawer-icon">◇</span><span class="link-label" data-ar="وثائق التأمين" data-en="Insurance policies">وثائق التأمين</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('incident','incidentList')"><span class="drawer-icon">⚠</span><span class="link-label" data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('account')"><span class="drawer-icon">♙</span><span class="link-label" data-ar="حساب المنظم" data-en="Organizer account">حساب المنظم</span><span class="link-arrow">‹</span></button>
-  </div>
-  <div class="drawer-group" data-portal-menu="insurer">
-   <div class="drawer-group-title">خدمات شركة التأمين</div>
-   <button class="drawer-link" onclick="goFromDrawer('insurer')"><span class="drawer-icon">▤</span><span class="link-label" data-ar="لوحة الشركة" data-en="Company dashboard">لوحة الشركة</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('insurer','claimsList')"><span class="drawer-icon">▧</span><span class="link-label" data-ar="إدارة المطالبات" data-en="Claims management">إدارة المطالبات</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('insurerPolicies')"><span class="drawer-icon">◇</span><span class="link-label" data-ar="الوثائق والتغطيات" data-en="Policies & coverage">الوثائق والتغطيات</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('incident','incidentList')"><span class="drawer-icon">⚠</span><span class="link-label" data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('insurer','reviewControls')"><span class="drawer-icon">▥</span><span class="link-label" data-ar="ضوابط المراجعة والتقارير" data-en="Review controls & reports">ضوابط المراجعة والتقارير</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="goFromDrawer('account')"><span class="drawer-icon">♙</span><span class="link-label" data-ar="حساب الشركة" data-en="Company account">حساب الشركة</span><span class="link-arrow">‹</span></button>
-  </div>
-  <div class="drawer-group drawer-tools">
-   <button class="drawer-link" onclick="toggleLang();closeDrawer()"><span class="drawer-icon">文</span><span class="link-label" data-ar="تغيير اللغة" data-en="Change language">تغيير اللغة</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link" onclick="resetDemo();closeDrawer()"><span class="drawer-icon">↻</span><span class="link-label" data-ar="إعادة ضبط التجربة" data-en="Reset demo">إعادة ضبط التجربة</span><span class="link-arrow">‹</span></button>
-   <button class="drawer-link switch-portal-link" onclick="closeDrawer();exitPortal()"><span class="drawer-icon">⇄</span><span class="link-label" data-ar="تغيير البوابة" data-en="Switch portal">تغيير البوابة</span><span class="link-arrow">‹</span></button>
-  </div>
- </aside>
-</div>
-<section class="hero landing-hero" id="landingHero">
- <div class="hero-copy">
-  <span class="tag" id="heroTag">منصة موحدة للفعاليات والتأمين</span>
-  <h2 id="heroTitle">مرحبًا بك في حِمى</h2>
-  <p id="heroText">منظومة رقمية متكاملة تربط منظم الفعالية، وشركة التأمين، والمستفيد في تجربة واحدة لإدارة المخاطر والتأمين ومتابعة الحوادث والمطالبات بكفاءة وثقة.</p>
-  <div class="steps">
-   <span class="step" id="heroStep1">إدارة مخاطر ذكية</span>
-   <span class="step" id="heroStep2">تغطية تأمينية مرنة</span>
-   <span class="step" id="heroStep3">متابعة المطالبات بسهولة</span>
-  </div>
- </div>
- <div class="hero-visual" aria-hidden="true">
-  <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
-  <div class="hero-shield"><span>حِمى</span><small>HIMA</small></div>
-  <span class="hero-float float-calendar">▦</span><span class="hero-float float-shield">♢</span><span class="hero-float float-chart">▥</span>
- </div>
-</section>
-<section class="role-gateway" id="roleGateway">
- <div class="gateway-heading">
-  <span class="section-kicker">ابدأ من المساحة المناسبة لك</span>
-  <h2 id="gatewayTitle">اختر بوابتك للدخول</h2>
-  <p id="gatewaySub">كل طرف لديه مساحة مستقلة وأدوات مصممة لتلبية احتياجاته.</p>
- </div>
- <div class="role-grid">
-  <button class="role-card customer-role" onclick="enterPortal('customer')">
-   <span class="role-icon">♙</span><span class="role-title" id="customerRoleTitle">المستفيد</span>
-   <span class="role-desc" id="customerRoleDesc">استكشف الفعاليات، احجز تذكرتك، وأضف الحماية التأمينية المناسبة لك.</span>
-   <span class="role-action" id="customerRoleAction">الدخول كمستفيد <b>←</b></span>
-  </button>
-  <button class="role-card organizer-role" onclick="enterPortal('organizer')">
-   <span class="role-icon">▦</span><span class="role-title" id="organizerRoleTitle">منظم الفعالية</span>
-   <span class="role-desc" id="organizerRoleDesc">أدر فعالياتك، قيّم المخاطر، وارفع طلبات ووثائق التأمين.</span>
-   <span class="role-action" id="organizerRoleAction">الدخول كمنظم <b>←</b></span>
-  </button>
-  <button class="role-card insurer-role" onclick="enterPortal('insurer')">
-   <span class="role-icon">⬡</span><span class="role-title" id="insurerRoleTitle">شركة التأمين</span>
-   <span class="role-desc" id="insurerRoleDesc">راجع طلبات التأمين، وأدر التغطيات والحوادث والمطالبات.</span>
-   <span class="role-action" id="insurerRoleAction">الدخول لشركة التأمين <b>←</b></span>
-  </button>
- </div>
- <div class="gateway-benefits">
-  <div><span>♧</span><b>ثلاث بوابات مترابطة</b><small>تجربة موحدة وفعالة</small></div>
-  <div><span>▱</span><b>منصة متكاملة</b><small>لإدارة الفعاليات والتأمين</small></div>
-  <div><span>ϟ</span><b>إجراءات رقمية</b><small>سريعة ومبسطة</small></div>
-  <div><span>♢</span><b>موثوق وأمن</b><small>لحماية جميع الأطراف</small></div>
- </div>
- <div class="gateway-note">نموذج تجريبي — لا يتطلب حسابًا حقيقيًا، والبيانات والإجراءات المعروضة افتراضية.</div>
+<section class="hero">
+ <div><span class="tag" id="heroTag">نموذج أولي تفاعلي • بيانات افتراضية</span><h2 id="heroTitle">من التذكرة إلى المطالبة، في رحلة واحدة</h2><p id="heroText">تربط حِمى منظم الفعالية وحامل التذكرة وشركة التأمين عبر مسارين تأمينيين منفصلين، وسجل رقمي موحد للحوادث والمطالبات.</p><div class="steps"><span class="step" id="heroStep1">إدارة مخاطر المنظم</span><span class="step" id="heroStep2">حماية اختيارية للحضور</span><span class="step" id="heroStep3">بصمة الحادث التأمينية</span></div></div>
+ <div class="hero-mark">حِمى<br><span style="font-size:22px;letter-spacing:5px">HIMA</span></div>
 </section>
 <nav class="nav" id="nav">
- <button class="active" data-page="overview" data-portal="customer" onclick="showPage('overview')" data-ar="الرئيسية" data-en="Home">الرئيسية</button>
- <button data-page="events" data-portal="customer" onclick="showPage('events')" data-ar="استكشف الفعاليات" data-en="Explore events">استكشف الفعاليات</button>
- <button data-page="booking" data-portal="customer" onclick="showPage('booking')" data-ar="إتمام الحجز" data-en="Booking">إتمام الحجز</button>
- <button data-page="wallet" data-portal="customer" onclick="showPage('wallet')" data-ar="تذاكري وحماياتي" data-en="My tickets">تذاكري وحماياتي</button>
- <button data-page="incident" data-portal="customer" onclick="showPage('incident')" data-ar="المطالبات" data-en="Claims">المطالبات</button>
- <button data-page="account" data-portal="customer" onclick="showPage('account')" data-ar="حسابي" data-en="My account">حسابي</button>
- <button data-page="organizer" data-portal="organizer" onclick="showPage('organizer')" data-ar="بوابة المنظم" data-en="Organizer portal">بوابة المنظم</button>
- <button data-page="insurer" data-portal="insurer" onclick="showPage('insurer')" data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</button>
-</nav>
-<nav class="bottom-nav" id="customerBottomNav" aria-label="تنقل المستفيد">
- <button class="bottom-link active" data-page="overview" onclick="showPage('overview')"><span>⌂</span><small data-ar="الرئيسية" data-en="Home">الرئيسية</small></button>
- <button class="bottom-link" data-page="events" onclick="showPage('events')"><span>⌕</span><small data-ar="الفعاليات" data-en="Events">الفعاليات</small></button>
- <button class="bottom-link" data-page="wallet" onclick="showPage('wallet')"><span>▣</span><small data-ar="تذاكري" data-en="Tickets">تذاكري</small></button>
- <button class="bottom-link" data-page="incident" onclick="showPage('incident')"><span>♧</span><small data-ar="مطالباتي" data-en="Claims">مطالباتي</small></button>
- <button class="bottom-link" data-page="account" onclick="showPage('account')"><span>♙</span><small data-ar="حسابي" data-en="Account">حسابي</small></button>
+ <button class="active" data-page="overview" onclick="showPage('overview')" data-ar="نظرة عامة" data-en="Overview">نظرة عامة</button>
+ <button data-page="organizer" onclick="showPage('organizer')" data-ar="لوحة المنظم" data-en="Organizer">لوحة المنظم</button>
+ <button data-page="booking" onclick="showPage('booking')" data-ar="حجز التذكرة" data-en="Ticket booking">حجز التذكرة</button>
+ <button data-page="wallet" onclick="showPage('wallet')" data-ar="محفظة التذاكر" data-en="Ticket wallet">محفظة التذاكر</button>
+ <button data-page="incident" onclick="showPage('incident')" data-ar="بصمة الحادث والمطالبة" data-en="Incident & claim">بصمة الحادث والمطالبة</button>
+ <button data-page="insurer" onclick="showPage('insurer')" data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</button>
 </nav>
 
-<section class="page" id="overview">
- <div class="welcome-row"><div><span class="pill">HIMA • حِمى</span><h2 class="welcome-title">أهلًا بك في حِمى</h2><p class="muted">اكتشف الفعاليات، اختر تذكرتك، وأضف الحماية التأمينية الاختيارية بخطوات واضحة.</p></div><button class="btn" onclick="showPage('events')">استكشف الفعاليات <span aria-hidden="true">←</span></button></div>
- <div class="home-shortcuts">
-  <button class="shortcut" onclick="showPage('events')"><span class="shortcut-icon">⌕</span><b>استكشف الفعاليات</b><small>مباريات، حفلات، ألعاب والمزيد</small></button>
-  <button class="shortcut" onclick="showPage('wallet')"><span class="shortcut-icon">▣</span><b>تذاكري وحماياتي</b><small>كل تذاكرك وشهاداتك في مكان واحد</small></button>
-  <button class="shortcut" onclick="showPage('incident')"><span class="shortcut-icon">♧</span><b>طلباتي ومطالباتي</b><small>تابع حالة طلبك أو أرسل مطالبة</small></button>
-  <button class="shortcut" onclick="showPage('account')"><span class="shortcut-icon">♙</span><b>حسابي</b><small>بياناتك وإعداداتك</small></button>
+<section class="page active" id="overview">
+ <div class="grid">
+  <div class="card span8"><h3 data-ar="ما الذي تقدمه حِمى؟" data-en="What HIMA does">ما الذي تقدمه حِمى؟</h3><p class="muted" id="overviewCopy" style="line-height:1.9">منظومة تقنية تأمينية مقترحة تخدم ثلاثة أطراف: منظم الفعالية، حامل التذكرة، وشركة التأمين. تربط بيانات الفعالية والتذكرة والتغطية وسجل الحادث لتسهيل التحقق ومراجعة المطالبات.</p><div class="grid"><div class="card span6" style="background:#f8f5fd;box-shadow:none"><h3>🏢 <span data-ar="مسؤولية المنظم" data-en="Organizer liability">مسؤولية المنظم</span></h3><p class="muted" data-ar="تأمين المسؤولية المدنية تجاه الغير وفق شروط الوثيقة." data-en="Civil liability cover toward third parties, subject to policy terms.">تأمين المسؤولية المدنية تجاه الغير وفق شروط الوثيقة.</p></div><div class="card span6" style="background:#f4fbf8;box-shadow:none"><h3>🛡️ <span data-ar="حوادث الحاضر" data-en="Attendee accident cover">حوادث الحاضر</span></h3><p class="muted" data-ar="حماية اختيارية ضد الحوادث الشخصية أثناء فترة التغطية." data-en="Optional personal accident benefits during the coverage period.">حماية اختيارية ضد الحوادث الشخصية أثناء فترة التغطية.</p></div></div></div>
+  <div class="card span4"><h3 data-ar="الأطراف الثلاثة" data-en="Three participants">الأطراف الثلاثة</h3><p>🏟️ <b data-ar="منظم الفعالية" data-en="Event organizer">منظم الفعالية</b></p><p>🎟️ <b data-ar="حامل التذكرة" data-en="Ticket holder">حامل التذكرة</b></p><p>🛡️ <b data-ar="شركة التأمين" data-en="Insurer">شركة التأمين</b></p><div class="notice" data-ar="تعمل الواجهات ببيانات تجريبية داخل جلسة المتصفح فقط." data-en="The prototype uses demo data in the browser session only.">تعمل الواجهات ببيانات تجريبية داخل جلسة المتصفح فقط.</div></div>
+  <div class="card span12"><h3 data-ar="رحلة حِمى" data-en="HIMA journey">رحلة حِمى</h3><div class="steps"><span class="step">1. <span data-ar="تجهيز الفعالية" data-en="Prepare event">تجهيز الفعالية</span></span><span class="step">2. <span data-ar="اختيار التذكرة والحماية" data-en="Ticket & optional cover">اختيار التذكرة والحماية</span></span><span class="step">3. <span data-ar="شهادة تجريبية" data-en="Demo certificate">شهادة تجريبية</span></span><span class="step">4. <span data-ar="تسجيل الحادث" data-en="Record incident">تسجيل الحادث</span></span><span class="step">5. <span data-ar="مراجعة المطالبة" data-en="Claim review">مراجعة المطالبة</span></span></div></div>
  </div>
- <div class="section-heading"><div><h3>تصفّح حسب نوع الفعالية</h3><p class="muted">اختر التصنيف لتظهر لك الفعاليات التابعة له.</p></div><button class="text-btn" onclick="showPage('events')">عرض الكل</button></div>
- <div class="category-grid" id="homeCategories"></div>
- <div class="section-heading"><div><h3>فعاليات مقترحة</h3><p class="muted">أمثلة تجريبية توضح طريقة عرض الفعاليات.</p></div></div>
- <div class="event-grid" id="homeEvents"></div>
- <div class="notice">جميع الفعاليات والأسعار المعروضة في هذا النموذج بيانات افتراضية للتجربة، وليست حجوزات أو عروضًا حقيقية.</div>
- <div class="card"><h3>كيف تستخدم حِمى؟</h3><div class="journey-grid"><div><b>01</b><strong>اختر الفعالية</strong><p class="muted">حدد النوع والمنطقة والفعالية المناسبة.</p></div><div><b>02</b><strong>اختر التذكرة</strong><p class="muted">اطلع على الفئات والأسعار التجريبية.</p></div><div><b>03</b><strong>أضف الحماية</strong><p class="muted">راجع تفاصيل الحماية الاختيارية ووافق عليها.</p></div><div><b>04</b><strong>احتفظ بتذكرتك</strong><p class="muted">تابع التذكرة والشهادة من محفظتك.</p></div></div></div>
-</section>
-<section class="page" id="events">
- <div class="page-intro"><span class="pill">اكتشف</span><h2>استكشف الفعاليات</h2><p class="muted">اختر نوع الفعالية والمنطقة والمدينة لتظهر لك الخيارات المناسبة.</p></div>
- <div class="card filters-card"><div class="field"><label>نوع الفعالية</label><div class="category-pills" id="eventCategoryFilters"></div></div><div class="filter-row"><div class="field"><label for="filterRegion">المنطقة</label><select id="filterRegion" onchange="updateCityOptions();renderEventCatalog()"><option value="all">كل مناطق المملكة</option></select></div><div class="field"><label for="filterCity">المدينة</label><select id="filterCity" onchange="renderEventCatalog()"><option value="all">كل المدن</option></select></div></div></div>
- <div class="section-heading"><div><h3 id="catalogTitle">كل الفعاليات</h3><p class="muted" id="catalogCount">اختاري تصنيفًا لعرض الفعاليات.</p></div></div>
- <div class="event-grid" id="eventCatalog"></div>
-</section>
-<section class="page" id="account">
- <div class="page-intro"><span class="pill">حساب المستخدم</span><h2>حسابي</h2><p class="muted">إدارة بيانات الحساب والوصول السريع إلى خدماتك.</p></div>
- <div class="grid"><div class="card span5"><div class="profile-head"><div class="profile-avatar">م</div><div><h3>المستخدم التجريبي</h3><p class="muted">حساب تجريبي — لا يتطلب تسجيل دخول فعلي</p></div></div><div class="notice">يمكن إضافة تسجيل الدخول والتحقق من الهوية عند ربط النظام بخدمة خلفية.</div></div><div class="card span7"><h3>الخدمات الشخصية</h3><div class="account-links"><button onclick="showPage('wallet')">🎟️ تذاكري وحماياتي <span>←</span></button><button onclick="showPage('incident')">📄 طلباتي ومطالباتي <span>←</span></button><button onclick="showPage('wallet')">🛡️ شهاداتي التأمينية <span>←</span></button><button onclick="showPage('overview')">⚙️ الإعدادات <span>←</span></button></div></div></div>
 </section>
 
 <section class="page" id="organizer">
  <div class="grid">
-  <div class="card span7" id="eventDetails"><h3 data-ar="بيانات الفعالية" data-en="Event details">بيانات الفعالية</h3>
-   <div class="field"><label>نوع الفعالية</label><select id="organizerType" onchange="renderOrganizerEvents()"><option value="sports">المباريات الرياضية</option><option value="concert">الحفلات الغنائية</option><option value="gaming">الألعاب والرياضات الإلكترونية</option><option value="festival">المهرجانات</option><option value="exhibition">المعارض</option><option value="entertainment">الفعاليات الترفيهية</option></select></div><div class="field"><label>الفعالية</label><select id="organizerEvent" onchange="syncOrganizerEvent()"></select></div>
-   <div class="grid"><div class="field span6"><label>المنطقة</label><select id="organizerRegion" onchange="updateOrganizerCities()"></select></div><div class="field span6"><label>المدينة</label><select id="organizerCity" onchange="syncOrganizerEvent()"></select></div></div><input type="hidden" id="eventName"><input type="hidden" id="eventType"><input type="hidden" id="eventLocation">
+  <div class="card span7"><h3 data-ar="بيانات الفعالية" data-en="Event details">بيانات الفعالية</h3>
+   <div class="field"><label data-ar="اسم الفعالية" data-en="Event name">اسم الفعالية</label><input id="eventName" value="مباراة الهلال × النصر"></div>
+   <div class="grid"><div class="field span6"><label data-ar="نوع الفعالية" data-en="Event type">نوع الفعالية</label><select id="eventType"><option>مباراة كرة قدم</option><option>حفل موسيقي</option><option>مهرجان</option><option>فعالية جماهيرية</option></select></div><div class="field span6"><label data-ar="الموقع" data-en="Location">الموقع</label><input id="eventLocation" value="الرياض — ملعب افتراضي"></div></div>
    <div class="grid"><div class="field span6"><label data-ar="سعة الموقع" data-en="Venue capacity">سعة الموقع</label><input id="capacity" type="number" value="25000" min="1"></div><div class="field span6"><label data-ar="الحضور المتوقع" data-en="Expected attendance">الحضور المتوقع</label><input id="attendance" type="number" value="20000" min="0"></div></div>
    <div class="grid"><div class="field span6"><label data-ar="مستوى الازدحام" data-en="Crowd level">مستوى الازدحام</label><select id="crowd"><option value="1">منخفض</option><option value="2" selected>متوسط</option><option value="3">مرتفع</option></select></div><div class="field span6"><label data-ar="جاهزية السلامة" data-en="Safety readiness">جاهزية السلامة</label><select id="safety"><option value="3">مكتملة</option><option value="2" selected>جزئية</option><option value="1">تحتاج تحسين</option></select></div></div>
-   <div class="field" id="policyDetails"><label data-ar="بيانات وثيقة المسؤولية المدنية (تجريبية)" data-en="Civil liability policy details (demo)">بيانات وثيقة المسؤولية المدنية (تجريبية)</label><input id="policyRef" value="POL-HIMA-DEMO-001"></div>
+   <div class="field"><label data-ar="بيانات وثيقة المسؤولية المدنية (تجريبية)" data-en="Civil liability policy details (demo)">بيانات وثيقة المسؤولية المدنية (تجريبية)</label><input id="policyRef" value="POL-HIMA-DEMO-001"></div>
    <button class="btn" onclick="calculateRisk()" data-ar="حساب مؤشر المخاطر التوضيحي" data-en="Calculate illustrative risk">حساب مؤشر المخاطر التوضيحي</button>
   </div>
-  <div class="card span5" id="organizerIndicators"><h3 data-ar="مؤشرات المنظم" data-en="Organizer indicators">مؤشرات المنظم</h3><div class="stats" style="grid-template-columns:1fr 1fr"><div class="statbox"><div class="statlabel" data-ar="السعة" data-en="Capacity">السعة</div><div class="stat" id="statCapacity">25,000</div></div><div class="statbox"><div class="statlabel" data-ar="الحضور" data-en="Attendance">الحضور</div><div class="stat" id="statAttendance">20,000</div></div></div><div class="notice warn" id="riskResult">مؤشر توضيحي غير معاير، ولا يستخدم للتسعير أو قرارات السلامة الفعلية.</div><div class="field"><label data-ar="حالة وثيقة المسؤولية" data-en="Liability policy status">حالة وثيقة المسؤولية</label><span class="pill amber" id="policyStatus">بيانات افتراضية للمراجعة</span></div><p class="muted" style="font-size:12px" data-ar="المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا." data-en="Demo indicator only; not an engineering or underwriting assessment.">المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا.</p></div>
+  <div class="card span5"><h3 data-ar="مؤشرات المنظم" data-en="Organizer indicators">مؤشرات المنظم</h3><div class="stats" style="grid-template-columns:1fr 1fr"><div class="statbox"><div class="statlabel" data-ar="السعة" data-en="Capacity">السعة</div><div class="stat" id="statCapacity">25,000</div></div><div class="statbox"><div class="statlabel" data-ar="الحضور" data-en="Attendance">الحضور</div><div class="stat" id="statAttendance">20,000</div></div></div><div class="notice warn" id="riskResult">مؤشر توضيحي غير معاير، ولا يستخدم للتسعير أو قرارات السلامة الفعلية.</div><div class="field"><label data-ar="حالة وثيقة المسؤولية" data-en="Liability policy status">حالة وثيقة المسؤولية</label><span class="pill amber" id="policyStatus">بيانات افتراضية للمراجعة</span></div><p class="muted" style="font-size:12px" data-ar="المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا." data-en="Demo indicator only; not an engineering or underwriting assessment.">المؤشر لأغراض العرض فقط، ولا يمثل تقييمًا هندسيًا أو اكتتابيًا.</p></div>
  </div>
 </section>
 
 <section class="page" id="booking">
  <div class="grid">
-  <div class="card span7"><h3 data-ar="اختيار الفعالية والتذكرة" data-en="Choose event and ticket">اختيار الفعالية والتذكرة</h3><div class="notice">الفعالية المختارة: <b id="selectedEventName">لم يتم اختيار فعالية بعد</b> <button class="text-btn" onclick="showPage('events')">تغيير الفعالية</button></div>
+  <div class="card span7"><h3 data-ar="اختيار الفعالية والتذكرة" data-en="Choose event and ticket">اختيار الفعالية والتذكرة</h3>
    <div class="ticket"><div class="tickethead"><span class="pill">HIMA EVENT</span><span class="muted" data-ar="تصور حجز مقترح" data-en="Proposed booking concept">تصور حجز مقترح</span></div><h2 id="bookingEvent">مباراة الهلال × النصر</h2><p class="muted" data-ar="الرياض • ملعب افتراضي • 24 نوفمبر 2026" data-en="Riyadh • Demo stadium • 24 Nov 2026">الرياض • ملعب افتراضي • 24 نوفمبر 2026</p></div>
    <div class="field"><label data-ar="فئة التذكرة" data-en="Ticket category">فئة التذكرة</label><select id="ticketType" onchange="updateTotal()"><option value="150">الفئة العادية — 150 ر.س</option><option value="250">الفئة المميزة — 250 ر.س</option><option value="350">الفئة الذهبية — 350 ر.س</option></select></div>
-   <div class="check"><input type="checkbox" id="addCover" onchange="updateTotal()"><div><b data-ar="إضافة حماية حِمى الاختيارية — 5 ر.س" data-en="Add optional HIMA protection — SAR 5">إضافة حماية حِمى الاختيارية — 5 ر.س</b><div class="muted" style="font-size:13px" data-ar="تأمين تجريبي ضد الحوادث الشخصية أثناء الفعالية، وفق المنافع والحدود والاستثناءات الافتراضية." data-en="Demo personal accident cover during the event, subject to illustrative benefits, limits and exclusions.">تأمين تجريبي ضد الحوادث الشخصية أثناء الفعالية، وفق المنافع والحدود والاستثناءات الافتراضية.</div></div></div>
-   <div class="notice"><b data-ar="قبل الاختيار" data-en="Before selecting">قبل الاختيار</b><br><span data-ar="راجع المنافع وحدود التغطية والاستثناءات ومدة الحماية والجهة المؤمنة. لا تضاف الحماية إلا بموافقتك." data-en="Review benefits, limits, exclusions, coverage period and insurer. Cover is not added without your consent.">راجع المنافع وحدود التغطية والاستثناءات ومدة الحماية والجهة المؤمنة. لا تضاف الحماية إلا بموافقتك.</span></div>
-   <div class="field"><label data-ar="ملخص المنافع (افتراضي)" data-en="Illustrative benefits">ملخص المنافع (افتراضي)</label><p class="muted" data-ar="منافع حوادث شخصية محددة وفق وثيقة افتراضية. لا تمثل هذه الشاشة عرض تأمين أو وثيقة حقيقية." data-en="Specified personal accident benefits under a fictional policy. This is not an insurance offer or real policy.">منافع حوادث شخصية محددة وفق وثيقة افتراضية. لا تمثل هذه الشاشة عرض تأمين أو وثيقة حقيقية.</p></div>
+   <div class="field"><label data-ar="اختاري باقة حماية حِمى (اختيارية)" data-en="Choose an optional HIMA protection package">اختاري باقة حماية حِمى (اختيارية)</label>
+    <div class="package-grid">
+     <label class="package-option"><input type="radio" name="coverPackage" value="basic" onchange="updateTotal()"><span><b>الحماية الأساسية</b><strong>5 ر.س</strong><small>حد منفعة توضيحي: 1,000 ر.س</small></span></label>
+     <label class="package-option"><input type="radio" name="coverPackage" value="balanced" onchange="updateTotal()"><span><b>الحماية المتوازنة</b><strong>10 ر.س</strong><small>حد منفعة توضيحي: 3,000 ر.س</small></span></label>
+     <label class="package-option"><input type="radio" name="coverPackage" value="plus" onchange="updateTotal()"><span><b>الحماية الموسعة</b><strong>15 ر.س</strong><small>حد منفعة توضيحي: 5,000 ر.س</small></span></label>
+    </div>
+    <p class="muted" style="font-size:12px;margin-top:8px">الأسعار وحدود المنافع افتراضية لأغراض العرض فقط، وليست تسعيرًا أو تغطية تأمينية معتمدة.</p>
+   </div>
+   <details class="notice protection-details"><summary><b>تفاصيل حماية حِمى وشروطها</b></summary><div class="detail-list"><p><b>نوع الحماية:</b> حوادث شخصية للحامل أثناء الفعالية.</p><p><b>مدة الحماية:</b> خلال وقت الفعالية المحدد في نموذج الحجز.</p><p><b>حد المنفعة:</b> يختلف حسب الباقة المختارة، والقيم المعروضة توضيحية.</p><p><b>الاستثناءات:</b> تخضع لوثيقة وشروط الجهة المؤمنة عند اعتماد المنتج؛ ولا توجد وثيقة فعلية ضمن هذا النموذج.</p><p><b>الجهة المؤمنة:</b> غير محددة في النموذج التجريبي.</p></div></details>
   </div>
-  <div class="card span5"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="حماية حِمى" data-en="HIMA protection">حماية حِمى</span><b id="coverPrice">0 ر.س</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="issueTicket()" data-ar="تأكيد الحجز التجريبي" data-en="Confirm demo booking">تأكيد الحجز التجريبي</button><div id="bookingMsg" class="notice hide"></div></div>
+  <div class="card span5"><h3 data-ar="مراجعة الطلب" data-en="Order summary">مراجعة الطلب</h3><div class="row"><span data-ar="قيمة التذكرة" data-en="Ticket price">قيمة التذكرة</span><b id="basePrice">150 ر.س</b></div><div class="row" style="margin:14px 0"><span data-ar="باقة حماية حِمى" data-en="HIMA protection package">باقة حماية حِمى</span><b id="coverPrice">بدون حماية</b></div><hr style="border:0;border-top:1px solid var(--line)"><div class="row" style="font-size:19px;margin:15px 0"><b data-ar="الإجمالي" data-en="Total">الإجمالي</b><b id="totalPrice">150 ر.س</b></div><div class="check"><input type="checkbox" id="agreeDemo"><span data-ar="أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية." data-en="I understand this is a demo and the displayed protection is not a real insurance policy.">أقر أن هذه تجربة افتراضية، وأن الحماية المعروضة ليست وثيقة تأمين فعلية.</span></div><button class="btn" style="width:100%" onclick="issueTicket()" data-ar="تأكيد الحجز التجريبي" data-en="Confirm demo booking">تأكيد الحجز التجريبي</button><div id="bookingMsg" class="notice hide"></div></div>
  </div>
 </section>
 
@@ -182,46 +76,31 @@
 
 <section class="page" id="incident">
  <div class="grid">
-  <div class="card span6" id="incidentEntryCard"><h3 data-ar="تسجيل واقعة — بصمة الحادث" data-en="Record incident — Incident fingerprint">تسجيل واقعة — بصمة الحادث</h3>
+  <div class="card span6"><h3 data-ar="تسجيل واقعة — بصمة الحادث" data-en="Record incident — Incident fingerprint">تسجيل واقعة — بصمة الحادث</h3>
    <div class="field"><label data-ar="نوع الواقعة" data-en="Incident type">نوع الواقعة</label><select id="incidentType"><option>سقوط حاجز</option><option>تدافع أو ازدحام</option><option>إصابة نتيجة تعثر</option><option>واقعة أخرى</option></select></div>
    <div class="field"><label data-ar="الموقع داخل الفعالية" data-en="Incident location">الموقع داخل الفعالية</label><input id="incidentLocation" value="المدرج الشرقي"></div>
    <div class="field"><label data-ar="وصف الواقعة" data-en="Incident description">وصف الواقعة</label><textarea id="incidentDescription">سقوط حاجز في المدرج الشرقي أثناء المباراة — مثال افتراضي.</textarea></div>
    <div class="field"><label data-ar="وقت الواقعة" data-en="Incident time">وقت الواقعة</label><input id="incidentTime" type="datetime-local"></div>
    <button class="btn" onclick="createIncident()" data-ar="إنشاء بصمة الحادث" data-en="Create incident fingerprint">إنشاء بصمة الحادث</button><div id="incidentMsg" class="notice hide"></div>
   </div>
-  <div class="card span6" id="claimSubmissionCard"><h3 data-ar="تقديم مطالبة الحاضر" data-en="Submit attendee claim">تقديم مطالبة الحاضر</h3>
+  <div class="card span6"><h3 data-ar="تقديم مطالبة الحاضر" data-en="Submit attendee claim">تقديم مطالبة الحاضر</h3>
    <div class="field"><label data-ar="رقم التذكرة" data-en="Ticket number">رقم التذكرة</label><input id="claimTicket" placeholder="TKT-HIMA-0001"></div>
    <div class="field"><label data-ar="رقم بصمة الحادث" data-en="Incident fingerprint ID">رقم بصمة الحادث</label><input id="claimIncident" placeholder="INC-HIMA-001"></div>
    <div class="field"><label data-ar="وصف الضرر أو الإصابة" data-en="Injury or loss description">وصف الضرر أو الإصابة</label><textarea id="claimDescription" placeholder="اكتب وصفًا مختصرًا..."></textarea></div>
    <div class="field"><label data-ar="مرجع المستندات (محاكاة)" data-en="Document reference (simulation)">مرجع المستندات (محاكاة)</label><input id="claimDocs" placeholder="مثال: MED-REPORT-DEMO"></div>
    <button class="btn" onclick="submitClaim()" data-ar="إرسال المطالبة للمراجعة" data-en="Send claim for review">إرسال المطالبة للمراجعة</button><div id="claimMsg" class="notice hide"></div>
   </div>
-  <div class="card span12" id="incidentRegister"><h3 data-ar="سجل بصمات الحوادث" data-en="Incident fingerprint register">سجل بصمات الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
+  <div class="card span12"><h3 data-ar="سجل بصمات الحوادث" data-en="Incident fingerprint register">سجل بصمات الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
  </div>
 </section>
 
 <section class="page" id="insurer">
  <div class="grid">
-  <div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="لوحة شركة التأمين — مراجعة المطالبات" data-en="Insurer dashboard — claim review">لوحة شركة التأمين — مراجعة المطالبات</h3><span class="pill amber" data-ar="محاكاة مراجعة بشرية" data-en="Human review simulation">محاكاة مراجعة بشرية</span></div><div id="claimsList" class="empty">لا توجد مطالبات واردة بعد.</div></div>
-  <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي." data-en="The platform presents ticket, incident, coverage and document references to support review. It does not automatically approve, reject or pay claims.">تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي.</p></div>
+  <div class="card span12"><div class="row"><h3 data-ar="لوحة شركة التأمين — مراجعة المطالبات" data-en="Insurer dashboard — claim review">لوحة شركة التأمين — مراجعة المطالبات</h3><span class="pill amber" data-ar="محاكاة مراجعة بشرية" data-en="Human review simulation">محاكاة مراجعة بشرية</span></div><div id="claimsList" class="empty">لا توجد مطالبات واردة بعد.</div></div>
+  <div class="card span12"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي." data-en="The platform presents ticket, incident, coverage and document references to support review. It does not automatically approve, reject or pay claims.">تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي.</p></div>
  </div>
 </section>
-
-
-<section class="page" id="insurerPolicies">
- <div class="page-intro"><span class="pill">بوابة شركة التأمين</span><h2 data-ar="الوثائق والتغطيات" data-en="Policies & coverage">الوثائق والتغطيات</h2><p class="muted" data-ar="عرض تجريبي للوثائق والتغطيات المرتبطة بالفعاليات." data-en="Illustrative view of event-related policies and coverage.">عرض تجريبي للوثائق والتغطيات المرتبطة بالفعاليات.</p></div>
- <div class="grid">
-  <div class="card span12"><h3 data-ar="الوثائق التأمينية" data-en="Insurance policies">الوثائق التأمينية</h3>
-   <div class="tablewrap"><table><thead><tr><th>رقم الوثيقة</th><th>نوع التغطية</th><th>الجهة</th><th>الحالة</th></tr></thead><tbody>
-    <tr><td><b>POL-HIMA-DEMO-001</b></td><td>المسؤولية المدنية للمنظم</td><td>منظم فعالية تجريبية</td><td><span class="pill amber">بيانات افتراضية</span></td></tr>
-    <tr><td><b>HIMA-CERT-DEMO-001</b></td><td>الحوادث الشخصية للحضور</td><td>حامل تذكرة تجريبية</td><td><span class="pill green">شهادة تجريبية</span></td></tr>
-   </tbody></table></div>
-   <div class="notice">البيانات المعروضة للتوضيح فقط، ولا تمثل وثائق تأمين فعلية أو تغطية سارية.</div>
-  </div>
- </div>
-</section>
-
 <footer class="foot" id="footerText">حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.</footer>
 </div>
-<script src="app.js?v=10"></script>
+<script src="app.js"></script>
 </body></html>
