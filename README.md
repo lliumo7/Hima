@@ -31,3 +31,11 @@
 - قائمة جانبية صغيرة من زر الثلاث شرطات للخدمات الإضافية والحمايات والإعدادات وتغيير البوابة.
 - أزيل خيار الحجز من شريط التنقل؛ يبدأ الحجز بعد اختيار فعالية.
 - بوابتا المنظم وشركة التأمين تبقيان منفصلتين عن تنقل المستفيد.
+
+
+## HIMA V7 — agreed customer navigation layout
+- Customer header is simplified to brand, language selector and hamburger menu.
+- Customer navigation is fixed to the bottom of the viewport on desktop, tablet and mobile.
+- Tablet/mobile navigation uses stacked icons and labels; desktop uses a horizontal icon-and-label bar.
+- Hamburger menu opens below the header and contains secondary account and coverage actions.
+- Existing portal separation and demo flows are preserved.
