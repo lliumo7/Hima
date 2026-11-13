@@ -390,3 +390,72 @@ body.portal-customer .landing-hero{display:none!important}
 .wallet-ticket{max-width:900px;margin-inline:auto}
 .wallet-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
 @media(max-width:700px){.cover-package-grid{grid-template-columns:1fr}.package-body{min-height:0;padding:14px 14px 14px 42px}.cover-package:has(input:checked) .package-body{padding:13px 13px 13px 41px}.package-name{margin-top:0}.cover-facts{grid-template-columns:1fr}.cover-details,.cover-packages{padding:14px}.wallet-actions .btn{flex:1}}
+
+/* HIMA V10.1 — connected attendee claims and insurer review */
+.claim-layout{align-items:start}
+.claim-form-card h3,.claim-side-card h3{margin-bottom:5px}
+.claim-section-title{display:flex;align-items:center;gap:12px;margin:22px 0 14px}
+.claim-section-title:first-child{margin-top:2px}
+.claim-section-title>div{min-width:0}
+.claim-section-title h3{margin:0!important;font-size:16px}
+.claim-section-title p{margin:3px 0 0;font-size:12px}
+.claim-step{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:50%;background:var(--lav);color:var(--purple);font-weight:800}
+.claim-ticket-summary{margin:0 0 18px;padding:14px;border-radius:14px}
+.claim-ticket-name{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.claim-ticket-meta,.claim-summary-row{display:flex;justify-content:space-between;gap:14px;padding:7px 0;border-top:1px solid #e9e1f2;font-size:12px}
+.claim-ticket-meta span,.claim-summary-row span{color:var(--muted)}
+.claim-ticket-meta b,.claim-summary-row b{text-align:left;overflow-wrap:anywhere}
+.claim-fields-grid{gap:12px}
+.claim-fields-grid .field{grid-column:span 4}
+.claim-upload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;min-height:142px;padding:18px;border:1.5px dashed #b99bdd;border-radius:15px;background:#fbf8ff;color:var(--purple);text-align:center;cursor:pointer}
+.claim-upload .upload-symbol{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--lav);font-size:27px}
+.claim-upload span,.claim-upload small{color:var(--muted);font-size:12px}
+.claim-upload input{max-width:100%;font:inherit;font-size:12px;color:var(--muted)}
+.claim-file-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.claim-file-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:12px;overflow-wrap:anywhere}
+.claim-file-chip small{color:var(--muted);white-space:nowrap}
+.claim-demo-note{margin:17px 0 12px}
+.claim-submit-btn{width:100%;min-height:48px}
+.claim-side-card{position:sticky;top:16px}
+.claim-summary-empty{padding:18px;border-radius:13px;background:var(--lav-2);color:var(--muted);font-size:13px;line-height:1.8}
+.claim-summary-ticket{display:flex;flex-direction:column;gap:5px;padding:13px;margin-bottom:10px;border-radius:12px;background:var(--lav-2)}
+.claim-summary-ticket small{color:var(--muted)}
+.claim-summary-ticket b{color:var(--purple);font-size:13px}
+.claim-status-guide{margin-top:25px;padding-top:18px;border-top:1px solid var(--line)}
+.claim-mini-step{display:flex;align-items:center;gap:11px;padding:10px 0}
+.mini-step-dot{width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;border:1px solid #d9cce9;border-radius:50%;color:var(--muted);font-size:12px;font-weight:800}
+.mini-step-dot.active{background:var(--purple);border-color:var(--purple);color:#fff}
+.claim-mini-step div{display:flex;flex-direction:column;gap:3px}
+.claim-mini-step b{font-size:13px}.claim-mini-step small{color:var(--muted);font-size:11px}
+.claim-insurer-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 17px}
+.claim-stat{padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface);box-shadow:var(--shadow-soft)}
+.claim-stat small{display:block;color:var(--muted);font-size:12px}.claim-stat b{display:block;margin-top:7px;color:var(--purple);font-size:25px}
+.claim-review-list,.customer-claims-list{display:grid;gap:14px}
+.claim-review-card,.customer-claim-card{padding:17px;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:var(--shadow-soft)}
+.claim-review-head,.customer-claim-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:13px;border-bottom:1px solid var(--line)}
+.claim-review-head small,.customer-claim-head small{display:block;color:var(--muted);font-size:11px}
+.claim-review-head h3{margin:3px 0 0;color:var(--purple);font-size:17px}
+.claim-review-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:15px}
+.claim-review-grid section{padding:13px;border-radius:12px;background:var(--lav-2)}
+.claim-review-grid h4,.claim-review-description h4,.claim-review-docs h4{margin:0 0 9px;color:#4b3470;font-size:13px}
+.claim-review-row{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid #e6dcf0;font-size:12px}
+.claim-review-row span{color:var(--muted)}.claim-review-row b{text-align:left;overflow-wrap:anywhere}
+.claim-review-description,.claim-review-docs{margin-top:14px;padding:13px;border:1px solid var(--line);border-radius:12px}
+.claim-review-description p{margin:0;font-size:13px;line-height:1.9}
+.claim-review-actions{margin-top:15px;padding-top:14px;border-top:1px solid var(--line)}
+.claim-decision-buttons{display:flex;gap:10px}
+.claim-decision-buttons .btn{flex:1}
+.claim-accept{background:#16834e!important}.claim-reject{background:#b83245!important}
+.pill.red{background:#fde8eb;color:#a82337}
+.customer-claim-head>b{color:var(--purple)}
+.customer-claim-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:13px 0;font-size:12px;color:var(--muted)}
+.customer-claim-info b{color:var(--ink)}
+.claim-progress{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:13px;margin:12px 0;border-radius:12px;background:var(--lav-2)}
+.progress-node{font-size:11px;color:var(--muted);font-weight:700;white-space:nowrap}
+.progress-node.done{color:var(--green)}.progress-node.current{color:var(--purple)}
+.progress-line{height:2px;flex:1;background:#d9cbe9}
+body.portal-organizer #claimSubmissionCard,body.portal-insurer #claimSubmissionCard{display:none!important}
+body.portal-customer #incidentEntryCard,body.portal-customer #incidentRegister{display:none!important}
+body.portal-organizer #customerClaimsCard,body.portal-insurer #customerClaimsCard{display:none!important}
+body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{display:none!important}
+@media(max-width:760px){.claim-side-card{position:static}.claim-fields-grid .field{grid-column:span 12}.claim-insurer-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.claim-review-grid{grid-template-columns:1fr}.customer-claim-info{grid-template-columns:1fr}.claim-progress{flex-wrap:wrap}.progress-node{white-space:normal;text-align:center}}

@@ -18,14 +18,87 @@ function renderWallet(){
  const t=state.ticket;el.className='ticket wallet-ticket';
  el.innerHTML=`<div class="tickethead"><div><span class="pill green">HIMA • DEMO</span><h2>${escapeHtml(t.event)}</h2><p class="muted">${escapeHtml(t.location||'')} • ${escapeHtml(t.date||'')}</p><p class="muted">${escapeHtml(t.venue||'')}</p></div><div class="qr" aria-label="نمط QR توضيحي"></div></div><hr style="border:0;border-top:1px dashed #c9b8e2"><div class="row"><span>رقم التذكرة</span><b class="ticketcode">${escapeHtml(t.id)}</b></div><div class="row"><span>فئة التذكرة</span><b>${escapeHtml(t.type)}</b></div><div class="row"><span>قيمة التذكرة</span><b>${t.base} ر.س</b></div><div class="row"><span>باقة حماية حِمى</span><b>${t.cover?escapeHtml(t.coverPackage)+' — '+t.coverPrice+' ر.س':'غير مضافة'}</b></div><div class="row"><b>الإجمالي التجريبي</b><b>${t.total} ر.س</b></div>${t.cover?`<div class="notice good"><b>شهادة حماية تجريبية</b><br>الباقة: ${escapeHtml(t.coverPackage)}<br>المرجع: ${escapeHtml(t.certificate)}<br>هذه ليست وثيقة تأمين فعلية، وتخضع التغطية الفعلية لشروط الوثيقة عند توفرها.</div>`:`<div class="notice warn">لم تتم إضافة الحماية الاختيارية إلى هذه التذكرة.</div>`}<div class="wallet-actions"><button class="btn secondary" onclick="showPage('events')">استكشاف فعاليات أخرى</button><button class="btn" onclick="showPage('incident')">الانتقال إلى بصمة الحادث / المطالبة</button></div>`
 }
-function createIncident(){let id='INC-HIMA-'+String(state.incidents.length+1).padStart(3,'0');let incident={id,type:$('incidentType').value,location:$('incidentLocation').value,description:$('incidentDescription').value,time:$('incidentTime').value||new Date().toLocaleString('sv-SE'),event:$('eventName').value};state.incidents.push(incident);$('incidentMsg').className='notice good';$('incidentMsg').classList.remove('hide');$('incidentMsg').textContent='تم إنشاء بصمة الحادث: '+id+' — سجل تجريبي.';renderIncidents();$('claimIncident').value=id}
-function renderIncidents(){let el=$('incidentList');if(!state.incidents.length){el.className='empty';el.textContent='لا توجد حوادث مسجلة.';return}el.className='tablewrap';el.innerHTML='<table><thead><tr><th>رقم الواقعة</th><th>النوع</th><th>الموقع</th><th>الوصف</th></tr></thead><tbody>'+state.incidents.map(i=>`<tr><td><b>${i.id}</b></td><td>${escapeHtml(i.type)}</td><td>${escapeHtml(i.location)}</td><td>${escapeHtml(i.description)}</td></tr>`).join('')+'</tbody></table>'}
-function submitClaim(){let ticket=$('claimTicket').value.trim(),incident=$('claimIncident').value.trim(),t=state.ticket;let msg=$('claimMsg');if(!ticket||!incident){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='أدخل رقم التذكرة ورقم الحادث.';return}let knownTicket=!!(t&&ticket===t.id),knownIncident=state.incidents.some(i=>i.id===incident);let coverage=knownTicket&&t.cover;let claim={id:'CLM-HIMA-'+String(state.claims.length+1).padStart(3,'0'),ticket,incident,description:$('claimDescription').value,docs:$('claimDocs').value,knownTicket,knownIncident,coverage,status:'قيد المراجعة الأولية'};state.claims.push(claim);msg.className='notice '+(knownTicket&&knownIncident?'good':'warn');msg.classList.remove('hide');msg.textContent=`تم تسجيل المطالبة ${claim.id}. ${knownTicket?'التذكرة مطابقة.':'التذكرة تحتاج تحققًا.'} ${knownIncident?'الواقعة مسجلة.':'الواقعة غير موجودة في السجل وتحتاج تحققًا.'} ${coverage?'توجد حماية حوادث شخصية تجريبية.':'لا توجد حماية شخصية مسجلة؛ يمكن فحص مسؤولية المنظم بصورة مستقلة.'}`;renderClaims()}
-function renderClaims(){let el=$('claimsList');if(!state.claims.length){el.className='empty';el.textContent='لا توجد مطالبات واردة بعد.';return}el.className='tablewrap';el.innerHTML='<table><thead><tr><th>رقم المطالبة</th><th>التذكرة</th><th>الواقعة</th><th>التحقق الأولي</th><th>الحالة</th><th>إجراء المراجع</th></tr></thead><tbody>'+state.claims.map((c,i)=>`<tr><td><b>${c.id}</b></td><td>${escapeHtml(c.ticket)}</td><td>${escapeHtml(c.incident)}</td><td>${c.knownTicket?'التذكرة موجودة':'التذكرة تحتاج تحقق'} / ${c.knownIncident?'الواقعة مسجلة':'الواقعة تحتاج تحقق'} / ${c.coverage?'حماية شخصية موجودة':'لا توجد حماية شخصية'}</td><td><span class="pill amber">${c.status}</span></td><td><select onchange="updateClaim(${i},this.value)"><option value="">اختر إجراءً</option><option>طلب مستندات إضافية</option><option>إحالة لمراجعة مختص</option><option>استكمال التحقق</option><option>قيد الدراسة لدى المختص</option></select></td></tr>`).join('')+'</tbody></table><div class="notice warn">تحديث الحالة محاكاة لسير المراجعة فقط. لا يوجد قرار قبول أو رفض أو صرف تعويض تلقائي.</div>'}
-function updateClaim(i,status){if(!status)return;state.claims[i].status=status;renderClaims()}
+function renderClaimTicketOptions(){
+ const select=$('claimTicket');if(!select)return;
+ const previous=select.value;
+ const eligible=state.ticket&&state.ticket.cover?[state.ticket]:[];
+ select.innerHTML='<option value="">اختر التذكرة المؤمّن عليها</option>'+eligible.map(t=>`<option value="${escapeHtml(t.id)}">${escapeHtml(t.event)} — ${escapeHtml(t.id)}</option>`).join('');
+ if(eligible.some(t=>t.id===previous))select.value=previous;
+ else if(eligible.length===1)select.value=eligible[0].id;
+ if(!eligible.length){$('claimTicketSummary').className='notice warn claim-ticket-summary';$('claimTicketSummary').textContent='لا توجد تذكرة صادرة تحتوي على حماية حِمى. احجز تذكرة مع إضافة الحماية أولًا حتى تتمكن من تقديم مطالبة.';}
+ else renderClaimTicketSummary();
+}
+function renderClaimTicketSummary(){
+ const t=state.ticket,box=$('claimTicketSummary');if(!box)return;
+ if(!t||!t.cover||$('claimTicket').value!==t.id){box.className='notice claim-ticket-summary';box.textContent='اختر تذكرتك المؤمّن عليها لعرض تفاصيلها.';renderClaimLiveSummary();return;}
+ box.className='claim-ticket-summary notice good';box.innerHTML=`<div class="claim-ticket-name"><b>${escapeHtml(t.event)}</b><span class="pill green">حماية حِمى مفعّلة</span></div><div class="claim-ticket-meta"><span>رقم التذكرة</span><b>${escapeHtml(t.id)}</b></div><div class="claim-ticket-meta"><span>فئة التذكرة</span><b>${escapeHtml(t.type)}</b></div><div class="claim-ticket-meta"><span>باقة الحماية</span><b>${escapeHtml(t.coverPackage||'حماية حِمى')}</b></div><div class="claim-ticket-meta"><span>الموقع والتاريخ</span><b>${escapeHtml((t.location||'')+' — '+(t.date||''))}</b></div>`;
+ renderClaimLiveSummary();
+}
+function renderClaimLiveSummary(){
+ const el=$('claimLiveSummary');if(!el)return;
+ const t=state.ticket&&$('claimTicket')?.value===state.ticket.id?state.ticket:null;
+ const fields=[['نوع الحادث',$('claimIncidentType')?.value],['الموقع',$('claimIncidentLocation')?.value],['وقت الحادث',$('claimIncidentTime')?.value],['الوصف',$('claimDescription')?.value]];
+ if(!t){el.className='claim-summary-empty';el.textContent='اختر تذكرة مؤمّنًا عليها وأكمل بيانات الحادث لتظهر تفاصيل مطالبتك هنا.';return;}
+ el.className='claim-summary-details';el.innerHTML=`<div class="claim-summary-ticket"><small>التذكرة المختارة</small><b>${escapeHtml(t.id)}</b><strong>${escapeHtml(t.event)}</strong></div>`+fields.map(([label,value])=>`<div class="claim-summary-row"><span>${label}</span><b>${escapeHtml(value||'لم يحدد بعد')}</b></div>`).join('')+`<div class="claim-summary-row"><span>المرفقات</span><b>${$('claimFiles')?.files?.length||0} ملف</b></div>`;
+}
+function renderClaimFileList(){
+ const el=$('claimFileList'),files=[...($('claimFiles')?.files||[])];if(!el)return;
+ const tooLarge=files.filter(f=>f.size>10*1024*1024);
+ if(tooLarge.length){el.innerHTML='<div class="notice warn">بعض الملفات يتجاوز حجمها 10MB: '+tooLarge.map(f=>escapeHtml(f.name)).join('، ')+'</div>';}
+ else el.innerHTML=files.map(f=>`<div class="claim-file-chip"><span>▤</span><span>${escapeHtml(f.name)}</span><small>${(f.size/1024/1024).toFixed(2)} MB</small></div>`).join('');
+ renderClaimLiveSummary();
+}
+function createIncident(){
+ const id='INC-HIMA-'+String(state.incidents.length+1).padStart(3,'0');
+ const incident={id,type:$('incidentType')?.value||'واقعة مسجلة',location:$('incidentLocation')?.value||'',description:$('incidentDescription')?.value||'',time:$('incidentTime')?.value||new Date().toLocaleString('sv-SE'),event:$('eventName')?.value||state.ticket?.event||'فعالية'};
+ state.incidents.push(incident);renderIncidents();return incident;
+}
+function renderIncidents(){
+ let el=$('incidentList');if(!el)return;
+ if(!state.incidents.length){el.className='empty';el.textContent='لا توجد حوادث مسجلة.';return}
+ el.className='tablewrap';el.innerHTML='<table><thead><tr><th>رقم الواقعة</th><th>النوع</th><th>الموقع</th><th>الوصف</th></tr></thead><tbody>'+state.incidents.map(i=>`<tr><td><b>${escapeHtml(i.id)}</b></td><td>${escapeHtml(i.type)}</td><td>${escapeHtml(i.location)}</td><td>${escapeHtml(i.description)}</td></tr>`).join('')+'</tbody></table>';
+}
+function submitClaim(){
+ const msg=$('claimMsg'),ticketId=$('claimTicket').value,t=state.ticket,files=[...($('claimFiles')?.files||[])];
+ const type=$('claimIncidentType').value,location=$('claimIncidentLocation').value.trim(),time=$('claimIncidentTime').value,description=$('claimDescription').value.trim();
+ const eligible=!!(t&&t.cover&&ticketId===t.id);
+ if(!eligible){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى اختيار تذكرة صادرة تتضمن حماية حِمى.';return;}
+ if(!type||!location||!time||!description){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يرجى استكمال جميع بيانات الحادث المطلوبة قبل الإرسال.';return;}
+ if(files.some(f=>f.size>10*1024*1024)){msg.className='notice warn';msg.classList.remove('hide');msg.textContent='يوجد ملف يتجاوز الحد الأقصى المسموح به (10MB).';return;}
+ const incidentId='INC-HIMA-'+String(state.incidents.length+1).padStart(3,'0');
+ const incident={id:incidentId,type,location,description,time,event:t.event};state.incidents.push(incident);
+ const claim={id:'CLM-HIMA-'+String(state.claims.length+1).padStart(4,'0'),ticket:t.id,ticketEvent:t.event,ticketType:t.type,ticketDate:t.date,ticketLocation:t.location,coverPackage:t.coverPackage||'حماية حِمى',incident:incidentId,incidentType:type,incidentLocation:location,incidentTime:time,incidentDescription:description,docs:files.map(f=>({name:f.name,size:f.size,type:f.type,file:f,url:URL.createObjectURL(f)})),knownTicket:true,knownIncident:true,coverage:true,status:'قيد مراجعة شركة التأمين',reviewNote:'',submittedAt:new Date().toLocaleString('ar-SA'),decisionAt:null};
+ state.claims.push(claim);
+ msg.className='notice good';msg.classList.remove('hide');msg.innerHTML=`تم إرسال مطالبتك بنجاح. رقم المطالبة: <b>${escapeHtml(claim.id)}</b>. يمكنك متابعة قرار شركة التأمين من سجل «مطالباتي» أدناه.`;
+ $('claimDescription').value='';$('claimIncidentLocation').value='';$('claimIncidentType').value='';$('claimIncidentTime').value='';$('claimFiles').value='';renderClaimFileList();renderClaimLiveSummary();renderIncidents();renderClaims();renderClaimTicketOptions();
+ $('customerClaimsCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function statusClass(status){return status==='مقبولة'?'green':status==='مرفوضة'?'red':'amber'}
+function renderClaims(){
+ const el=$('claimsList');if(el){
+  const pending=state.claims.filter(c=>c.status==='قيد مراجعة شركة التأمين').length,accepted=state.claims.filter(c=>c.status==='مقبولة').length,rejected=state.claims.filter(c=>c.status==='مرفوضة').length;
+  const stats=$('claimInsurerStats');if(stats)stats.innerHTML=`<div class="claim-stat"><small>إجمالي المطالبات</small><b>${state.claims.length}</b></div><div class="claim-stat"><small>قيد المراجعة</small><b>${pending}</b></div><div class="claim-stat"><small>مقبولة</small><b>${accepted}</b></div><div class="claim-stat"><small>مرفوضة</small><b>${rejected}</b></div>`;
+  if(!state.claims.length){el.className='empty';el.textContent='لا توجد مطالبات واردة بعد. عند إرسال مطالبة من بوابة المستفيد ستظهر هنا للمراجعة.';}
+  else{el.className='claim-review-list';el.innerHTML=state.claims.map((c,i)=>`<article class="claim-review-card"><div class="claim-review-head"><div><small>رقم المطالبة</small><h3>${escapeHtml(c.id)}</h3></div><span class="pill ${statusClass(c.status)}">${escapeHtml(c.status)}</span></div><div class="claim-review-grid"><section><h4>بيانات العميل والتذكرة</h4><div class="claim-review-row"><span>العميل</span><b>المستخدم التجريبي</b></div><div class="claim-review-row"><span>رقم التذكرة</span><b>${escapeHtml(c.ticket)}</b></div><div class="claim-review-row"><span>الفعالية</span><b>${escapeHtml(c.ticketEvent)}</b></div><div class="claim-review-row"><span>باقة الحماية</span><b>${escapeHtml(c.coverPackage)}</b></div></section><section><h4>بيانات الحادث</h4><div class="claim-review-row"><span>رقم الحادث</span><b>${escapeHtml(c.incident)}</b></div><div class="claim-review-row"><span>نوع الحادث</span><b>${escapeHtml(c.incidentType)}</b></div><div class="claim-review-row"><span>الموقع</span><b>${escapeHtml(c.incidentLocation)}</b></div><div class="claim-review-row"><span>وقت الحادث</span><b>${escapeHtml(c.incidentTime)}</b></div></section></div><div class="claim-review-description"><h4>وصف الضرر</h4><p>${escapeHtml(c.incidentDescription)}</p></div><div class="claim-review-docs"><h4>المرفقات (${c.docs?.length||0})</h4>${c.docs?.length?c.docs.map(d=>`<a class="claim-file-chip claim-file-link" href="${escapeHtml(d.url||'#')}" target="_blank" rel="noopener">▤ ${escapeHtml(d.name)} <small>فتح الملف · ${(d.size/1024/1024).toFixed(2)} MB</small></a>`).join(''):'<span class="muted">لا توجد مرفقات</span>'}</div>${c.status==='قيد مراجعة شركة التأمين'?`<div class="claim-review-actions"><div class="field"><label for="claimNote${i}">ملاحظة المراجع (اختياري)</label><textarea id="claimNote${i}" placeholder="أضف ملاحظة للعميل عند الحاجة..."></textarea></div><div class="field"><label for="claimRejectReason${i}">سبب الرفض (إلزامي عند الرفض)</label><input id="claimRejectReason${i}" placeholder="يظهر للعميل في حال رفض المطالبة"></div><div class="claim-decision-buttons"><button class="btn claim-accept" onclick="updateClaim(${i},'مقبولة')">✓ قبول المطالبة</button><button class="btn claim-reject" onclick="updateClaim(${i},'مرفوضة')">✕ رفض المطالبة</button></div></div>`:`<div class="notice ${c.status==='مقبولة'?'good':'warn'}"><b>قرار شركة التأمين: ${escapeHtml(c.status)}</b>${c.reviewNote?`<p>${escapeHtml(c.reviewNote)}</p>`:''}${c.rejectionReason?`<p><b>سبب الرفض:</b> ${escapeHtml(c.rejectionReason)}</p>`:''}<small>${escapeHtml(c.decisionAt||'')}</small></div>`}</article>`).join('');}
+ }
+ const customer=$('customerClaimsList');if(customer){
+  if(!state.claims.length){customer.className='empty';customer.textContent='لا توجد مطالبات مرسلة حتى الآن.';}
+  else{customer.className='customer-claims-list';customer.innerHTML=state.claims.map(c=>`<article class="customer-claim-card"><div class="customer-claim-head"><div><small>رقم المطالبة</small><b>${escapeHtml(c.id)}</b></div><span class="pill ${statusClass(c.status)}">${escapeHtml(c.status)}</span></div><div class="customer-claim-info"><span>الفعالية: <b>${escapeHtml(c.ticketEvent)}</b></span><span>التذكرة: <b>${escapeHtml(c.ticket)}</b></span><span>الحادث: <b>${escapeHtml(c.incidentType)} — ${escapeHtml(c.incidentLocation)}</b></span><span>تاريخ الإرسال: <b>${escapeHtml(c.submittedAt)}</b></span></div><div class="claim-progress ${c.status==='قيد مراجعة شركة التأمين'?'pending':c.status==='مقبولة'?'accepted':'rejected'}"><span class="progress-node done">تم الإرسال</span><span class="progress-line"></span><span class="progress-node ${c.status==='قيد مراجعة شركة التأمين'?'current':c.status!=='قيد مراجعة شركة التأمين'?'done':''}">مراجعة شركة التأمين</span><span class="progress-line"></span><span class="progress-node ${c.status==='قيد مراجعة شركة التأمين'?'': 'current'}">قرار المطالبة</span></div>${c.status==='مرفوضة'?`<div class="notice warn"><b>سبب الرفض:</b> ${escapeHtml(c.rejectionReason||c.reviewNote||'يرجى مراجعة شركة التأمين للتفاصيل.')}</div>`:c.status==='مقبولة'?`<div class="notice good"><b>تم قبول المطالبة.</b> ${escapeHtml(c.reviewNote||'تم تحديث حالة مطالبتك من شركة التأمين.')}</div>`:`<div class="notice">مطالبتك لدى شركة التأمين للمراجعة. ستظهر نتيجة القرار هنا بعد اعتمادها.</div>`}</article>`).join('');}
+ }
+}
+function updateClaim(i,decision){
+ const claim=state.claims[i];if(!claim||claim.status!=='قيد مراجعة شركة التأمين')return;
+ const note=$('claimNote'+i)?.value.trim()||'';
+ const reason=$('claimRejectReason'+i)?.value.trim()||'';
+ if(decision==='مرفوضة'&&!reason){alert('يرجى كتابة سبب الرفض قبل اعتماد القرار.');return;}
+ claim.status=decision;claim.reviewNote=note;claim.rejectionReason=decision==='مرفوضة'?reason:'';claim.decisionAt=new Date().toLocaleString('ar-SA');
+ renderClaims();
+}
 function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
-$('incidentTime').value=new Date().toISOString().slice(0,16);updateTotal();
+function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();renderClaimTicketOptions();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
+if($('incidentTime'))$('incidentTime').value=new Date().toISOString().slice(0,16);
+['claimIncidentType','claimIncidentLocation','claimIncidentTime','claimDescription'].forEach(id=>$(id)?.addEventListener('input',renderClaimLiveSummary));
+updateTotal();
 
 
 const himaIcons={overview:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',events:'<svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 3v4m8-4v4M4 9h16"/></svg>',account:'<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',organizer:'<svg viewBox="0 0 24 24"><path d="M3 21h18M5 21V5l7-2v18M12 9h7v12M8 7h1m-1 4h1m-1 4h1m8-3h1m-1 4h1"/></svg>',booking:'<svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 0 0 0 4v2a2 2 0 0 0 0 4h16a2 2 0 0 0 0-4v-2a2 2 0 0 0 0-4H4Z"/><path d="M13 7v2m0 3v2m0 3v1"/></svg>',wallet:'<svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v16H6a3 3 0 0 1-3-3V6.5Z"/><path d="M3 8h17M16 13h4"/></svg>',incident:'<svg viewBox="0 0 24 24"><path d="M12 11a2 2 0 0 0-2 2c0 3-.5 5.5-1.5 7M12 7a6 6 0 0 0-6 6c0 2-.2 4-1 6M12 3a10 10 0 0 0-10 10m10-6a6 6 0 0 1 6 6c0 3-.4 5.3-1.3 7M12 11a2 2 0 0 1 2 2c0 2.7.3 4.6 1 6"/></svg>',insurer:'<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/></svg>'};
@@ -140,7 +213,7 @@ function showPage(id){
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
  document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
  if(id==='wallet')renderWallet();
- if(id==='incident'){renderIncidents();if(state.portal==='customer')renderClaims()}
+ if(id==='incident'){renderIncidents();if(state.portal==='customer'){renderClaimTicketOptions();renderClaims();}}
  if(id==='insurer')renderClaims();
  if(id==='events'){renderCategoryCards();renderEventCatalog()}
  openPortalNavState(id);
@@ -154,7 +227,7 @@ function issueTicket(){
  state.ticket={id:'TKT-HIMA-'+stamp,event:state.selectedEvent.name,type:$('ticketType').selectedOptions[0].text,base,cover,coverPackage:pack?pack.name:null,coverLevel:pack?pack.level:null,coverPrice:pack?pack.price:0,total:base+(pack?pack.price:0),date:state.selectedEvent.date,certificate:cover?'HIMA-CERT-DEMO-'+stamp:null,location:`${state.selectedEvent.region} — ${state.selectedEvent.city}`,venue:state.selectedEvent.venue};
  renderWallet();showPage('wallet');
 }
-function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
+function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();renderClaimTicketOptions();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
 // Initialize guided experience and region selectors.
 fillRegions($('filterRegion'));updateCityOptions();fillRegions($('organizerRegion'),false);if($('organizerRegion'))$('organizerRegion').value='الرياض';updateOrganizerCities();renderOrganizerEvents();renderCategoryCards();renderEventCatalog();
 // Extend icon set for the new primary navigation.

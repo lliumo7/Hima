@@ -197,32 +197,44 @@
 </section>
 
 <section class="page" id="incident">
- <div class="grid">
-  <div class="card span6" id="incidentEntryCard"><h3 data-ar="تسجيل واقعة — بصمة الحادث" data-en="Record incident — Incident fingerprint">تسجيل واقعة — بصمة الحادث</h3>
-   <div class="field"><label data-ar="نوع الواقعة" data-en="Incident type">نوع الواقعة</label><select id="incidentType"><option>سقوط حاجز</option><option>تدافع أو ازدحام</option><option>إصابة نتيجة تعثر</option><option>واقعة أخرى</option></select></div>
-   <div class="field"><label data-ar="الموقع داخل الفعالية" data-en="Incident location">الموقع داخل الفعالية</label><input id="incidentLocation" value="المدرج الشرقي"></div>
-   <div class="field"><label data-ar="وصف الواقعة" data-en="Incident description">وصف الواقعة</label><textarea id="incidentDescription">سقوط حاجز في المدرج الشرقي أثناء المباراة — مثال افتراضي.</textarea></div>
-   <div class="field"><label data-ar="وقت الواقعة" data-en="Incident time">وقت الواقعة</label><input id="incidentTime" type="datetime-local"></div>
-   <button class="btn" onclick="createIncident()" data-ar="إنشاء بصمة الحادث" data-en="Create incident fingerprint">إنشاء بصمة الحادث</button><div id="incidentMsg" class="notice hide"></div>
+ <div class="page-intro"><span class="pill">بوابة المستفيد</span><h2>تقديم مطالبة تأمينية</h2><p class="muted">اختر تذكرتك المؤمّن عليها، وسجّل تفاصيل الحادث وأرفق المستندات لإرسال المطالبة إلى شركة التأمين للمراجعة.</p></div>
+ <div class="grid claim-layout">
+  <div class="card span7 claim-form-card" id="claimSubmissionCard">
+   <div class="claim-section-title"><span class="claim-step">1</span><div><h3>اختر التذكرة المؤمّن عليها</h3><p class="muted">تظهر هنا التذاكر الصادرة التي تتضمن حماية حِمى.</p></div></div>
+   <div class="field"><label for="claimTicket">التذكرة</label><select id="claimTicket" required onchange="renderClaimTicketSummary()"><option value="">اختر التذكرة</option></select></div>
+   <div id="claimTicketSummary" class="claim-ticket-summary notice">ستظهر تفاصيل التذكرة المختارة هنا.</div>
+   <div class="claim-section-title"><span class="claim-step">2</span><div><h3>بيانات الحادث</h3><p class="muted">أدخل المعلومات الأساسية عن الواقعة التي تعرضت لها.</p></div></div>
+   <div class="grid claim-fields-grid">
+    <div class="field span4"><label for="claimIncidentType">نوع الحادث *</label><select id="claimIncidentType" required><option value="">اختر نوع الحادث</option><option>سقوط حاجز</option><option>تدافع أو ازدحام</option><option>إصابة نتيجة تعثر</option><option>إصابة شخصية أخرى</option><option>حادث آخر</option></select></div>
+    <div class="field span4"><label for="claimIncidentLocation">مكان وقوع الحادث *</label><input id="claimIncidentLocation" placeholder="مثال: المدرج الشرقي" required></div>
+    <div class="field span4"><label for="claimIncidentTime">تاريخ ووقت الحادث *</label><input id="claimIncidentTime" type="datetime-local" required></div>
+   </div>
+   <div class="field"><label for="claimDescription">وصف تفصيلي للحادث والضرر *</label><textarea id="claimDescription" placeholder="اشرح ما حدث، ونوع الإصابة أو الضرر الذي تعرضت له..." required></textarea></div>
+   <div class="claim-section-title"><span class="claim-step">3</span><div><h3>المرفقات</h3><p class="muted">أرفق الصور أو التقارير الطبية أو أي مستندات تدعم المطالبة.</p></div></div>
+   <label class="claim-upload" for="claimFiles"><span class="upload-symbol">⇧</span><b>إرفاق الملفات</b><span>اختر الصور أو المستندات من جهازك</span><small>الصيغ المدعومة: JPG, PNG, PDF — بحد أقصى 10MB لكل ملف</small><input id="claimFiles" type="file" accept="image/png,image/jpeg,application/pdf" multiple onchange="renderClaimFileList()"></label>
+   <div id="claimFileList" class="claim-file-list"></div>
+   <div class="notice warn claim-demo-note">إرسال المطالبة لا يعني قبولها تلقائيًا. ستراجع شركة التأمين البيانات والمرفقات وتتخذ قرارها.</div>
+   <button class="btn claim-submit-btn" onclick="submitClaim()">تأكيد إرسال المطالبة <span aria-hidden="true">←</span></button>
+   <div id="claimMsg" class="notice hide" aria-live="polite"></div>
   </div>
-  <div class="card span6" id="claimSubmissionCard"><h3 data-ar="تقديم مطالبة الحاضر" data-en="Submit attendee claim">تقديم مطالبة الحاضر</h3>
-   <div class="field"><label data-ar="رقم التذكرة" data-en="Ticket number">رقم التذكرة</label><input id="claimTicket" placeholder="TKT-HIMA-0001"></div>
-   <div class="field"><label data-ar="رقم بصمة الحادث" data-en="Incident fingerprint ID">رقم بصمة الحادث</label><input id="claimIncident" placeholder="INC-HIMA-001"></div>
-   <div class="field"><label data-ar="وصف الضرر أو الإصابة" data-en="Injury or loss description">وصف الضرر أو الإصابة</label><textarea id="claimDescription" placeholder="اكتب وصفًا مختصرًا..."></textarea></div>
-   <div class="field"><label data-ar="مرجع المستندات (محاكاة)" data-en="Document reference (simulation)">مرجع المستندات (محاكاة)</label><input id="claimDocs" placeholder="مثال: MED-REPORT-DEMO"></div>
-   <button class="btn" onclick="submitClaim()" data-ar="إرسال المطالبة للمراجعة" data-en="Send claim for review">إرسال المطالبة للمراجعة</button><div id="claimMsg" class="notice hide"></div>
-  </div>
-  <div class="card span12" id="incidentRegister"><h3 data-ar="سجل بصمات الحوادث" data-en="Incident fingerprint register">سجل بصمات الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
+  <aside class="card span5 claim-side-card">
+   <h3>ملخص المطالبة</h3>
+   <div id="claimLiveSummary" class="claim-summary-empty">أكمِل بيانات الحادث لتظهر تفاصيل مطالبتك هنا.</div>
+   <div class="claim-status-guide"><h3>ماذا يحدث بعد الإرسال؟</h3><div class="claim-mini-step"><span class="mini-step-dot active">1</span><div><b>تم إرسال المطالبة</b><small>يتم تسجيل طلبك وإعطاؤه رقمًا خاصًا.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">2</span><div><b>مراجعة شركة التأمين</b><small>تتم مراجعة تفاصيل الحادث والمستندات.</small></div></div><div class="claim-mini-step"><span class="mini-step-dot">3</span><div><b>صدور القرار</b><small>يظهر لك القبول أو الرفض مع توضيح القرار.</small></div></div></div>
+   <div class="notice">يمكنك متابعة حالة المطالبة وقرار شركة التأمين من قسم «مطالباتي» في هذه الصفحة.</div>
+  </aside>
+  <div class="card span12" id="customerClaimsCard"><div class="row"><h3>مطالباتي</h3><span class="pill">سجل الطلبات</span></div><div id="customerClaimsList" class="empty">لا توجد مطالبات مرسلة حتى الآن.</div></div>
+  <div class="card span12" id="incidentRegister"><h3 data-ar="سجل الحوادث" data-en="Incident register">سجل الحوادث</h3><div id="incidentList" class="empty">لا توجد حوادث مسجلة.</div></div>
  </div>
 </section>
 
 <section class="page" id="insurer">
- <div class="grid">
-  <div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="لوحة شركة التأمين — مراجعة المطالبات" data-en="Insurer dashboard — claim review">لوحة شركة التأمين — مراجعة المطالبات</h3><span class="pill amber" data-ar="محاكاة مراجعة بشرية" data-en="Human review simulation">محاكاة مراجعة بشرية</span></div><div id="claimsList" class="empty">لا توجد مطالبات واردة بعد.</div></div>
-  <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي." data-en="The platform presents ticket, incident, coverage and document references to support review. It does not automatically approve, reject or pay claims.">تعرض المنصة مراجع التذكرة والواقعة والتغطية والمستندات لتسهيل المراجعة. لا يصدر النظام قرار قبول أو رفض أو تعويض آلي.</p></div>
+ <div class="page-intro"><span class="pill">بوابة شركة التأمين</span><h2>إدارة ومراجعة المطالبات</h2><p class="muted">راجع بيانات العميل والتذكرة والحادث والمرفقات، ثم سجّل قرار شركة التأمين.</p></div>
+ <div class="claim-insurer-stats" id="claimInsurerStats"></div>
+ <div class="grid"><div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="المطالبات الواردة" data-en="Incoming claims">المطالبات الواردة</h3><span class="pill amber">مراجعة بشرية</span></div><div id="claimsList" class="claim-review-list empty">لا توجد مطالبات واردة بعد.</div></div>
+  <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا." data-en="Acceptance or rejection is decided by an insurer reviewer after examining incident details and documents. The system does not make automated decisions.">قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا.</p></div>
  </div>
 </section>
-
 
 <section class="page" id="insurerPolicies">
  <div class="page-intro"><span class="pill">بوابة شركة التأمين</span><h2 data-ar="الوثائق والتغطيات" data-en="Policies & coverage">الوثائق والتغطيات</h2><p class="muted" data-ar="عرض تجريبي للوثائق والتغطيات المرتبطة بالفعاليات." data-en="Illustrative view of event-related policies and coverage.">عرض تجريبي للوثائق والتغطيات المرتبطة بالفعاليات.</p></div>
