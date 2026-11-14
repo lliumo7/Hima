@@ -35,6 +35,7 @@
     xCircle: '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6m0-6-6 6"/>',
     clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     infoCircle: '<circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/>',
+    plusCircle: '<circle cx="12" cy="12" r="9"/><path d="M12 8v8m-4-4h8"/>',
   };
 
   const navIcons = {
