@@ -278,6 +278,17 @@ body:not(.portal-active) #portalChip{display:none!important}
  .actions{gap:5px;flex-wrap:nowrap}
  .actions .btn{padding:8px 9px;font-size:11px}
  .portal-chip{display:none!important}
+  body.portal-active .top{
+   display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-areas:"menu brand" "actions actions";
+   align-items:center;gap:8px
+  }
+  body.portal-active .menu-trigger{grid-area:menu}
+  body.portal-active .brand{grid-area:brand;min-width:0}
+  body.portal-active .actions{
+   grid-area:actions;width:100%;min-width:0;justify-content:center;flex-wrap:wrap
+  }
+  body.portal-active .actions .btn{white-space:nowrap}
+  body.portal-active .actions #portalChip{display:none!important}
  .drawer-panel{width:min(420px,92vw);padding:14px 13px calc(20px + env(safe-area-inset-bottom));border-radius:19px 0 0 19px}
  .drawer-head{top:-14px;padding-top:14px}
  .drawer-link{padding:10px 8px}
@@ -993,3 +1004,32 @@ body.portal-insurer #incidentEntryCard,body.portal-insurer #incidentRegister{dis
 .request-coverage{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
 .request-coverage span{font-size:11px;padding:5px 9px;border-radius:20px;background:#f2ecfa;color:#573482}
 @media(max-width:700px){.organizer-overview-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.coverage-options,.check-grid,.request-meta{grid-template-columns:1fr}.request-card-head{flex-direction:column}}
+
+/* Unified HIMA line-icon system */
+.hima-icon{display:block;width:20px;height:20px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hima-icon--directional{transition:transform .18s ease}
+html[dir="ltr"] .hima-icon--directional{transform:scaleX(-1)}
+.nav-icon .hima-icon{width:18px;height:18px}
+.drawer-icon .hima-icon{width:20px;height:20px}
+.link-arrow .hima-icon{width:14px;height:14px}
+.menu-trigger .hima-icon,.drawer-close .hima-icon{width:20px;height:20px}
+.hero-float .hima-icon{width:21px;height:21px}
+.role-icon .hima-icon{width:28px;height:28px}
+.role-action .hima-icon{width:17px;height:17px}
+.gateway-benefits>div>span .hima-icon{width:23px;height:23px;margin:auto}
+.bottom-link>span .hima-icon{width:21px;height:21px}
+.shortcut-icon .hima-icon{width:23px;height:23px}
+.account-links button>span .hima-icon{width:16px;height:16px}
+.cover-shield .hima-icon{width:25px;height:25px}
+.payment-method-icon .hima-icon{width:24px;height:24px}
+.upload-symbol .hima-icon{width:21px;height:21px}
+.event-meta-icon .hima-icon{width:16px;height:16px}
+.claim-file-chip>[data-hima-icon]{display:inline-flex;align-items:center}
+.claim-file-chip .hima-icon{width:16px;height:16px;color:var(--purple)}
+.btn .hima-icon{width:17px;height:17px}
+.btn .hima-icon--directional{width:15px;height:15px}
+.exit-btn .hima-icon{width:12px;height:12px}
+.hima-status-icon{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;flex:0 0 14px}
+.hima-status-icon .hima-icon{width:14px;height:14px}
+.hima-notice-icon{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-inline-end:7px;vertical-align:-3px}
+.hima-notice-icon .hima-icon{width:16px;height:16px}
