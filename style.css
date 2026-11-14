@@ -1058,3 +1058,7 @@ html[dir="ltr"] .hima-icon--directional{transform:scaleX(-1)}
 #wfInsReports .statbox{min-width:0}
 @media(max-width:850px){.role-services{grid-template-columns:repeat(2,minmax(0,1fr))}.role-welcome{padding:22px}}
 @media(max-width:560px){.role-services{grid-template-columns:1fr}.role-service-card{min-height:150px}.role-welcome{padding:18px}.hima-work-page .request-actions .btn{width:100%}}
+
+/* Improve contrast for role welcome banners */
+.role-welcome .welcome-title{color:#fff !important}
+.role-welcome h2{color:#fff !important}
