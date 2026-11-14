@@ -15,10 +15,17 @@ function updateOrganizerDashboard(){
  $('orgRequestCount').textContent=req.length;
  $('orgPendingCount').textContent=req.filter(x=>x.status==='قيد المراجعة').length;
  $('orgPolicyCount').textContent=pol.length;
+ if($('orgHomeEventCount'))$('orgHomeEventCount').textContent=req.length?new Set(req.map(x=>x.eventName)).size:'0';
+ if($('orgHomePendingCount'))$('orgHomePendingCount').textContent=req.filter(x=>x.status==='قيد المراجعة').length;
+ if($('orgHomePolicyCount'))$('orgHomePolicyCount').textContent=pol.length;
  const list=$('organizerRequests');
  if(list){if(!req.length){list.className='request-list empty';list.textContent='لم ترسل طلبات بعد.'}
  else{list.className='request-list';list.innerHTML=req.slice().reverse().map(r=>`<article class="request-card"><div class="request-card-head"><div><h4>${escapeHtml(r.eventName)}</h4><small>${escapeHtml(r.id)} · ${escapeHtml(r.date)}</small></div><span class="pill ${organizerStatusClass(r.status)}">${escapeHtml(r.status)}</span></div><div class="request-details">المدينة: ${escapeHtml(r.city)} · الحضور المتوقع: ${Number(r.attendance).toLocaleString('ar-SA')}<br>${r.status==='مرفوض'?'سبب الرفض: '+escapeHtml(r.decisionNote||'غير محدد'):r.status==='مقبول'?'رقم الوثيقة: '+escapeHtml(r.policyNo||'بانتظار الإصدار'):'بانتظار مراجعة شركة التأمين'}</div></article>`).join('')}}
+ const mirror=$('organizerRequestsPageList');if(mirror){if(!req.length){mirror.className='request-list empty';mirror.textContent='لم ترسل طلبات بعد.'}else{mirror.className='request-list';mirror.innerHTML=list?.innerHTML||''}}
+ const policyList=$('organizerPoliciesPageList');if(policyList){if(!pol.length){policyList.className='request-list empty';policyList.textContent='لا توجد وثائق صادرة بعد.'}else{policyList.className='request-list';policyList.innerHTML=pol.slice().reverse().map(x=>`<article class="request-card"><div class="request-card-head"><div><h4>${escapeHtml(x.eventName)}</h4><small>${escapeHtml(x.policyNo)} · ${escapeHtml(x.requestId)}</small></div><span class="pill green">${escapeHtml(x.status||'وثيقة تجريبية')}</span></div><div class="request-details">التغطيات: ${escapeHtml(x.coverage)}<br>القسط المقترح: ${Number(x.premium||0).toLocaleString('ar-SA')} ر.س</div></article>`).join('')}}
 }
+function updateInsurerHome(){const req=state.eventInsuranceRequests||[],pol=state.eventPolicies||[];if($('insHomeRequestCount'))$('insHomeRequestCount').textContent=req.length;if($('insHomePendingCount'))$('insHomePendingCount').textContent=req.filter(x=>x.status==='قيد المراجعة').length;if($('insHomePolicyCount'))$('insHomePolicyCount').textContent=pol.length}
+
 function submitOrganizerRequest(){
  const name=$('orgEventName').value.trim(),region=$('organizerRegion').value,city=$('organizerCity').value;
  const capacity=+$('capacity').value,attendance=+$('attendance').value;
@@ -36,7 +43,7 @@ function submitOrganizerRequest(){
 function renderEventUnderwriting(){
  const list=$('eventUnderwritingList'),stats=$('eventUnderwritingStats');if(!list)return;
  const req=state.eventInsuranceRequests||[];
- if(stats){stats.innerHTML=`<div class="statbox"><div class="statlabel">إجمالي الطلبات</div><div class="stat">${req.length}</div></div><div class="statbox"><div class="statlabel">قيد المراجعة</div><div class="stat">${req.filter(x=>x.status==='قيد المراجعة').length}</div></div><div class="statbox"><div class="statlabel">تم البت فيها</div><div class="stat">${req.filter(x=>x.status!=='قيد المراجعة').length}</div></div>`}
+ updateInsurerHome();if(stats){stats.innerHTML=`<div class="statbox"><div class="statlabel">إجمالي الطلبات</div><div class="stat">${req.length}</div></div><div class="statbox"><div class="statlabel">قيد المراجعة</div><div class="stat">${req.filter(x=>x.status==='قيد المراجعة').length}</div></div><div class="statbox"><div class="statlabel">تم البت فيها</div><div class="stat">${req.filter(x=>x.status!=='قيد المراجعة').length}</div></div>`}
  if(!req.length){list.className='request-list empty';list.textContent='لا توجد طلبات تأمين فعاليات واردة. أرسل طلبًا من بوابة المنظم لتظهر تفاصيله هنا.';return}
  list.className='request-list';
  list.innerHTML=req.slice().reverse().map((r)=>`<article class="request-card"><div class="request-card-head"><div><small>طلب تأمين فعالية · ${escapeHtml(r.id)}</small><h4>${escapeHtml(r.eventName)}</h4><small>${escapeHtml(r.type)} · ${escapeHtml(r.city)}، ${escapeHtml(r.region)}</small></div><span class="pill ${organizerStatusClass(r.status)}">${escapeHtml(r.status)}</span></div><div class="request-meta"><div><small>تاريخ الفعالية</small><b>${escapeHtml(r.date)}</b></div><div><small>الحضور / السعة</small><b>${Number(r.attendance).toLocaleString('ar-SA')} / ${Number(r.capacity).toLocaleString('ar-SA')}</b></div><div><small>مؤشر المخاطر التوضيحي</small><b>${r.risk}/100</b></div><div><small>جاهزية السلامة</small><b>${escapeHtml(r.safety)}</b></div><div><small>الإسعافات</small><b>${r.medical?'متوفرة':'غير مؤكدة'}</b></div><div><small>الطوارئ والأمن</small><b>${r.emergency?'خطة طوارئ':'غير مؤكدة'} · ${r.security?'أمن':'غير مؤكد'}</b></div></div><div class="request-coverage">${r.coverages.map(c=>`<span>${escapeHtml(c)}</span>`).join('')}</div><div class="request-details">الوصف: ${escapeHtml(r.description||'لم يضف وصف')}<br>ملاحظات المنظم: ${escapeHtml(r.notes||'لا توجد')}<br><b>تنبيه:</b> المؤشر توضيحي ولا يغني عن الاكتتاب أو التحقق من المستندات.</div>${r.status==='قيد المراجعة'?`<div class="field"><label>القسط المقترح (ريال سعودي)</label><input type="number" min="0" id="eventPremium_${r.id}" placeholder="أدخل القسط المقترح"></div><div class="field"><label>ملاحظات / شروط القرار</label><textarea id="eventDecision_${r.id}" rows="2" placeholder="اكتب الشروط أو سبب الرفض"></textarea></div><div class="request-actions"><button class="btn" onclick="decideEventInsurance('${r.id}','مقبول')">قبول الطلب وإصدار وثيقة تجريبية</button><button class="btn secondary" onclick="decideEventInsurance('${r.id}','مرفوض')">رفض الطلب</button></div>`:`<div class="request-details"><b>قرار المراجع:</b> ${escapeHtml(r.decisionNote||'لا توجد ملاحظات')} ${r.premium!==undefined?' · القسط المقترح: '+r.premium+' ر.س':''} ${r.policyNo?' · الوثيقة: '+escapeHtml(r.policyNo):''}</div>`}</article>`).join('');
@@ -49,7 +56,7 @@ function decideEventInsurance(id,decision){
  if(decision==='مرفوض'&&!note){alert('اكتب سبب رفض الطلب حتى يظهر للمنظم.');return}
  r.status=decision;r.decisionNote=note;r.premium=decision==='مقبول'?Number(premium):null;r.reviewedAt=new Date().toLocaleString('ar-SA');
  if(decision==='مقبول'){r.policyNo='HIMA-EVT-POL-'+String(state.eventPolicies.length+1).padStart(4,'0');state.eventPolicies.push({policyNo:r.policyNo,requestId:r.id,eventName:r.eventName,coverage:r.coverages.join('، '),premium:r.premium,status:'وثيقة تجريبية'});}
- renderEventUnderwriting();updateOrganizerDashboard();renderEventPolicies();
+ renderEventUnderwriting();updateInsurerHome();updateOrganizerDashboard();renderEventPolicies();
 }
 
 
@@ -238,7 +245,7 @@ function enterPortal(role){
  const labels={customer:'بوابة المستفيد',organizer:'بوابة منظم الفعالية',insurer:'بوابة شركة التأمين'};
  $('portalChip').textContent=labels[role]||'';
  if($('drawerSubtitle'))$('drawerSubtitle').textContent=labels[role]||'';
- const first={customer:'overview',organizer:'organizer',insurer:'insurer'}[role]||'overview';
+ const first={customer:'overview',organizer:'organizerHome',insurer:'insurerHome'}[role]||'overview';
  showPage(first);
  openPortalNavState(first);
 }
@@ -259,8 +266,8 @@ function showPage(id){
  const target=$(id);if(!target)return;
  const allowed={
   customer:['overview','events','booking','payment','wallet','incident','account'],
-  organizer:['organizer','incident','account'],
-  insurer:['insurer','insurerPolicies','incident','account']
+  organizer:['organizerHome','organizer','organizerRequestsPage','organizerPoliciesPage','incident','account'],
+  insurer:['insurerHome','insurer','insurerPolicies','insurerClaims','incident','account']
  };
  if(state.portal && !allowed[state.portal]?.includes(id))return;
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));
@@ -268,7 +275,11 @@ function showPage(id){
  if(id==='wallet')renderWallet();
  if(id==='payment')renderPaymentSummary();
  if(id==='incident'){renderIncidents();if(state.portal==='customer'){renderClaimTicketOptions();renderClaims();}}
- if(id==='insurer')renderClaims();
+ if(id==='insurer'){renderEventUnderwriting();renderEventPolicies()}
+ if(id==='insurerClaims')renderClaims();
+ if(id==='organizerHome'||id==='organizer'||id==='organizerRequestsPage'||id==='organizerPoliciesPage')updateOrganizerDashboard();
+ if(id==='insurerHome')updateInsurerHome();
+ if(id==='insurerPolicies')renderEventPolicies();
  if(id==='events'){renderCategoryCards();renderEventCatalog()}
  openPortalNavState(id);
  window.scrollTo({top:0,behavior:'smooth'});
@@ -330,3 +341,6 @@ closeDrawer();document.body.classList.remove('portal-active','portal-customer','
 window.goToPayment=goToPayment;
 
 
+
+// Refresh portal dashboard summaries from the current in-session demo state.
+document.addEventListener('DOMContentLoaded',()=>{try{updateOrganizerDashboard();updateInsurerHome()}catch(e){}});
