@@ -1257,3 +1257,61 @@ body { overflow-x: hidden; overflow-y: auto; }
 
 /* Organizer insurance request form clarity */
 .request-page-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;direction:rtl}.request-back-btn{white-space:nowrap}.ticket-sales-panel{margin:16px 0;padding:16px;border:1px solid #e6d9f2;border-radius:16px;background:linear-gradient(135deg,#fbf8ff,#fff)}.ticket-sales-panel h4{margin:0 0 12px;color:#54258b}.ticket-sales-panel input[readonly]{background:#f5f1fa;color:#4c2677;font-weight:800}.ticket-attendance-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;margin:8px 0;border-radius:12px;background:#f0e8fa;color:#4a2670}.ticket-attendance-summary strong{font-size:20px;color:#54258b}@media(max-width:600px){.request-page-toolbar{align-items:stretch;flex-direction:column}.ticket-attendance-summary{align-items:flex-start;flex-direction:column}}
+
+/* HIMA insurer portal redesign: dedicated operations workspace */
+body.insurer-mode .menu-trigger{display:none!important}
+.insurer-page{max-width:none!important;padding:0!important}
+.insurer-layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:22px;align-items:start;direction:rtl}
+.insurer-sidebar{background:linear-gradient(180deg,#171936 0%,#21164a 55%,#171936 100%);color:#fff;border-radius:22px;padding:22px 16px;min-height:calc(100vh - 125px);display:flex;flex-direction:column;position:sticky;top:18px;box-shadow:0 18px 45px #21164a22}
+.insurer-side-brand{display:flex;align-items:center;gap:12px;padding:4px 4px 22px;border-bottom:1px solid #ffffff24}
+.insurer-shield{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,#9b76e6,#5930a1);display:grid;place-items:center;font-size:29px;font-weight:800;box-shadow:0 8px 20px #09091e66}
+.insurer-side-brand b{display:block;font-size:19px}.insurer-side-brand small{display:block;color:#c7bddf;margin-top:4px}
+.insurer-side-caption{font-size:11px;color:#9e91c4;margin:22px 10px 10px}
+.insurer-side-link{border:0;background:transparent;color:#e8e2f4;padding:13px 12px;border-radius:12px;text-align:right;font:inherit;font-size:13px;font-weight:650;display:flex;align-items:center;gap:12px;cursor:pointer;margin:3px 0;transition:.2s}
+.insurer-side-link span{width:28px;height:28px;border-radius:9px;background:#ffffff12;display:grid;place-items:center;font-size:18px}
+.insurer-side-link:hover,.insurer-side-link.active{background:linear-gradient(90deg,#6940aa,#8657c7);color:#fff}
+.insurer-side-bottom{margin-top:auto;border-top:1px solid #ffffff24;padding:20px 8px 0;color:#bdb2d8;font-size:11px}
+.insurer-side-bottom button{display:block;margin-top:13px;background:#ffffff12;color:#fff;border:1px solid #ffffff24;padding:10px 13px;border-radius:10px;width:100%;font:inherit;cursor:pointer}
+.insurer-main{min-width:0}
+.insurer-topline{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin:4px 0 20px}
+.insurer-eyebrow{color:#8053bb;font-size:10px;letter-spacing:2px;font-weight:800}
+.insurer-topline h2{font-size:26px;margin:7px 0 5px;color:#21183d}
+.insurer-topline p{color:#827792;margin:0;font-size:13px}
+.insurer-top-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.insurer-live-dot{font-size:11px;color:#27845c;background:#e9f7ef;border:1px solid #ccebd8;padding:9px 12px;border-radius:30px}
+.insurer-hero{position:relative;overflow:hidden;border-radius:22px;min-height:208px;padding:30px 34px;color:white;background:linear-gradient(90deg,#20143e 0%,#37205f 48%,#211a47 100%);display:flex;align-items:center;justify-content:space-between;gap:20px;box-shadow:0 16px 35px #30205224}
+.insurer-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#21143b18 0%,#25174635 36%,#21143b 72%),url("assets/insurer/riyadh-skyline.jpg") left center/auto 100% no-repeat;opacity:.9}
+.insurer-hero:after{content:"";position:absolute;width:420px;height:420px;border:1px solid #ffffff20;border-radius:50%;right:-110px;top:-250px;box-shadow:0 0 0 35px #ffffff08,0 0 0 75px #ffffff06}
+.insurer-hero-copy,.insurer-hero-art{position:relative;z-index:1}
+.insurer-hero-copy{max-width:620px}.insurer-hero-tag{font-size:10px;letter-spacing:2px;color:#d5c5f7;font-weight:800}
+.insurer-hero h1{font-size:29px;line-height:1.45;margin:12px 0 7px;color:#fff}
+.insurer-hero p{font-size:13px;color:#e3d9f2;margin:0;max-width:560px}
+.insurer-hero-art{width:160px;height:145px;display:grid;place-items:center;flex-shrink:0}
+.insurer-big-shield{width:94px;height:110px;clip-path:polygon(50% 0,95% 17%,88% 69%,50% 100%,12% 69%,5% 17%);background:linear-gradient(145deg,#c6a7ff,#7042b5 65%,#3d286d);border:2px solid #ffffff80;display:grid;place-items:center;font-size:48px;color:#fff;text-shadow:0 4px 15px #29134d;filter:drop-shadow(0 12px 18px #0b082b)}
+.insurer-orbit{position:absolute;border:1px solid #ffffff30;border-radius:50%;width:135px;height:135px}.orbit-two{width:165px;height:165px;border-color:#ffffff18}
+.insurer-hero-caption{position:absolute;bottom:-8px;font-size:8px;letter-spacing:2px;color:#c8b4e8}
+.insurer-section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:25px 0 13px}
+.insurer-section-head span{font-size:9px;letter-spacing:1.8px;color:#9568c9;font-weight:800}
+.insurer-section-head h3{margin:4px 0 0;font-size:18px;color:#281d43}
+.insurer-section-head small{font-size:11px;color:#91869f}
+.insurer-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.insurer-kpi{position:relative;text-align:right;border:1px solid #e8def4;background:#fff;border-radius:16px;padding:16px;min-width:0;box-shadow:0 7px 20px #32205209;cursor:pointer;font:inherit;transition:.2s}
+.insurer-kpi:hover,.insurer-work-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px #32205216}
+.insurer-kpi .kpi-icon{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;font-size:19px;margin-bottom:12px}
+.insurer-kpi small{display:block;color:#80758e;font-size:11px}.insurer-kpi b{display:block;font-size:28px;color:#251941;margin:3px 0}.insurer-kpi em{font-style:normal;color:#9a90a4;font-size:10px}
+.kpi-purple .kpi-icon{background:#f0e7ff;color:#7540b3}.kpi-amber .kpi-icon{background:#fff3d8;color:#aa791e}.kpi-green .kpi-icon{background:#e2f5e9;color:#36855a}.kpi-blue .kpi-icon{background:#e4efff;color:#4774bd}
+.insurer-workspace-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.insurer-work-card{border:1px solid #e8def4;background:#fff;border-radius:17px;padding:18px;text-align:right;min-height:160px;display:flex;flex-direction:column;align-items:flex-start;cursor:pointer;font:inherit;box-shadow:0 7px 20px #32205209;transition:.2s}
+.insurer-work-card .work-icon{width:39px;height:39px;border-radius:12px;background:#f0e7fb;color:#6838a5;display:grid;place-items:center;font-size:21px;margin-bottom:12px}
+.insurer-work-card b{font-size:14px;color:#2b2044}.insurer-work-card small{font-size:11px;line-height:1.8;color:#887d96;margin-top:5px;min-height:38px}
+.insurer-work-card strong{font-size:11px;color:#7041ad;margin-top:auto;padding-top:10px}
+.insurer-detail-heading{margin-top:30px}
+.insurer-original-card,.insurer-original-grid .card{border:1px solid #e8def4;box-shadow:0 8px 22px #3020520a;border-radius:17px}
+.insurer-anchor{height:1px;scroll-margin-top:20px}
+.insurer-page .insurer-original-card,.insurer-page .insurer-original-grid{scroll-margin-top:18px}
+@media(max-width:1050px){.insurer-layout{grid-template-columns:205px minmax(0,1fr);gap:14px}.insurer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.insurer-workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.insurer-layout{grid-template-columns:1fr}.insurer-sidebar{position:relative;top:auto;min-height:0;padding:14px;border-radius:16px}.insurer-side-brand{padding-bottom:12px}.insurer-side-caption,.insurer-side-bottom{display:none}.insurer-sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.insurer-side-brand{grid-column:1/-1}.insurer-side-link{font-size:11px;padding:9px 8px}.insurer-side-link span{width:23px;height:23px}.insurer-topline{display:block}.insurer-top-actions{margin-top:12px}.insurer-hero{min-height:190px;padding:22px}.insurer-hero h1{font-size:23px}.insurer-hero-art{width:90px}.insurer-big-shield{width:70px;height:84px;font-size:34px}.insurer-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.insurer-workspace-grid{grid-template-columns:1fr 1fr}.insurer-work-card{padding:13px;min-height:155px}.insurer-section-head small{display:none}}
+@media(max-width:430px){.insurer-workspace-grid{grid-template-columns:1fr}.insurer-kpi{padding:12px}}
+
+.insurer-report-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.insurer-report-metrics>div{padding:16px;border-radius:13px;background:#f8f4fc}.insurer-report-metrics small{display:block;color:#81768e}.insurer-report-metrics b{display:block;font-size:24px;color:#39205e;margin-top:6px}
+@media(max-width:600px){.insurer-report-metrics{grid-template-columns:1fr}}
