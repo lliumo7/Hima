@@ -26,3 +26,10 @@
 
 ## حدود النسخة التجريبية
 هذه تجربة Front-end وليست نظامًا متعدد المستخدمين متصلًا بخادم. البيانات المشتركة بين البوابات تعمل على المتصفح نفسه، ولا تتزامن تلقائيًا بين أجهزة مختلفة أو مستخدمين مختلفين. لا يوجد دفع فعلي أو تكامل مع شركة تأمين، والوثائق والقرارات ومؤشر المخاطر تجريبية فقط. لا تمثل أي وثيقة تغطية تأمينية فعلية.
+
+
+## Continuity and navigation update
+- Added `hima-persistence.js` to preserve the active portal, current page, key workflow records, language, and in-progress form values across refreshes using browser local storage.
+- The active portal/page is restored after the workflow pages are initialized.
+- Added clearer role dashboard cards and a stronger purple welcome banner for organizer and insurer portals.
+- This is a browser-local prototype persistence layer; it does not synchronize data across different devices or browsers.
