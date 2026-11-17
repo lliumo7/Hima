@@ -18,7 +18,7 @@
     try{
       if(typeof state==='undefined') return;
       const active=document.querySelector('.page.active');
-      const data={version:1,portal:state.portal||null,page:active?.id||null,lang:state.lang||'ar',ticket:state.ticket??null,pendingBooking:state.pendingBooking??null,incidents:state.incidents||[],claims:state.claims||[],risk:state.risk||0,eventInsuranceRequests:state.eventInsuranceRequests||[],eventPolicies:state.eventPolicies||[],forms:formSnapshot(),savedAt:Date.now()};
+      const data={version:1,portal:state.portal||null,page:active?.id||null,lang:state.lang||'ar',ticket:state.ticket??null,tickets:state.tickets||[],pendingBooking:state.pendingBooking??null,incidents:state.incidents||[],claims:state.claims||[],risk:state.risk||0,eventInsuranceRequests:state.eventInsuranceRequests||[],eventPolicies:state.eventPolicies||[],forms:formSnapshot(),savedAt:Date.now()};
       localStorage.setItem(KEY,JSON.stringify(data));
       try{history.replaceState({...history.state,hima:{portal:data.portal,page:data.page}},'',location.pathname+location.search+'#'+(data.portal||'gateway')+'/'+(data.page||''))}catch(_){ }
     }catch(e){console.warn('HIMA continuity save failed',e)}
@@ -47,7 +47,7 @@
     const saved=read();if(!saved||saved.version!==1)return;
     try{
       const savedLang=saved.lang||state.lang;
-      state.ticket=saved.ticket??null;state.pendingBooking=saved.pendingBooking??null;
+      state.ticket=saved.ticket??null;state.tickets=Array.isArray(saved.tickets)?saved.tickets:(saved.ticket?[saved.ticket]:[]);state.pendingBooking=saved.pendingBooking??null;
       state.incidents=saved.incidents||[];state.claims=saved.claims||[];state.risk=saved.risk||0;
       state.eventInsuranceRequests=saved.eventInsuranceRequests||[];state.eventPolicies=saved.eventPolicies||[];
       // Keep workflow-owned records in sync with its own storage keys.

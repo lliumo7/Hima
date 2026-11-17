@@ -1145,3 +1145,7 @@ body { overflow-x: hidden; overflow-y: auto; }
   #events .event-art { height: 145px !important; min-height: 145px !important; }
   #events .event-art > .event-category-label { max-width: calc(100% - 24px) !important; }
 }
+
+/* Organizer event category badge: compact like attendee event cards. */
+#organizerEvents .event-art .event-category-label{font-size:12px!important;line-height:1.35!important;padding:6px 10px!important;border-radius:999px!important;max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600!important;top:12px!important;inset-inline-start:12px!important}
+@media(max-width:600px){#organizerEvents .event-art .event-category-label{font-size:10px!important;padding:5px 8px!important;top:8px!important;inset-inline-start:8px!important}}
