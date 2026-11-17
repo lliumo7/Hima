@@ -162,12 +162,13 @@
  </div>
  <div class="grid">
   <div class="card span7" id="eventDetails">
-   <div class="row"><h3>تسجيل فعالية وطلب تأمين</h3><span class="pill">تأمين الفعالية</span></div>
+   <div class="request-page-toolbar"><button class="btn secondary request-back-btn" type="button" onclick="showPage('organizer')">← العودة إلى لوحة المنظم</button><span class="pill">تأمين الفعالية</span></div><h3>تسجيل فعالية وطلب تأمين</h3>
    <p class="muted">هذه التغطية تخص مخاطر تنظيم الفعالية ومسؤولية المنظم، وهي منفصلة عن حماية تذكرة المستفيد.</p>
    <div class="field"><label>اسم الفعالية</label><input id="orgEventName" placeholder="مثال: مباراة نهائي البطولة"></div>
    <div class="grid"><div class="field span6"><label>نوع الفعالية</label><select id="organizerType"><option value="sports">مباراة رياضية</option><option value="concert">حفلة غنائية</option><option value="gaming">ألعاب ورياضات إلكترونية</option><option value="festival">مهرجان</option><option value="exhibition">معرض</option><option value="entertainment">فعالية ترفيهية</option></select></div><div class="field span6"><label>المنطقة</label><select id="organizerRegion"></select></div></div>
    <div class="grid"><div class="field span6"><label>المدينة</label><select id="organizerCity"></select></div><div class="field span6"><label>تاريخ الفعالية</label><input id="orgEventDate" type="date"></div></div>
-   <div class="grid"><div class="field span6"><label>سعة الموقع</label><input id="capacity" type="number" min="1" value="25000"></div><div class="field span6"><label>الحضور المتوقع</label><input id="attendance" type="number" min="0" value="18000"></div></div>
+   <div class="grid"><div class="field span6"><label>سعة الموقع القصوى</label><input id="capacity" type="number" min="1" value="25000"><small class="muted">الحد الأقصى للأشخاص الذين يستوعبهم الموقع.</small></div><div class="field span6"><label>منصة بيع التذاكر</label><select id="ticketPlatform"><option value="">اختاري المنصة</option><option>منصة خارجية – بيانات تجريبية</option><option>Webook</option><option>Ticketmx</option><option>Platinumlist</option><option>منصة أخرى</option></select><small class="muted">في النموذج التجريبي تُدخل بيانات المنصة يدويًا؛ الربط التلقائي يحتاج واجهة API من المنصة.</small></div></div>
+   <div class="ticket-sales-panel"><h4>بيانات التذاكر من منصة الحجز</h4><div class="grid"><div class="field span4"><label>عدد التذاكر المباعة</label><input id="ticketsSold" type="number" min="0" value="0"></div><div class="field span4"><label>سعر التذكرة (ريال)</label><input id="ticketUnitPrice" type="number" min="0" step="0.01" value="0"></div><div class="field span4"><label>إجمالي مبيعات التذاكر</label><input id="ticketSalesTotal" type="text" value="0 ر.س" readonly></div></div><div class="ticket-attendance-summary"><span>الحضور المتوقع (يُحسب من التذاكر المباعة)</span><strong id="attendanceAuto">0 شخص</strong></div><input id="attendance" type="hidden" value="0"><small class="muted">الحضور المتوقع يساوي عدد التذاكر المباعة المدخلة. حدّثي الأرقام عند استلام تقرير أحدث من منصة الحجز.</small></div>
    <select id="organizerEvent" hidden></select><input type="hidden" id="eventName"><input type="hidden" id="eventType"><input type="hidden" id="eventLocation"><div class="field"><label>وصف الفعالية ومعلومات إضافية</label><textarea id="orgEventDescription" rows="3" placeholder="اكتب نبذة عن الفعالية وموقع إقامتها..."></textarea></div>
    <h3 class="subheading">مؤشرات السلامة</h3>
    <div class="grid"><div class="field span6"><label>مستوى الازدحام المتوقع</label><select id="crowd"><option value="1">منخفض</option><option value="2" selected>متوسط</option><option value="3">مرتفع</option></select></div><div class="field span6"><label>جاهزية السلامة</label><select id="safety"><option value="3">مكتملة</option><option value="2" selected>جزئية</option><option value="1">تحتاج تحسين</option></select></div></div>
@@ -310,8 +311,8 @@
 
 <footer class="foot" id="footerText">حِمى | HIMA — نموذج أولي للاختبار والتطوير فقط. لا يمثل وثيقة تأمين أو عرضًا تأمينيًا أو تكاملًا فعليًا مع أي جهة.</footer>
 </div>
- <script src="app.js?v=19-two-fixes"></script>
+ <script src="app.js?v=next1"></script>
  <script src="hima-icons.js?v=2"></script>
- <script src="hima-workflows.js?v=5"></script>
+ <script src="hima-workflows.js?v=next1"></script>
  <script src="hima-persistence.js?v=3"></script>
 </body></html>
