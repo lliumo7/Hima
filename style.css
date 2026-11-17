@@ -1329,3 +1329,25 @@ body { overflow-x: hidden; overflow-y: auto; }
 .insurer-page #eventUnderwritingCard,.insurer-page #claimsListCard,.insurer-page #reviewControls{scroll-margin-top:22px}
 @media(max-width:700px){.insurer-page .insurer-workspace-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.insurer-page .insurer-work-card{min-height:165px}}
 @media(max-width:430px){.insurer-page .insurer-workspace-grid{grid-template-columns:1fr}}
+
+/* Polished insurer service icons and compact work queue */
+.insurer-work-card .work-icon{width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#f4edff,#e9ddfa);color:#7040ad;box-shadow:inset 0 0 0 1px #e2d2f5}
+.insurer-work-card .work-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.insurer-work-card b{font-size:15px;line-height:1.6}
+.insurer-work-card small{font-size:12px;line-height:1.85}
+.insurer-work-card strong{display:inline-flex;align-items:center;gap:6px;border-top:1px solid #f0eaf6;width:100%;padding-top:12px;font-size:12px}
+.insurer-tabbar{display:flex;gap:9px;flex-wrap:wrap;padding:8px;background:#eee7f6;border:1px solid #e6d9f1;border-radius:16px;margin:0 0 15px}
+.insurer-tab{border:0;border-radius:11px;background:transparent;padding:12px 17px;color:#756687;font:inherit;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:9px}
+.insurer-tab span{min-width:23px;height:23px;border-radius:8px;background:#fff;color:#69409c;display:grid;place-items:center;font-size:11px}
+.insurer-tab.active{background:#fff;color:#48266f;box-shadow:0 3px 10px #29164a12}
+.insurer-tabpanel[hidden]{display:none!important}
+.insurer-tabpanel{animation:insurerFade .22s ease}
+@keyframes insurerFade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.insurer-panel-kicker{font-size:9px;letter-spacing:1.8px;color:#9369bf;font-weight:800;display:block;margin-bottom:5px}
+.insurer-review-note{display:flex;align-items:center;gap:14px;margin-top:13px;padding:17px 20px;border-radius:15px;background:#f8f4fc;border:1px solid #ebe1f4}
+.insurer-note-icon{width:38px;height:38px;border-radius:12px;background:#e9f6ee;color:#31845a;display:grid;place-items:center;font-weight:900;font-size:19px;flex-shrink:0}
+.insurer-review-note b{color:#3d2a56}.insurer-review-note p{margin:4px 0 0;color:#897e96;font-size:12px;line-height:1.8}
+.insurer-tabpanel .insurer-original-card{margin-bottom:0}
+.insurer-tabpanel .request-list,.insurer-tabpanel .claim-review-list{margin-top:14px}
+.insurer-detail-heading{margin-bottom:12px}
+@media(max-width:600px){.insurer-tabbar{display:grid;grid-template-columns:1fr}.insurer-tab{justify-content:space-between}.insurer-work-card .work-icon{width:40px;height:40px}}
