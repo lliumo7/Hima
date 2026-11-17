@@ -40,3 +40,10 @@
 - Booking, payment, and claim pages use natural document scrolling instead of nested fixed-height scroll panes, with responsive single-column layout on smaller screens.
 - Event category badges are compact and truncate long labels instead of appearing oversized.
 - Organizer/insurer welcome banners use subtle decorative rings while preserving the purple HIMA identity.
+
+
+## Organizer dashboard redesign
+- Reworked only the organizer portal dashboard into a more structured overview with a photo-led welcome banner, KPI cards, workflow track, quick actions, recent-events table, publication summary, and upcoming events.
+- Kept organizer navigation in the existing hamburger drawer.
+- Kept attendee and insurer dashboard markup unchanged.
+- Dashboard metrics are derived from the current local prototype event and insurance records.
