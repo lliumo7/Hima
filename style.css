@@ -1077,3 +1077,71 @@ html[dir="ltr"] .hima-icon--directional{transform:scaleX(-1)}
 .role-service-card .shortcut-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:#f1e8fb;color:#6737a3}
 .role-services .role-service-card:focus-visible{outline:3px solid #a77bdd;outline-offset:3px}
 @media(max-width:700px){.role-welcome{min-height:0;padding:24px 20px}.role-service-card{min-height:160px;padding:18px}}
+
+
+/* HIMA V18 — natural page scrolling, compact event labels and refined role banners. */
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; overflow-y: auto; }
+.app { min-height: 100dvh; height: auto; overflow: visible; }
+.page, .page.active { height: auto !important; min-height: 0 !important; max-height: none !important; overflow: visible !important; }
+#booking .booking-layout, #payment .payment-layout, #incident .claim-workspace {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, .85fr) !important;
+  grid-template-rows: auto !important;
+  align-items: start !important;
+  gap: 18px !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+#booking .booking-main-scroll, #payment .payment-main-scroll, #incident .claim-main-scroll,
+#booking .booking-summary-card, #payment .payment-summary-card, #incident .claim-side-card {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow: visible !important;
+  position: static !important;
+  inset: auto !important;
+  align-self: start !important;
+  overscroll-behavior: auto !important;
+}
+#incident .claim-lower-sections { padding-bottom: 18px !important; }
+#events .event-art > .event-category-label {
+  font-size: clamp(10px, 1.05vw, 13px) !important;
+  line-height: 1.35 !important;
+  font-weight: 650 !important;
+  padding: 6px 10px !important;
+  max-width: min(68%, 210px) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  border-radius: 12px !important;
+}
+#events .event-card h4 { font-size: 15px !important; line-height: 1.55 !important; }
+.role-welcome {
+  position: relative !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+  background: linear-gradient(112deg,#321064 0%,#51258f 52%,#7950b2 100%) !important;
+}
+.role-welcome::before, .role-welcome::after {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  border: 1px solid rgba(255,255,255,.13); border-radius: 50%;
+}
+.role-welcome::before { width: 310px; height: 310px; inset-inline-start: -95px; top: -190px; box-shadow: 0 0 0 24px rgba(255,255,255,.035),0 0 0 52px rgba(255,255,255,.025); }
+.role-welcome::after { width: 190px; height: 190px; inset-inline-end: -65px; bottom: -130px; box-shadow: 0 0 0 20px rgba(255,255,255,.035),0 0 0 42px rgba(255,255,255,.025); }
+@media (max-width: 760px) {
+  #booking .booking-layout, #payment .payment-layout, #incident .claim-workspace {
+    grid-template-columns: minmax(0,1fr) !important;
+    grid-template-rows: auto !important;
+    height: auto !important; max-height: none !important;
+  }
+  #booking .booking-main-scroll, #payment .payment-main-scroll, #incident .claim-main-scroll,
+  #booking .booking-summary-card, #payment .payment-summary-card, #incident .claim-side-card {
+    grid-column: auto !important; grid-row: auto !important; width: 100% !important;
+  }
+  #events .event-art { height: 145px !important; min-height: 145px !important; }
+  #events .event-art > .event-category-label { max-width: calc(100% - 24px) !important; }
+}

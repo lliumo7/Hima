@@ -312,7 +312,7 @@ function confirmPayment(){
  const method=document.querySelector('input[name="paymentMethod"]:checked')?.value||'Apple Pay';
  const stamp=String(Date.now()).slice(-6);
  state.ticket={id:'TKT-HIMA-'+stamp,event:b.event.name,type:b.type,base:b.base,cover:b.cover,coverPackage:b.coverPackage,coverLevel:b.coverLevel,coverPrice:b.coverPrice,total:b.total,date:b.date,certificate:b.cover?'HIMA-CERT-DEMO-'+stamp:null,location:b.location,venue:b.venue,paymentMethod:method,paymentStatus:'مدفوع تجريبيًا'};
- state.pendingBooking=null;renderWallet();showPage('wallet');
+ state.pendingBooking=null;renderWallet();renderClaimTicketOptions();renderClaimTicketSummary();showPage('wallet');
 }
 function resetDemo(){if(!confirm(state.lang==='ar'?'هل تريد إعادة ضبط بيانات التجربة؟':'Reset demo data?'))return;state.ticket=null;state.pendingBooking=null;state.incidents=[];state.claims=[];state.risk=0;state.selectedEvent=null;$('agreeDemo').checked=false;document.querySelectorAll('input[name="coverPackage"]').forEach(input=>input.checked=false);updateTotal();renderWallet();renderIncidents();renderClaims();renderClaimTicketOptions();if(state.portal==='customer')showPage('overview');else if(state.portal==='organizer')showPage('organizer');else if(state.portal==='insurer')showPage('insurer');else exitPortal()}
 // Initialize guided experience and region selectors.

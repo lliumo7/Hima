@@ -33,3 +33,10 @@
 - The active portal/page is restored after the workflow pages are initialized.
 - Added clearer role dashboard cards and a stronger purple welcome banner for organizer and insurer portals.
 - This is a browser-local prototype persistence layer; it does not synchronize data across different devices or browsers.
+
+
+## V18 visual and ticket-flow refinements
+- Ticket completion now refreshes the insured-ticket selector in the claim form immediately.
+- Booking, payment, and claim pages use natural document scrolling instead of nested fixed-height scroll panes, with responsive single-column layout on smaller screens.
+- Event category badges are compact and truncate long labels instead of appearing oversized.
+- Organizer/insurer welcome banners use subtle decorative rings while preserving the purple HIMA identity.
