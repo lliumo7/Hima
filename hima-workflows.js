@@ -51,17 +51,8 @@
     const orgRegion=$('wfEventRegion');if(orgRegion&&typeof HIMA_REGIONS!=='undefined'){orgRegion.innerHTML=Object.keys(HIMA_REGIONS).map(r=>`<option value="${safe(r)}">${safe(r)}</option>`).join('');orgRegion.addEventListener('change',updateWfEventCities);updateWfEventCities();}
     $('wfEventForm').addEventListener('submit',saveOrganizerEvent);
     $('wfInsuranceEventSelect')?.addEventListener('change',fillInsuranceFormFromEvent);
-    addPageNav();createOrganizerSidebar();renderAll();
+    addPageNav();renderAll();
   }
-  function createOrganizerSidebar(){
-    if($('organizerSidebar'))return;
-    const nav=[['الرئيسية','dashboard','organizer'],['جميع الفعاليات','calendar','organizerEvents'],['إضافة فعالية','plusCircle','organizerCreate'],['طلب تأمين فعالية','shieldPlus','organizerInsuranceRequest'],['متابعة طلبات التأمين','fileSearch','organizerRequests'],['المخاطر والسلامة','shieldCheck','organizerRisk'],['وثائق التأمين','fileCheck','organizerPolicies']];
-    const side=document.createElement('aside');side.id='organizerSidebar';side.className='organizer-sidebar';side.setAttribute('aria-label','قائمة بوابة منظم الفعاليات');
-    side.innerHTML=`<div class="organizer-sidebar-brand"><span class="organizer-sidebar-mark">ح</span><div><b>بوابة المنظم</b><small>إدارة الفعاليات والتأمين</small></div></div><div class="organizer-sidebar-label">القائمة الرئيسية</div><nav>${nav.map(([label,icon,id])=>`<button type="button" class="organizer-side-link" data-org-page="${id}" onclick="showPage('${id}')"><span data-hima-icon="${icon}"></span><b>${label}</b><i data-hima-icon="chevronLeft" data-hima-directional="true"></i></button>`).join('')}</nav><div class="organizer-sidebar-note"><span data-hima-icon="info"></span><p>تذكّر: نشر الفعالية لا يعني الموافقة على تأمينها.</p></div>`;
-    const app=document.querySelector('.app');if(app)app.insertBefore(side,$('organizer')||null);
-    if(window.HIMAIcons?.hydrate)window.HIMAIcons.hydrate(side);
-  }
-  function updateOrganizerSidebar(id){document.querySelectorAll('.organizer-side-link').forEach(b=>b.classList.toggle('active',b.dataset.orgPage===id));}
   function updateWfEventCities(selected=''){const region=$('wfEventRegion')?.value,city=$('wfEventCity');if(!city)return;const cities=(typeof HIMA_REGIONS!=='undefined'&&HIMA_REGIONS[region])||[];city.innerHTML='<option value="">اختاري المدينة</option>'+cities.map(c=>`<option value="${safe(c)}">${safe(c)}</option>`).join('');if(selected&&cities.includes(selected))city.value=selected;}
   function saveOrganizerEvent(ev){ev.preventDefault();const name=$('wfEventName').value.trim(),region=$('wfEventRegion').value,city=$('wfEventCity').value.trim(),venue=$('wfEventVenue').value.trim(),date=$('wfEventDate').value,price=Number($('wfEventPrice').value),capacity=Number($('wfEventCapacity').value),category=$('wfEventCategory').value;
     if(!name||!region||!city||!venue||!date||!Number.isFinite(price)||price<0||!Number.isFinite(capacity)||capacity<1){alert('تأكدي من تعبئة بيانات الفعالية بشكل صحيح.');return}
@@ -120,7 +111,6 @@
     if(state.portal && !allowed[state.portal]?.includes(id)) return false;
     const target=$(id); if(!target) return false;
     document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p===target));
-    updateOrganizerSidebar(id);
     document.querySelectorAll('.nav button,.bottom-link').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
     if(id==='events'&&typeof renderEventCatalog==='function'){renderCategoryCards();renderEventCatalog()}
     if(id==='wallet'&&typeof renderWallet==='function')renderWallet();
