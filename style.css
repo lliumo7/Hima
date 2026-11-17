@@ -1231,3 +1231,26 @@ body { overflow-x: hidden; overflow-y: auto; }
 #organizer .org-disclaimer svg{width:17px;height:17px;flex:0 0 17px}
 @media(max-width:1050px){#organizer .org-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#organizer .org-dashboard-bottom{grid-template-columns:1fr}#organizer .org-insights-column{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){#organizer .org-hero{min-height:220px;padding:22px 18px}#organizer .org-hero-image{width:100%;opacity:.35;mask-image:none}#organizer .org-hero:after{background:rgba(57,22,98,.78)}#organizer .org-hero-copy{max-width:100%}#organizer .org-kpi-grid{gap:8px}#organizer .org-kpi{padding:11px;gap:8px}#organizer .org-kpi-icon{width:36px;height:36px;flex-basis:36px}#organizer .org-kpi strong{font-size:21px}#organizer .org-kpi small{font-size:10px}#organizer .org-workflow-track{display:grid;grid-template-columns:1fr 1fr;gap:14px}#organizer .org-workflow-track>i{display:none}#organizer .org-quick-actions{grid-template-columns:1fr}#organizer .org-insights-column{grid-template-columns:1fr}#organizer .org-workflow-panel,#organizer .org-quick-panel,#organizer .org-events-panel,#organizer .org-insight-card{padding:14px}}
+
+/* HIMA organizer dashboard: explicit RTL alignment and readable event interactions */
+#organizer .org-hero{direction:rtl}
+#organizer .org-hero-copy{direction:rtl;text-align:right;margin-inline-start:0;margin-inline-end:auto;align-self:center;width:min(100%,680px);max-width:68%;}
+#organizer .org-hero-copy h2,#organizer .org-hero-copy p{text-align:right;direction:rtl}
+#organizer .org-hero-button{display:inline-flex;align-items:center;justify-content:center;margin-inline-start:0;margin-inline-end:auto}
+#organizer .org-events-table{direction:rtl}
+#organizer .org-events-table th,#organizer .org-events-table td{text-align:right}
+#organizer .org-event-row{cursor:pointer;transition:background .16s ease}
+#organizer .org-event-row:hover,#organizer .org-event-row:focus{background:#faf6ff;outline:2px solid #d9c5f4;outline-offset:-2px}
+#organizer .org-event-row:focus-visible{outline:3px solid #8b55c5;outline-offset:-3px}
+#organizer .org-insight-content{direction:rtl}
+#organizer .org-insight-legend{text-align:right;direction:rtl}
+.hima-event-dialog-backdrop{position:fixed;inset:0;z-index:9999;background:rgba(29,16,43,.48);display:flex;align-items:center;justify-content:center;padding:18px;direction:rtl}
+.hima-event-dialog{position:relative;width:min(620px,100%);max-height:min(82vh,760px);overflow:auto;background:#fff;border:1px solid #eadff5;border-radius:22px;padding:26px;box-shadow:0 24px 70px rgba(31,14,50,.24);direction:rtl;text-align:right;color:#332047}
+.hima-event-dialog h3{font-size:22px;margin:14px 0 20px}
+.hima-event-dialog-close{position:absolute;left:16px;top:14px;width:38px;height:38px;border:0;border-radius:12px;background:#f2eafb;color:#59299a;font-size:26px;cursor:pointer}
+.hima-event-dialog-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0 18px}
+.hima-event-dialog-grid>div{display:flex;flex-direction:column;gap:5px;background:#faf7fd;border:1px solid #eee5f6;border-radius:12px;padding:12px}
+.hima-event-dialog-grid small{color:#8b7b9a;font-size:11px}
+.hima-event-dialog-grid b{font-size:13px;color:#43256b}
+.hima-event-dialog-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+@media(max-width:680px){#organizer .org-hero-copy{max-width:100%;width:100%}.hima-event-dialog{padding:22px 16px}.hima-event-dialog-grid{grid-template-columns:1fr}}
