@@ -289,46 +289,33 @@
 </section>
 
 <section class="page insurer-page" id="insurer">
- <div class="insurer-layout">
-  <aside class="insurer-sidebar" aria-label="قائمة شركة التأمين">
-   <div class="insurer-side-brand"><div class="insurer-shield">✓</div><div><b>حِمى | HIMA</b><small>بوابة شركة التأمين</small></div></div>
-   <div class="insurer-side-caption">مركز إدارة التأمين</div>
-   <button class="insurer-side-link active" type="button" onclick="insurerScrollTo('insurerHome')"><span>⌂</span> الرئيسية</button>
-   <button class="insurer-side-link" type="button" onclick="insurerScrollTo('eventUnderwritingCard')"><span>▣</span> طلبات تأمين الفعاليات</button>
-   <button class="insurer-side-link" type="button" onclick="insurerScrollTo('riskReviewAnchor')"><span>◇</span> تقييم المخاطر</button>
-   <button class="insurer-side-link" type="button" onclick="insurerScrollTo('insurerPolicies')"><span>▤</span> وثائق التأمين والتغطيات</button>
-   <button class="insurer-side-link" type="button" onclick="insurerScrollTo('claimsListCard')"><span>♧</span> مطالبات المستفيدين</button>
-   <button class="insurer-side-link" type="button" onclick="insurerScrollTo('insurerReportsAnchor')"><span>▥</span> التقارير والإحصائيات</button>
-   <div class="insurer-side-bottom"><small>منصة حِمى لإدارة التأمين</small><button type="button" onclick="exitPortal()">تغيير البوابة ↗</button></div>
-  </aside>
-  <div class="insurer-main">
-   <div class="insurer-topline"><div><span class="insurer-eyebrow">INSURANCE OPERATIONS CENTER</span><h2>مركز إدارة شركة التأمين</h2><p>تابعي طلبات المنظمين، وقيّمي المخاطر، وأديري الوثائق ومطالبات المستفيدين من مكان واحد.</p></div><div class="insurer-top-actions"><span class="insurer-live-dot">● النظام التجريبي</span><button class="btn secondary" onclick="toggleLang()">English</button></div></div>
-   <div class="insurer-hero" id="insurerHome"><div class="insurer-hero-copy"><span class="insurer-hero-tag">HIMA · INSURANCE</span><h1>قرارات تأمينية أوضح،<br>ومخاطر تحت السيطرة.</h1><p>منصة موحدة لمراجعة طلبات تأمين الفعاليات ومتابعة المطالبات وإصدار الوثائق.</p></div><div class="insurer-hero-art"><div class="insurer-orbit orbit-one"></div><div class="insurer-orbit orbit-two"></div><div class="insurer-big-shield">✓</div><div class="insurer-hero-caption">TRUST · REVIEW · PROTECT</div></div></div>
-   <div class="insurer-section-head"><div><span>نظرة عامة</span><h3>ملخص الأعمال التأمينية</h3></div><small>تتحدث الأرقام وفق بيانات التجربة الحالية</small></div>
-   <div class="insurer-kpis">
-    <button class="insurer-kpi kpi-purple" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="kpi-icon">▣</span><small>طلبات تأمين الفعاليات</small><b id="insurerKpiEvents">—</b><em>طلبات المنظمين</em></button>
-    <button class="insurer-kpi kpi-amber" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="kpi-icon">◷</span><small>قيد المراجعة</small><b id="insurerKpiPending">—</b><em>تحتاج إلى إجراء</em></button>
-    <button class="insurer-kpi kpi-green" onclick="insurerScrollTo('insurerPolicies')"><span class="kpi-icon">▤</span><small>وثائق صادرة</small><b id="insurerKpiPolicies">—</b><em>وثائق الفعاليات</em></button>
-    <button class="insurer-kpi kpi-blue" onclick="insurerScrollTo('claimsListCard')"><span class="kpi-icon">♧</span><small>مطالبات المستفيدين</small><b id="insurerKpiClaims">—</b><em>مسار مستقل عن تأمين الفعاليات</em></button>
-   </div>
-   <div class="insurer-section-head"><div><span>WORKSPACE</span><h3>مساحات العمل</h3></div><small>اختاري الخدمة للانتقال مباشرة إلى تفاصيلها</small></div>
-   <div class="insurer-workspace-grid">
-    <button class="insurer-work-card" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="work-icon">▣</span><b>طلبات تأمين الفعاليات</b><small>استقبال طلبات المنظمين ومراجعتها واتخاذ القرار</small><strong>فتح الطلبات ←</strong></button>
-    <button class="insurer-work-card" onclick="insurerScrollTo('riskReviewAnchor')"><span class="work-icon">◇</span><b>تقييم المخاطر</b><small>مراجعة مؤشرات المخاطر والسلامة قبل اعتماد التغطية</small><strong>مراجعة المخاطر ←</strong></button>
-    <button class="insurer-work-card" onclick="insurerScrollTo('insurerPolicies')"><span class="work-icon">▤</span><b>التغطيات وعروض الأسعار</b><small>مراجعة التغطيات والقسط والشروط التأمينية</small><strong>فتح التغطيات ←</strong></button>
-    <button class="insurer-work-card" onclick="insurerScrollTo('insurerPolicies')"><span class="work-icon">▧</span><b>وثائق التأمين</b><small>متابعة الوثائق الصادرة وحالاتها</small><strong>عرض الوثائق ←</strong></button>
-    <button class="insurer-work-card" onclick="insurerScrollTo('claimsListCard')"><span class="work-icon">♧</span><b>مطالبات المستفيدين</b><small>مراجعة مطالبات تأمين التذاكر في مسار مستقل</small><strong>فتح المطالبات ←</strong></button>
-    <button class="insurer-work-card" onclick="insurerScrollTo('insurerReportsAnchor')"><span class="work-icon">▥</span><b>التقارير والإحصائيات</b><small>ملخص الطلبات والقرارات والوثائق</small><strong>عرض التقارير ←</strong></button>
-   </div>
-   <div class="insurer-section-head insurer-detail-heading"><div><span>INBOX</span><h3>الطلبات والإجراءات</h3></div><small>التفاصيل الحالية للخدمات محفوظة أدناه</small></div>
-   <div class="card span12 insurer-original-card" id="eventUnderwritingCard"><div class="row"><h3>طلبات تأمين الفعاليات من المنظمين</h3><span class="pill amber">مراجعة اكتتابية</span></div><p class="muted">طلبات مستقلة عن مطالبات المستفيدين وتأمين التذاكر. راجع بيانات الفعالية ومؤشرات السلامة والتغطيات المطلوبة قبل اتخاذ القرار.</p><div id="eventUnderwritingStats" class="stats" style="grid-template-columns:repeat(3,1fr)"></div><div id="eventUnderwritingList" class="request-list empty">لا توجد طلبات تأمين فعاليات واردة. أرسل طلبًا من بوابة المنظم لتظهر تفاصيله هنا.</div></div>
-   <div id="riskReviewAnchor" class="insurer-anchor"></div><div class="claim-insurer-stats" id="claimInsurerStats"></div>
-   <div class="grid insurer-original-grid"><div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="مطالبات المستفيدين الواردة" data-en="Incoming attendee claims">مطالبات المستفيدين الواردة</h3><span class="pill amber">مراجعة بشرية</span></div><div id="claimsList" class="claim-review-list empty">لا توجد مطالبات واردة بعد.</div></div>
-    <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا." data-en="Acceptance or rejection is decided by an insurer reviewer after examining incident details and documents. The system does not make automated decisions.">قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا.</p></div>
-   </div>
-   <div id="insurerReportsAnchor" class="insurer-anchor"></div>
-   <div class="card span12 insurer-reports-card"><div class="row"><h3>التقارير والإحصائيات</h3><span class="pill">ملخص مباشر</span></div><p class="muted">ملخص لأعداد السجلات المسجلة في هذه التجربة، دون افتراض نتائج أو قرارات غير موجودة.</p><div class="insurer-report-metrics"><div><small>طلبات تأمين الفعاليات</small><b id="insurerReportEvents">0</b></div><div><small>الوثائق الصادرة</small><b id="insurerReportPolicies">0</b></div><div><small>مطالبات المستفيدين</small><b id="insurerReportClaims">0</b></div></div></div>
+ <div class="insurer-main">
+  <div class="insurer-topline"><div><span class="insurer-eyebrow">INSURANCE OPERATIONS CENTER</span><h2>مركز إدارة شركة التأمين</h2><p>تابعي طلبات المنظمين، وقيّمي المخاطر، وأديري الوثائق ومطالبات المستفيدين من مكان واحد.</p></div><div class="insurer-top-actions"><span class="insurer-live-dot">● النظام التجريبي</span></div></div>
+  <div class="insurer-hero" id="insurerHome"><div class="insurer-hero-copy"><span class="insurer-hero-tag">HIMA · INSURANCE</span><h1>قرارات تأمينية أوضح،<br>ومخاطر تحت السيطرة.</h1><p>منصة موحدة لمراجعة طلبات تأمين الفعاليات ومتابعة المطالبات وإصدار الوثائق.</p></div><div class="insurer-hero-art"><div class="insurer-orbit orbit-one"></div><div class="insurer-orbit orbit-two"></div><div class="insurer-big-shield">✓</div><div class="insurer-hero-caption">TRUST · REVIEW · PROTECT</div></div></div>
+  <div class="insurer-section-head"><div><span>نظرة عامة</span><h3>ملخص الأعمال التأمينية</h3></div><small>تتحدث الأرقام وفق بيانات التجربة الحالية</small></div>
+  <div class="insurer-kpis">
+   <button class="insurer-kpi kpi-purple" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="kpi-icon">▣</span><small>طلبات تأمين الفعاليات</small><b id="insurerKpiEvents">—</b><em>طلبات المنظمين</em></button>
+   <button class="insurer-kpi kpi-amber" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="kpi-icon">◷</span><small>قيد المراجعة</small><b id="insurerKpiPending">—</b><em>تحتاج إلى إجراء</em></button>
+   <button class="insurer-kpi kpi-green" onclick="showPage('insurerPolicies')"><span class="kpi-icon">▤</span><small>وثائق صادرة</small><b id="insurerKpiPolicies">—</b><em>وثائق الفعاليات</em></button>
+   <button class="insurer-kpi kpi-blue" onclick="insurerScrollTo('claimsListCard')"><span class="kpi-icon">♧</span><small>مطالبات المستفيدين</small><b id="insurerKpiClaims">—</b><em>مسار مستقل عن تأمين الفعاليات</em></button>
   </div>
+  <div class="insurer-section-head"><div><span>WORKSPACE</span><h3>خدمات شركة التأمين</h3></div><small>اختاري الخدمة لفتح تفاصيلها</small></div>
+  <div class="insurer-workspace-grid">
+   <button class="insurer-work-card" onclick="insurerScrollTo('eventUnderwritingCard')"><span class="work-icon"><svg viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg></span><b>طلبات تأمين الفعاليات</b><small>استقبال طلبات المنظمين ومراجعتها واتخاذ القرار</small><strong>فتح الطلبات ←</strong></button>
+   <button class="insurer-work-card" onclick="insurerScrollTo('riskReviewAnchor')"><span class="work-icon"><svg viewBox="0 0 24 24"><path d="M12 3 21 7v5c0 5-4 8-9 10-5-2-9-5-9-10V7zM9 12l2 2 4-4"/></svg></span><b>تقييم المخاطر</b><small>مراجعة مؤشرات المخاطر والسلامة قبل اعتماد التغطية</small><strong>مراجعة المخاطر ←</strong></button>
+   <button class="insurer-work-card" onclick="showPage('insurerPolicies')"><span class="work-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4zM8 9h8M8 13h5"/></svg></span><b>التغطيات وعروض الأسعار</b><small>مراجعة التغطيات والقسط والشروط التأمينية</small><strong>فتح التغطيات ←</strong></button>
+   <button class="insurer-work-card" onclick="showPage('insurerPolicies')"><span class="work-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6zM15 3v5h4M9 13h7M9 17h7"/></svg></span><b>وثائق التأمين</b><small>متابعة الوثائق الصادرة وحالاتها</small><strong>عرض الوثائق ←</strong></button>
+   <button class="insurer-work-card" onclick="insurerScrollTo('claimsListCard')"><span class="work-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-4 2-6 6-6s6 2 6 6M17 8h4M19 6v4"/></svg></span><b>مطالبات المستفيدين</b><small>مراجعة مطالبات تأمين التذاكر في مسار مستقل</small><strong>فتح المطالبات ←</strong></button>
+   <button class="insurer-work-card" onclick="insurerScrollTo('insurerReportsAnchor')"><span class="work-icon"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h17M8 15l4-4 3 2 5-7"/></svg></span><b>التقارير والإحصائيات</b><small>ملخص الطلبات والقرارات والوثائق</small><strong>عرض التقارير ←</strong></button>
+  </div>
+  <div class="insurer-section-head insurer-detail-heading"><div><span>INBOX</span><h3>الطلبات والإجراءات</h3></div><small>تفاصيل الخدمات والإجراءات</small></div>
+  <div class="card span12 insurer-original-card" id="eventUnderwritingCard"><div class="row"><h3>طلبات تأمين الفعاليات من المنظمين</h3><span class="pill amber">مراجعة اكتتابية</span></div><p class="muted">طلبات مستقلة عن مطالبات المستفيدين وتأمين التذاكر. راجعي بيانات الفعالية ومؤشرات السلامة والتغطيات المطلوبة قبل اتخاذ القرار.</p><div id="eventUnderwritingStats" class="stats" style="grid-template-columns:repeat(3,1fr)"></div><div id="eventUnderwritingList" class="request-list empty">لا توجد طلبات تأمين فعاليات واردة. أرسلي طلبًا من بوابة المنظم لتظهر تفاصيله هنا.</div></div>
+  <div id="riskReviewAnchor" class="insurer-anchor"></div><div class="claim-insurer-stats" id="claimInsurerStats"></div>
+  <div class="grid insurer-original-grid"><div class="card span12" id="claimsListCard"><div class="row"><h3 data-ar="مطالبات المستفيدين الواردة" data-en="Incoming attendee claims">مطالبات المستفيدين الواردة</h3><span class="pill amber">مراجعة بشرية</span></div><div id="claimsList" class="claim-review-list empty">لا توجد مطالبات واردة بعد.</div></div>
+   <div class="card span12" id="reviewControls"><h3 data-ar="ضوابط المراجعة" data-en="Review controls">ضوابط المراجعة</h3><p class="muted" data-ar="قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا." data-en="Acceptance or rejection is decided by an insurer reviewer after examining incident details and documents. The system does not make automated decisions.">قرار القبول أو الرفض يصدر من مراجع شركة التأمين بعد الاطلاع على بيانات الحادث والمستندات. لا يصدر النظام قرارًا آليًا.</p></div>
+  </div>
+  <div id="insurerReportsAnchor" class="insurer-anchor"></div>
+  <div class="card span12 insurer-reports-card"><div class="row"><h3>التقارير والإحصائيات</h3><span class="pill">ملخص مباشر</span></div><p class="muted">ملخص لأعداد السجلات المسجلة في هذه التجربة، دون افتراض نتائج أو قرارات غير موجودة.</p><div class="insurer-report-metrics"><div><small>طلبات تأمين الفعاليات</small><b id="insurerReportEvents">0</b></div><div><small>الوثائق الصادرة</small><b id="insurerReportPolicies">0</b></div><div><small>مطالبات المستفيدين</small><b id="insurerReportClaims">0</b></div></div></div>
  </div>
 </section>
 
