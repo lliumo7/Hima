@@ -255,6 +255,14 @@ function enterPortal(role){
  if($('drawerSubtitle'))$('drawerSubtitle').textContent=labels[role]||'';
  const first={customer:'overview',organizer:'organizer',insurer:'insurer'}[role]||'overview';
  showPage(first);
+ // Insurer portal must open directly on its redesigned dashboard, never on a legacy landing view.
+ if(role==='insurer'){
+   const home=$('insurerHomeDashboard'), workspace=$('insurerWorkspace');
+   if(home) home.hidden=false;
+   if(workspace) workspace.hidden=true;
+   document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='insurer'));
+   showInsurerWorkspace('home');
+ }
  openPortalNavState(first);
 }
 function openPortalNavState(id){

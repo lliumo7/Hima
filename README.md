@@ -47,3 +47,6 @@
 - Kept organizer navigation in the existing hamburger drawer.
 - Kept attendee and insurer dashboard markup unchanged.
 - Dashboard metrics are derived from the current local prototype event and insurance records.
+
+
+Focused update: insurer portal entry now forces the redesigned insurer dashboard to open immediately when selecting the Insurance Company portal. The old intermediate landing/workspace transition is bypassed. Insurer hero text is right-aligned. Attendee and organizer portal logic and icons were not intentionally changed.
