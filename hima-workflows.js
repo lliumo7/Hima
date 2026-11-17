@@ -1,0 +1,236 @@
+/* HIMA workflow upgrade — organizer event publishing + dedicated role pages */
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const safe = (v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const load = (key, fallback=[])=>{try{return JSON.parse(localStorage.getItem('hima:'+key))??fallback}catch{return fallback}};
+  const save = (key,val)=>{try{localStorage.setItem('hima:'+key,JSON.stringify(val))}catch(e){console.warn('HIMA local storage unavailable',e)}};
+  let customEvents = load('organizerEvents',[]);
+  let editingId = null;
+  const categoryNames={sports:'مباراة رياضية',concert:'حفلة غنائية',gaming:'ألعاب ورياضات إلكترونية',festival:'مهرجان',exhibition:'معرض',entertainment:'فعالية ترفيهية'};
+  const categoryPhotos={sports:'sports',concert:'concert',gaming:'gaming',festival:'festival',exhibition:'exhibition',entertainment:'entertainment'};
+  const getEventInsuranceStatus=(e)=>{const requests=(state.eventInsuranceRequests||[]).filter(r=>(r.eventId&&String(r.eventId)===String(e.id))||(!r.eventId&&r.eventName&&r.eventName===e.name));const latest=requests.slice().sort((a,b)=>String(a.submittedAt||'').localeCompare(String(b.submittedAt||''))).slice(-1)[0];return latest?.status||e.insuranceStatus||load('seededInsuranceStatuses',{})[e.id]||'لم يُطلب تأمين الفعالية'};
+  const eventStatusLabel=(e)=>{const status=getEventInsuranceStatus(e);return status==='مقبول'?'مؤمّنة — تمت الموافقة':status==='مرفوض'?'مرفوض — لا توجد تغطية':status==='قيد المراجعة'?'قيد مراجعة شركة التأمين':'لم يُطلب تأمين الفعالية'};
+  function page(id,title,sub,html){const s=document.createElement('section');s.className='page hima-work-page';s.id=id;s.innerHTML=`<div class="page-intro"><button class="text-btn" onclick="showPage('${id.startsWith('organizer')?'organizer':'insurer'}')">← العودة للرئيسية</button><span class="pill">${id.startsWith('organizer')?'بوابة منظم الفعالية':'بوابة شركة التأمين'}</span><h2>${title}</h2><p class="muted">${sub||''}</p></div>${html}`;document.querySelector('.app').insertBefore(s,$('footerText'));return s;}
+  function serviceCard(icon,title,desc,target){return `<button class="shortcut role-service-card" onclick="showPage('${target}')"><span class="shortcut-icon" data-hima-icon="${icon}"></span><b>${title}</b><small>${desc}</small><span class="service-link">فتح الخدمة ←</span></button>`}
+  function dashboardMarkup(role){
+    if(role==='organizer')return `
+      <div class="org-pro-dashboard">
+        <section class="org-hero">
+          <img src="assets/events/hero.jpg" alt="" class="org-hero-image" onerror="this.style.display='none'">
+          <div class="org-hero-copy"><span class="org-eyebrow">HIMA • حِمى | بوابة المنظم</span><h2>مرحبًا بك في بوابة منظم الفعاليات</h2><p>أدر فعالياتك، واطلب التأمين، وتابع حالة كل فعالية من مكان واحد.</p><button class="org-hero-button" onclick="showPage('organizerCreate')">＋ إضافة فعالية جديدة</button></div>
+        </section>
+        <section class="org-kpi-grid" aria-label="ملخص الفعاليات">
+          <article class="org-kpi org-kpi-purple"><span class="org-kpi-icon" data-hima-icon="calendar"></span><div><small>إجمالي الفعاليات</small><strong id="wfOrgEvents">0</strong></div></article>
+          <article class="org-kpi org-kpi-blue"><span class="org-kpi-icon" data-hima-icon="network"></span><div><small>فعاليات منشورة</small><strong id="wfOrgPublished">0</strong></div></article>
+          <article class="org-kpi org-kpi-amber"><span class="org-kpi-icon" data-hima-icon="shieldCheck"></span><div><small>طلبات تأمين قيد المراجعة</small><strong id="wfOrgPending">0</strong></div></article>
+          <article class="org-kpi org-kpi-lavender"><span class="org-kpi-icon" data-hima-icon="fileCheck"></span><div><small>وثائق صادرة</small><strong id="wfOrgPolicies">0</strong></div></article>
+        </section>
+        <section class="org-workflow-panel"><div class="org-section-title"><div><span class="org-section-kicker">خطواتك القادمة</span><h3>مسار إدارة الفعالية</h3><p>من إنشاء الفعالية حتى إصدار وثيقة التأمين</p></div><span class="org-section-symbol" data-hima-icon="layers"></span></div>
+          <div class="org-workflow-track"><button onclick="showPage('organizerCreate')"><span class="org-step-icon" data-hima-icon="plusCircle"></span><b>إنشاء الفعالية</b><small>أدخل بياناتها الأساسية</small></button><i></i><button onclick="showPage('organizerEvents')"><span class="org-step-icon" data-hima-icon="network"></span><b>نشر الفعالية</b><small>إتاحتها للمستفيدين</small></button><i></i><button onclick="showPage('organizerInsuranceRequest')"><span class="org-step-icon" data-hima-icon="shieldPlus"></span><b>طلب التأمين</b><small>اختر التغطيات المطلوبة</small></button><i></i><button onclick="showPage('organizerRequests')"><span class="org-step-icon" data-hima-icon="fileCheck"></span><b>المتابعة والوثيقة</b><small>تابع القرار والإصدار</small></button></div>
+        </section>
+        <section class="org-quick-panel"><div class="org-section-title"><div><span class="org-section-kicker">إنجاز أسرع</span><h3>الخدمات السريعة</h3></div><span class="org-section-symbol" data-hima-icon="zap"></span></div><div class="org-quick-actions"><button onclick="showPage('organizerCreate')"><span data-hima-icon="plusCircle"></span><b>إضافة فعالية جديدة</b><span class="org-action-arrow">←</span></button><button onclick="showPage('organizerInsuranceRequest')"><span data-hima-icon="shieldPlus"></span><b>طلب تأمين فعالية</b><span class="org-action-arrow">←</span></button><button onclick="showPage('organizerRequests')"><span data-hima-icon="fileSearch"></span><b>متابعة الطلبات</b><span class="org-action-arrow">←</span></button></div></section>
+        <div class="org-dashboard-bottom"><section class="org-events-panel"><div class="org-panel-heading"><div><span class="org-section-kicker">آخر التحديثات</span><h3>أحدث الفعاليات</h3><p>تابع الفعاليات وحالة النشر والتأمين بسرعة</p></div><button onclick="showPage('organizerEvents')">عرض الكل ←</button></div><div id="wfOrgRecentEvents" class="org-events-table-wrap"></div></section>
+          <aside class="org-insights-column"><section class="org-insight-card"><div class="org-panel-heading"><div><span class="org-section-kicker">ملخص سريع</span><h3>ملخص التأمين على الفعاليات</h3></div><span class="org-section-symbol" data-hima-icon="chart"></span></div><div class="org-insight-content"><div class="org-donut" id="wfOrgDonut"><span id="wfOrgPublishRate">0%</span></div><div class="org-insight-legend"><p><i class="dot-published"></i> مؤمّنة <b id="wfOrgInsuredLegend">0</b></p><p><i class="dot-pending"></i> قيد المراجعة <b id="wfOrgPendingLegend">0</b></p><p><i class="dot-draft"></i> لم يُطلب تأمينها <b id="wfOrgUninsuredLegend">0</b></p></div></div></section><section class="org-insight-card org-upcoming-card"><div class="org-panel-heading"><div><span class="org-section-kicker">لا تفوّت موعدًا</span><h3>الفعاليات القادمة</h3></div><span class="org-section-symbol" data-hima-icon="calendar"></span></div><div id="wfOrgUpcomingEvents" class="org-upcoming-list"></div></section></aside></div>
+        <div class="org-disclaimer"><span data-hima-icon="infoCircle"></span> نشر الفعالية يجعلها متاحة للمستفيد، ولا يعني أن طلب تأمين الفعالية قد تمت الموافقة عليه.</div>
+      </div>`;
+    return `
+      <div class="ins-pro-dashboard" dir="rtl">
+        <section class="ins-pro-hero">
+          <div class="ins-pro-hero-copy">
+            <span class="ins-pro-eyebrow">HIMA • INSURANCE OPERATIONS</span>
+            <span class="ins-pro-kicker">بوابة شركة التأمين</span>
+            <h2>إدارة التأمين بوضوح وثقة</h2>
+            <p>استقبل طلبات تأمين الفعاليات من المنظمين، وقيّم المخاطر، وحدد التغطيات والأقساط، ثم أصدر الوثائق وتابع مطالبات المستفيدين في مسارات مستقلة.</p>
+            <button class="ins-pro-primary" onclick="showPage('insurerRequests')"><span data-hima-icon="fileSearch"></span> مراجعة طلبات التأمين <span class="ins-pro-arrow">←</span></button>
+          </div>
+          <div class="ins-pro-hero-art" aria-hidden="true">
+            <div class="ins-pro-orbit ins-pro-orbit-a"></div><div class="ins-pro-orbit ins-pro-orbit-b"></div>
+            <div class="ins-pro-shield"><span data-hima-icon="shieldCheck"></span></div>
+            <span class="ins-pro-float ins-pro-float-one" data-hima-icon="fileCheck"></span>
+            <span class="ins-pro-float ins-pro-float-two" data-hima-icon="chart"></span>
+          </div>
+          <div class="ins-pro-hero-foot"><span class="ins-pro-live-dot"></span> مركز عمليات التأمين <b>•</b> لوحة متابعة موحدة</div>
+        </section>
+
+        <section class="ins-pro-metrics" aria-label="ملخص أعمال شركة التأمين">
+          <button class="ins-pro-metric metric-purple" onclick="showPage('insurerRequests')"><span class="ins-pro-metric-icon" data-hima-icon="calendar"></span><span><small>طلبات تأمين الفعاليات</small><strong id="wfInsRequests">0</strong><em>طلبات المنظمين</em></span></button>
+          <button class="ins-pro-metric metric-amber" onclick="showPage('insurerRequests')"><span class="ins-pro-metric-icon" data-hima-icon="clock"></span><span><small>قيد المراجعة</small><strong id="wfInsPending">0</strong><em>بانتظار قرار المراجع</em></span></button>
+          <button class="ins-pro-metric metric-green" onclick="showPage('insurerPolicies')"><span class="ins-pro-metric-icon" data-hima-icon="fileCheck"></span><span><small>وثائق فعاليات صادرة</small><strong id="wfInsPolicies">0</strong><em>وثائق تأمين الفعاليات</em></span></button>
+          <button class="ins-pro-metric metric-blue" onclick="showPage('insurerClaims')"><span class="ins-pro-metric-icon" data-hima-icon="user"></span><span><small>مطالبات المستفيدين</small><strong id="wfInsClaims">0</strong><em>مسار تأمين التذاكر</em></span></button>
+        </section>
+
+        <section class="ins-pro-main-grid">
+          <div class="ins-pro-workflow panel-surface">
+            <div class="ins-pro-section-head"><div><span class="ins-pro-section-kicker">WORKFLOW</span><h3>كيف تعمل بوابة شركة التأمين؟</h3><p>مسار واضح من استلام الطلب حتى متابعة الوثيقة.</p></div><span class="ins-pro-head-icon" data-hima-icon="layers"></span></div>
+            <div class="ins-pro-steps">
+              <button onclick="showPage('insurerRequests')"><span>01</span><b>استلام الطلب</b><small>استقبال طلب المنظم وبيانات الفعالية</small></button>
+              <i></i>
+              <button onclick="showPage('insurerRisk')"><span>02</span><b>تقييم المخاطر</b><small>مراجعة السلامة ومؤشرات المخاطر</small></button>
+              <i></i>
+              <button onclick="showPage('insurerCoverage')"><span>03</span><b>تحديد التغطية والقسط</b><small>مراجعة الشروط والسعر التأميني</small></button>
+              <i></i>
+              <button onclick="showPage('insurerPolicies')"><span>04</span><b>إصدار الوثيقة</b><small>إصدار الوثيقة بعد الموافقة</small></button>
+            </div>
+          </div>
+          <aside class="ins-pro-quick panel-surface">
+            <div class="ins-pro-section-head"><div><span class="ins-pro-section-kicker">QUICK ACCESS</span><h3>إجراءات سريعة</h3><p>انتقلي مباشرة إلى الخدمة المطلوبة.</p></div><span class="ins-pro-head-icon" data-hima-icon="zap"></span></div>
+            <button class="ins-pro-action" onclick="showPage('insurerRequests')"><span class="ins-pro-action-icon" data-hima-icon="fileSearch"></span><span><b>مراجعة طلبات جديدة</b><small>طلبات تأمين الفعاليات</small></span><span class="ins-pro-action-arrow">←</span></button>
+            <button class="ins-pro-action" onclick="showPage('insurerClaims')"><span class="ins-pro-action-icon" data-hima-icon="claim"></span><span><b>مراجعة المطالبات</b><small>مطالبات تأمين التذاكر</small></span><span class="ins-pro-action-arrow">←</span></button>
+            <button class="ins-pro-action" onclick="showPage('insurerReports')"><span class="ins-pro-action-icon" data-hima-icon="chart"></span><span><b>عرض التقارير</b><small>ملخص الأداء والقرارات</small></span><span class="ins-pro-action-arrow">←</span></button>
+          </aside>
+        </section>
+
+        <section class="ins-pro-services">
+          <div class="ins-pro-section-head"><div><span class="ins-pro-section-kicker">INSURANCE SERVICES</span><h3>خدمات شركة التأمين</h3><p>كل خدمة مستقلة وتفتح صفحتها الخاصة دون تكرار لوحة التحكم.</p></div></div>
+          <div class="ins-pro-service-grid">
+            <button class="ins-pro-service" onclick="showPage('insurerRequests')"><span class="ins-pro-service-icon" data-hima-icon="fileSearch"></span><b>طلبات تأمين الفعاليات</b><small>استقبال طلبات المنظمين ومراجعتها واتخاذ القرار.</small><em>فتح الطلبات <span>←</span></em></button>
+            <button class="ins-pro-service" onclick="showPage('insurerRisk')"><span class="ins-pro-service-icon" data-hima-icon="shieldCheck"></span><b>تقييم المخاطر</b><small>مراجعة مؤشرات المخاطر والسلامة لكل فعالية.</small><em>تقييم المخاطر <span>←</span></em></button>
+            <button class="ins-pro-service" onclick="showPage('insurerCoverage')"><span class="ins-pro-service-icon" data-hima-icon="layers"></span><b>التغطيات وعروض الأسعار</b><small>تحديد التغطيات والقسط والشروط التأمينية.</small><em>مراجعة التغطيات <span>←</span></em></button>
+            <button class="ins-pro-service" onclick="showPage('insurerPolicies')"><span class="ins-pro-service-icon" data-hima-icon="fileCheck"></span><b>وثائق التأمين</b><small>متابعة وثائق تأمين الفعاليات الصادرة وحالاتها.</small><em>عرض الوثائق <span>←</span></em></button>
+            <button class="ins-pro-service" onclick="showPage('insurerClaims')"><span class="ins-pro-service-icon" data-hima-icon="user"></span><b>مطالبات المستفيدين</b><small>مراجعة مطالبات تأمين التذاكر في مسار مستقل.</small><em>فتح المطالبات <span>←</span></em></button>
+            <button class="ins-pro-service" onclick="showPage('insurerReports')"><span class="ins-pro-service-icon" data-hima-icon="chart"></span><b>التقارير والإحصائيات</b><small>ملخص الطلبات والقرارات والوثائق والمطالبات.</small><em>عرض التقارير <span>←</span></em></button>
+          </div>
+        </section>
+        <div class="ins-pro-note"><span data-hima-icon="infoCircle"></span><p><b>تنبيه تشغيلي:</b> طلبات تأمين الفعاليات تخص المنظم، أما مطالبات المستفيدين فتخص تأمين التذاكر؛ ويُراجع كل مسار بشكل مستقل.</p></div>
+      </div>`;
+  }
+  function addPageNav(){
+    const groups=document.querySelectorAll('[data-portal-menu]');
+    const org=document.querySelector('[data-portal-menu="organizer"]');
+    const ins=document.querySelector('[data-portal-menu="insurer"]');
+    [org,ins].forEach(root=>root?.querySelectorAll('.drawer-link').forEach(b=>b.remove()));
+    const add=(root,items)=>{if(!root)return;items.forEach(([label,icon,id])=>{if(root.querySelector(`[data-wf-page="${id}"]`))return;const b=document.createElement('button');b.className='drawer-link';b.dataset.wfPage=id;b.innerHTML=`<span class="drawer-icon" data-hima-icon="${icon}"></span><span class="link-label">${label}</span><span class="link-arrow" data-hima-icon="chevronLeft" data-hima-directional="true"></span>`;b.onclick=()=>{closeDrawer();showPage(id)};root.appendChild(b)})};
+    add(org,[['الرئيسية','dashboard','organizer'],['جميع الفعاليات','calendar','organizerEvents'],['إضافة فعالية','plusCircle','organizerCreate'],['طلب تأمين فعالية','shieldPlus','organizerInsuranceRequest'],['متابعة طلبات التأمين','fileSearch','organizerRequests'],['المخاطر والسلامة','shieldCheck','organizerRisk'],['وثائق التأمين','fileCheck','organizerPolicies']]);
+    add(ins,[['الرئيسية','dashboard','insurer'],['طلبات تأمين الفعاليات','fileSearch','insurerRequests'],['تقييم المخاطر','shieldCheck','insurerRisk'],['التغطيات وعروض الأسعار','layers','insurerCoverage'],['وثائق التأمين','fileCheck','insurerPolicies'],['مطالبات المستفيدين','claim','insurerClaims'],['التقارير والإحصائيات','chart','insurerReports']]);
+    if(window.HIMAIcons?.hydrate)window.HIMAIcons.hydrate(document);
+  }
+  function initStructure(){
+    state.eventInsuranceRequests=load('eventInsuranceRequests',state.eventInsuranceRequests||[]);
+    state.eventPolicies=load('eventPolicies',state.eventPolicies||[]);
+    const oldOrg=$('organizer'),oldIns=$('insurer');if(!oldOrg||!oldIns)return;
+    oldOrg.id='organizerInsuranceRequest';
+    oldOrg.classList.add('hima-work-page');
+    oldIns.id='insurerRequests';oldIns.classList.add('hima-work-page');
+    const orgDash=document.createElement('section');orgDash.className='page';orgDash.id='organizer';orgDash.innerHTML=dashboardMarkup('organizer');document.querySelector('.app').insertBefore(orgDash,$('organizerInsuranceRequest'));
+    const insDash=document.createElement('section');insDash.className='page';insDash.id='insurer';insDash.innerHTML=dashboardMarkup('insurer');document.querySelector('.app').insertBefore(insDash,$('insurerRequests'));
+    page('organizerEvents','إدارة جميع الفعاليات','تابع الفعاليات المنشورة والمسودات والمنتهية، وعدّلها أو أوقف نشرها.','<div class="section-heading"><button class="btn" onclick="showPage(\'organizerCreate\')">+ إضافة فعالية</button></div><div id="wfOrganizerEventList" class="event-grid"></div>');
+    page('organizerCreate','إضافة فعالية جديدة','أدخل تفاصيل الفعالية واختر نوعها؛ ستُستخدم الصورة المناسبة تلقائيًا عند عرضها للمستفيد.','<div class="card"><form id="wfEventForm" class="grid"><div class="field span6"><label>اسم الفعالية</label><input id="wfEventName" required maxlength="100" placeholder="مثال: نهائي بطولة كرة القدم"></div><div class="field span6"><label>نوع الفعالية</label><select id="wfEventCategory"><option value="sports">مباراة رياضية</option><option value="concert">حفلة غنائية</option><option value="gaming">ألعاب ورياضات إلكترونية</option><option value="festival">مهرجان</option><option value="exhibition">معرض</option><option value="entertainment">فعالية ترفيهية</option></select></div><div class="field span6"><label>المنطقة</label><select id="wfEventRegion" required></select></div><div class="field span6"><label>المدينة</label><select id="wfEventCity" required><option value="">اختاري المنطقة أولًا</option></select></div><div class="field span6"><label>الموقع / المكان</label><input id="wfEventVenue" required placeholder="اسم الملعب أو الموقع"></div><div class="field span6"><label>تاريخ الفعالية</label><input id="wfEventDate" type="date" required></div><div class="field span6"><label>سعر التذكرة الأساسي (ريال)</label><input id="wfEventPrice" type="number" min="0" value="100" required></div><div class="field span6"><label>عدد التذاكر المتاحة</label><input id="wfEventCapacity" type="number" min="1" value="500" required></div><div class="field span12"><label>وصف الفعالية</label><textarea id="wfEventDescription" rows="3" placeholder="اكتب وصفًا مختصرًا للفعالية"></textarea></div><div class="field span12"><label class="check"><input id="wfEventPublish" type="checkbox" checked> نشر الفعالية للمستفيد بعد الحفظ</label><small class="muted">يمكنك حفظها كمسودة ونشرها لاحقًا.</small></div><div class="span12"><button class="btn" type="submit">حفظ الفعالية</button><button class="btn secondary" type="button" onclick="showPage(\'organizerEvents\')">إلغاء</button></div></form></div>');
+    page('organizerRequests','طلبات التأمين الخاصة بي','هذه الطلبات مستقلة عن نشر الفعاليات والحجوزات.','<div id="wfOrgRequestsList" class="request-list"></div>');
+    page('organizerRisk','المخاطر ومؤشرات السلامة','ملخص عوامل المخاطر للفعاليات التي أضافها المنظم.','<div id="wfOrgRiskList" class="request-list"></div>');
+    page('organizerPolicies','وثائق التأمين','الوثائق التجريبية الصادرة بعد موافقة شركة التأمين.','<div id="wfOrgPoliciesList" class="request-list"></div>');
+    page('insurerRisk','تقييم مخاطر الفعاليات','مراجعة بيانات السلامة ومؤشر المخاطر التوضيحي لكل طلب وارد.','<div id="wfInsRiskList" class="request-list"></div>');
+    page('insurerCoverage','التغطيات وعروض الأسعار','مراجعة التغطيات المطلوبة والقسط المقترح والقرار المرتبط بكل طلب.','<div id="wfInsCoverageList" class="request-list"></div>');
+    page('insurerReports','التقارير والإحصائيات','ملخص تجريبي لطلبات تأمين الفعاليات والوثائق ومطالبات المستفيدين.','<div id="wfInsReports" class="stats"></div><div class="card"><h3>ملخص حالة الطلبات</h3><div id="wfInsReportDetails"></div></div>');
+    // Split insurer claim review into its own service page.
+    const claimsCard=$('claimsListCard'),claimStats=$('claimInsurerStats'),controls=$('reviewControls');
+    const claimsPage=$('insurerClaims')||page('insurerClaims','مطالبات المستفيدين','هذا المسار مخصص لمطالبات تأمين التذاكر، ولا يختلط بطلبات تأمين الفعاليات.','<div id="wfClaimsMount"></div>');
+    const mount=$('wfClaimsMount');if(mount){if(claimStats)mount.appendChild(claimStats);if(claimsCard)mount.appendChild(claimsCard);if(controls)mount.appendChild(controls)}
+    // Add a dedicated event selector to the existing event-insurance request form.
+    const details=$('eventDetails');if(details&&!$('wfInsuranceEventSelect')){const f=document.createElement('div');f.className='field';f.innerHTML='<label for="wfInsuranceEventSelect">اختيار الفعالية لطلب التأمين</label><select id="wfInsuranceEventSelect"><option value="">اختاري فعالية مسجلة</option></select><small class="muted">طلب التأمين لا ينشر الفعالية؛ النشر يتم من إدارة الفعاليات.</small>';details.insertBefore(f,details.children[2]||null);}
+    const orgRegion=$('wfEventRegion');if(orgRegion&&typeof HIMA_REGIONS!=='undefined'){orgRegion.innerHTML=Object.keys(HIMA_REGIONS).map(r=>`<option value="${safe(r)}">${safe(r)}</option>`).join('');orgRegion.addEventListener('change',updateWfEventCities);updateWfEventCities();}
+    $('wfEventForm').addEventListener('submit',saveOrganizerEvent);
+    $('wfInsuranceEventSelect')?.addEventListener('change',fillInsuranceFormFromEvent);
+    addPageNav();renderAll();
+  }
+  function updateWfEventCities(selected=''){const region=$('wfEventRegion')?.value,city=$('wfEventCity');if(!city)return;const cities=(typeof HIMA_REGIONS!=='undefined'&&HIMA_REGIONS[region])||[];city.innerHTML='<option value="">اختاري المدينة</option>'+cities.map(c=>`<option value="${safe(c)}">${safe(c)}</option>`).join('');if(selected&&cities.includes(selected))city.value=selected;}
+  function saveOrganizerEvent(ev){ev.preventDefault();const name=$('wfEventName').value.trim(),region=$('wfEventRegion').value,city=$('wfEventCity').value.trim(),venue=$('wfEventVenue').value.trim(),date=$('wfEventDate').value,price=Number($('wfEventPrice').value),capacity=Number($('wfEventCapacity').value),category=$('wfEventCategory').value;
+    if(!name||!region||!city||!venue||!date||!Number.isFinite(price)||price<0||!Number.isFinite(capacity)||capacity<1){alert('تأكدي من تعبئة بيانات الفعالية بشكل صحيح.');return}
+    const record={id:editingId||('org-'+Date.now()),category,name,region,city,venue,date,price,capacity,description:$('wfEventDescription').value.trim(),published:$('wfEventPublish').checked,insuranceStatus:'غير مطلوب',createdAt:new Date().toISOString(),organizerCreated:true};
+    if(editingId){const i=customEvents.findIndex(x=>x.id===editingId);if(i>=0)customEvents[i]={...customEvents[i],...record,insuranceStatus:customEvents[i].insuranceStatus};}else customEvents.push(record);
+    editingId=null;save('organizerEvents',customEvents);$('wfEventForm').reset();$('wfEventPrice').value=100;$('wfEventCapacity').value=500;$('wfEventPublish').checked=true;renderAll();showPage('organizerEvents');
+  }
+  function renderOrganizerEventsList(){const box=$('wfOrganizerEventList');if(!box)return;const all=[...HIMA_EVENTS.filter(e=>!e.organizerCreated).map(e=>({...e,seeded:true,published:true,insuranceStatus:load('seededInsuranceStatuses',{})[e.id]||'لم يُطلب تأمين الفعالية'})),...customEvents].reverse();box.innerHTML=all.length?all.map(e=>`<article class="event-card"><div class="event-art"><img class="event-photo" src="${eventPhoto(e.category)}" onerror="this.onerror=null;this.src='./${categoryPhotos[e.category]||'festival'}.jpg'" alt="${safe(categoryNames[e.category])}"><span class="event-category-label">${safe(categoryNames[e.category])}</span></div><div class="event-card-body"><h4>${safe(e.name)}</h4><p class="muted">${safe(e.city)} • ${safe(e.date)} • ${Number(e.price).toLocaleString('ar-SA')} ر.س</p><div class="request-details">${e.published?'منشورة للمستفيد':'مسودة غير منشورة'} · ${safe(eventStatusLabel(e))}</div><div class="request-actions">${e.seeded?'<span class="pill">فعالية نموذجية</span>':`<button class="btn secondary" onclick="himaEditEvent('${e.id}')">تعديل</button><button class="btn secondary" onclick="himaTogglePublish('${e.id}')">${e.published?'إيقاف النشر':'نشر'}</button><button class="btn secondary" onclick="himaDeleteEvent('${e.id}')">حذف</button>`}<button class="btn" onclick="himaRequestInsurance('${e.id}')">طلب تأمين الفعالية</button></div></div></article>`).join(''):'<div class="empty">لم تضف فعاليات بعد. ابدئي بإضافة فعالية جديدة.</div>';
+  }
+  function eventPhoto(cat){return `assets/events/${categoryPhotos[cat]||'festival'}.jpg`}
+  function findEvent(id){return customEvents.find(x=>x.id===id)||HIMA_EVENTS.find(x=>x.id===id)}
+  window.himaEditEvent=(id)=>{const e=customEvents.find(x=>x.id===id);if(!e)return;editingId=id;$('wfEventName').value=e.name;$('wfEventCategory').value=e.category;$('wfEventRegion').value=e.region;updateWfEventCities(e.city);$('wfEventVenue').value=e.venue;$('wfEventDate').value=e.date;$('wfEventPrice').value=e.price;$('wfEventCapacity').value=e.capacity;$('wfEventDescription').value=e.description||'';$('wfEventPublish').checked=!!e.published;showPage('organizerCreate')};
+  window.himaTogglePublish=(id)=>{const e=customEvents.find(x=>x.id===id);if(!e)return;e.published=!e.published;save('organizerEvents',customEvents);renderAll()};
+  window.himaDeleteEvent=(id)=>{const e=customEvents.find(x=>x.id===id);if(!e)return;const hasReq=(state.eventInsuranceRequests||[]).some(r=>r.eventId===id);if(hasReq){e.published=false;e.archived=true;alert('للفعالية طلب تأمين مرتبط؛ تم إيقاف نشرها وأرشفتها للحفاظ على سجل الطلب.')}else if(!confirm('هل تريد حذف الفعالية؟'))return;else customEvents=customEvents.filter(x=>x.id!==id);save('organizerEvents',customEvents);renderAll()};
+  window.himaRequestInsurance=(id)=>{const e=findEvent(id);if(!e)return;fillInsuranceFormFromEventId(id);showPage('organizerInsuranceRequest');updateTicketSalesSummary()};
+  function fillInsuranceFormFromEventId(id){const e=findEvent(id);if(!e)return;const sel=$('wfInsuranceEventSelect');if(sel)sel.value=id;$('orgEventName').value=e.name;$('organizerType').value=e.category;$('organizerRegion').value=e.region;if(typeof updateOrganizerCities==='function')updateOrganizerCities();$('organizerCity').value=e.city;$('orgEventDate').value=e.date;$('orgEventDescription').value=e.description||'';$('capacity').value=e.capacity;$('attendance').value=Math.min(e.capacity,Math.round(e.capacity*.7));}
+  function fillInsuranceFormFromEvent(){fillInsuranceFormFromEventId($('wfInsuranceEventSelect').value)}
+  function renderRequestLists(){const req=state.eventInsuranceRequests||[];const box=$('wfOrgRequestsList');if(box)box.innerHTML=req.length?req.slice().reverse().map(r=>`<article class="request-card"><div class="request-card-head"><h3>${safe(r.eventName)}</h3><span class="pill ${r.status==='مقبول'?'green':r.status==='مرفوض'?'red':'amber'}">${safe(r.status)}</span></div><p>${safe(r.id)} · ${safe(r.date)} · ${safe(r.city)}</p><p>${r.status==='مقبول'?'تمت الموافقة على الطلب.':r.status==='مرفوض'?'سبب الرفض: '+safe(r.decisionNote||'—'):'بانتظار مراجعة شركة التأمين.'}</p></article>`).join(''):'<div class="empty">لا توجد طلبات تأمين مرسلة حتى الآن.</div>';
+    const pol=$('wfOrgPoliciesList');if(pol){const policies=state.eventPolicies||[];pol.innerHTML=policies.length?policies.slice().reverse().map(p=>`<article class="request-card"><h3>${safe(p.eventName)}</h3><p>رقم الوثيقة: ${safe(p.policyNo||'—')}</p><span class="pill green">وثيقة تجريبية صادرة</span></article>`).join(''):'<div class="empty">لا توجد وثائق صادرة حتى الآن.</div>'}
+    const risk=$('wfOrgRiskList');if(risk)risk.innerHTML=customEvents.length?customEvents.map(e=>`<article class="request-card"><h3>${safe(e.name)}</h3><p>${safe(e.city)} · ${safe(e.date)}</p><p>السعة: ${Number(e.capacity).toLocaleString('ar-SA')} · حالة النشر: ${e.published?'منشورة':'مسودة'}</p><p>حالة تأمين الفعالية: ${safe(eventStatusLabel(e))}</p></article>`).join(''):'<div class="empty">أضيفي فعالية لعرض مؤشرات المتابعة.</div>';
+  }
+  function renderInsurerServices(){const req=state.eventInsuranceRequests||[];const risk=$('wfInsRiskList');if(risk)risk.innerHTML=req.length?req.map(r=>`<article class="request-card"><h3>${safe(r.eventName)}</h3><p>مؤشر المخاطر التوضيحي: <b>${r.risk}/100</b> · الجاهزية: ${safe(r.safety)}</p><p>الإسعافات: ${r.medical?'متوفرة':'غير مؤكدة'} · الطوارئ: ${r.emergency?'متوفرة':'غير مؤكدة'} · الأمن: ${r.security?'متوفر':'غير مؤكد'}</p><span class="pill amber">${safe(r.status)}</span></article>`).join(''):'<div class="empty">لا توجد طلبات لعرض تقييم مخاطرها.</div>';
+    const cov=$('wfInsCoverageList');if(cov)cov.innerHTML=req.length?req.map(r=>`<article class="request-card"><h3>${safe(r.eventName)}</h3><p>التغطيات المطلوبة: ${(r.coverages||[]).map(safe).join('، ')}</p><p>القسط المقترح: ${r.premium??'لم يحدد بعد'} ${r.premium!==undefined?'ر.س':''}</p><p>ملاحظات القرار: ${safe(r.decisionNote||'لم يصدر قرار بعد')}</p></article>`).join(''):'<div class="empty">لا توجد طلبات تغطية واردة بعد.</div>';
+    const stats=$('wfInsReports');if(stats)stats.innerHTML=`<div class="statbox"><div class="statlabel">إجمالي الطلبات</div><div class="stat">${req.length}</div></div><div class="statbox"><div class="statlabel">مقبولة</div><div class="stat">${req.filter(r=>r.status==='مقبول').length}</div></div><div class="statbox"><div class="statlabel">مرفوضة</div><div class="stat">${req.filter(r=>r.status==='مرفوض').length}</div></div><div class="statbox"><div class="statlabel">قيد المراجعة</div><div class="stat">${req.filter(r=>r.status==='قيد المراجعة').length}</div></div>`;
+    const det=$('wfInsReportDetails');if(det)det.innerHTML=`<p>وثائق فعاليات صادرة: ${(state.eventPolicies||[]).length}</p><p>مطالبات المستفيدين: ${(state.claims||[]).length}</p><p>الفعاليات المنشورة: ${customEvents.filter(e=>e.published).length}</p>`;
+  }
+  window.himaViewEvent=function(id){
+    const e=[...HIMA_EVENTS,...customEvents].find(x=>String(x.id)===String(id));if(!e)return;
+    document.getElementById('himaEventDetailDialog')?.remove();
+    const req=(state.eventInsuranceRequests||[]).filter(r=>String(r.eventId||'')===String(id)).slice(-1)[0];
+    const dlg=document.createElement('div');dlg.id='himaEventDetailDialog';dlg.className='hima-event-dialog-backdrop';
+    dlg.innerHTML=`<section class="hima-event-dialog" role="dialog" aria-modal="true" aria-labelledby="himaEventDialogTitle"><button class="hima-event-dialog-close" type="button" aria-label="إغلاق">×</button><span class="pill">تفاصيل الفعالية</span><h3 id="himaEventDialogTitle">${safe(e.name)}</h3><div class="hima-event-dialog-grid"><div><small>المدينة</small><b>${safe(e.city||'—')}</b></div><div><small>التاريخ</small><b>${safe(e.date||'—')}</b></div><div><small>حالة النشر</small><b>${e.published?'منشورة للمستفيد':'مسودة غير منشورة'}</b></div><div><small>حالة تأمين الفعالية</small><b>${safe(eventStatusLabel(e))}</b></div>${req?`<div><small>رقم طلب التأمين</small><b>${safe(req.id)}</b></div><div><small>قسط تأمين الفعالية</small><b>${req.premium!==undefined&&req.premium!==null?Number(req.premium).toLocaleString('ar-SA')+' ر.س':'لم يحدد بعد'}</b></div>`:''}</div><p class="muted">${safe(e.description||'لا يوجد وصف إضافي.')}</p><div class="hima-event-dialog-actions">${!e.seeded?`<button class="btn secondary" type="button" id="himaEventDialogEdit">تعديل الفعالية</button>`:''}<button class="btn" type="button" id="himaEventDialogInsurance">طلب تأمين الفعالية</button></div></section>`;
+    document.body.appendChild(dlg);const close=()=>dlg.remove();dlg.querySelector('.hima-event-dialog-close').onclick=close;dlg.addEventListener('click',ev=>{if(ev.target===dlg)close()});dlg.querySelector('#himaEventDialogEdit')?.addEventListener('click',()=>{close();window.himaEditEvent(id)});dlg.querySelector('#himaEventDialogInsurance')?.addEventListener('click',()=>{close();window.himaRequestInsurance(id)});
+  };
+  function updateTicketSalesSummary(){const n=Math.max(0,Number(document.getElementById('ticketsSold')?.value||0)),p=Math.max(0,Number(document.getElementById('ticketUnitPrice')?.value||0));const a=document.getElementById('attendance');if(a)a.value=n;const total=document.getElementById('ticketSalesTotal');if(total)total.value=(n*p).toLocaleString('ar-SA',{maximumFractionDigits:2})+' ر.س';const label=document.getElementById('attendanceAuto');if(label)label.textContent=n.toLocaleString('ar-SA')+' شخص';const cap=Number(document.getElementById('capacity')?.value||0);const sold=document.getElementById('ticketsSold');if(sold)sold.setCustomValidity(n>cap?'عدد التذاكر المباعة يتجاوز سعة الموقع':'');}
+  document.addEventListener('input',ev=>{if(['ticketsSold','ticketUnitPrice','capacity'].includes(ev.target?.id))updateTicketSalesSummary()});
+  document.addEventListener('change',ev=>{if(['ticketsSold','ticketUnitPrice','capacity'].includes(ev.target?.id))updateTicketSalesSummary()});
+  function renderAll(){renderOrganizerEventsList();renderRequestLists();renderInsurerServices();const evsel=$('wfInsuranceEventSelect');if(evsel){const old=evsel.value;evsel.innerHTML='<option value="">اختاري فعالية مسجلة</option>'+[...HIMA_EVENTS.filter(e=>!e.organizerCreated),...customEvents].map(e=>`<option value="${safe(e.id)}">${safe(e.name)} — ${safe(e.city)}</option>`).join('');if(customEvents.some(e=>e.id===old))evsel.value=old}
+    const published=customEvents.filter(e=>e.published&&!e.archived);const ids=new Set(published.map(e=>e.id));
+    HIMA_EVENTS.splice(0,HIMA_EVENTS.length,...HIMA_EVENTS.filter(e=>!e.organizerCreated),...published);
+    if(typeof renderCategoryCards==='function')renderCategoryCards();if(typeof renderEventCatalog==='function')renderEventCatalog();
+    const allOrgEvents=[...HIMA_EVENTS.filter(e=>!e.organizerCreated).map(e=>({...e,seeded:true,published:true,insuranceStatus:load('seededInsuranceStatuses',{})[e.id]||'لم يُطلب تأمين الفعالية'})),...customEvents];
+    const recent=$('wfOrgRecentEvents');if(recent){const items=allOrgEvents.slice().reverse().slice(0,5);recent.innerHTML=items.length?`<table class="org-events-table"><thead><tr><th>الفعالية</th><th>التاريخ</th><th>حالة التأمين</th><th>الحالة</th></tr></thead><tbody>${items.map(e=>`<tr class="org-event-row" data-event-id="${safe(e.id)}" tabindex="0" role="button" aria-label="عرض تفاصيل ${safe(e.name)}"><td><b>${safe(e.name)}</b><small>${safe(e.city||'')}</small></td><td>${safe(e.date||'—')}</td><td><span class="org-status ${getEventInsuranceStatus(e)==='مقبول'?'status-good':getEventInsuranceStatus(e)==='قيد المراجعة'?'status-wait':'status-neutral'}">${safe(eventStatusLabel(e))}</span></td><td><span class="org-status ${e.published?'status-good':'status-neutral'}">${e.published?'منشورة':'مسودة'}</span></td></tr>`).join('')}</tbody></table>`:'<div class="org-table-empty">لا توجد فعاليات بعد. ابدئي بإضافة فعاليتك الأولى.</div>';}
+    recent?.querySelectorAll('.org-event-row').forEach(row=>{const open=()=>window.himaViewEvent?.(row.dataset.eventId);row.addEventListener('click',open);row.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();open()}})});
+    const upcoming=$('wfOrgUpcomingEvents');if(upcoming){const now=new Date();const future=allOrgEvents.filter(e=>e.date&&new Date(e.date+'T23:59:59')>=now).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,3);upcoming.innerHTML=future.length?future.map(e=>`<div class="org-upcoming-item"><span class="org-upcoming-date">${safe(e.date)}</span><div><b>${safe(e.name)}</b><small>${safe(e.city||'')}</small></div></div>`).join(''):'<div class="org-upcoming-empty">لا توجد فعاليات قادمة مسجلة.</div>';}
+    const orgCount=$('wfOrgEvents');if(orgCount)orgCount.textContent=allOrgEvents.length;const pub=$('wfOrgPublished');if(pub)pub.textContent=allOrgEvents.filter(e=>e.published).length;const pendingCount=(state.eventInsuranceRequests||[]).filter(r=>r.status==='قيد المراجعة').length;const pending=$('wfOrgPending');if(pending)pending.textContent=pendingCount;const op=$('wfOrgPolicies');if(op)op.textContent=(state.eventPolicies||[]).length;
+    const insuredCount=allOrgEvents.filter(e=>getEventInsuranceStatus(e)==='مقبول').length,uninsuredCount=allOrgEvents.filter(e=>!['مقبول','قيد المراجعة'].includes(getEventInsuranceStatus(e))).length,insurancePendingCount=allOrgEvents.filter(e=>getEventInsuranceStatus(e)==='قيد المراجعة').length,pct=allOrgEvents.length?Math.round(insuredCount/allOrgEvents.length*100):0;const rate=$('wfOrgPublishRate');if(rate)rate.textContent=pct+'%';const donut=$('wfOrgDonut');if(donut)donut.style.setProperty('--org-pct',pct+'%');const il=$('wfOrgInsuredLegend');if(il)il.textContent=insuredCount;const pnl=$('wfOrgPendingLegend');if(pnl)pnl.textContent=insurancePendingCount;const ul=$('wfOrgUninsuredLegend');if(ul)ul.textContent=uninsuredCount;
+    const ir=$('wfInsRequests');if(ir)ir.textContent=(state.eventInsuranceRequests||[]).length;const ip=$('wfInsPending');if(ip)ip.textContent=(state.eventInsuranceRequests||[]).filter(r=>r.status==='قيد المراجعة').length;const ipo=$('wfInsPolicies');if(ipo)ipo.textContent=(state.eventPolicies||[]).length;const ic=$('wfInsClaims');if(ic)ic.textContent=(state.claims||[]).length;
+  }
+  // Extend event cards with a clear event-insurance status, without presenting it as attendee-ticket insurance.
+  const originalEventCard=window.eventCard;
+  window.eventCard=function(e){const base=originalEventCard?originalEventCard(e):'';if(!e.organizerCreated)return base;return base.replace('<div class="event-card-foot">',`<div class="event-insurance-state">${safe(eventStatusLabel(e))}</div><div class="event-card-foot">`)};
+  // Rebind catalogue rendering so newly published organizer events are visible to attendees.
+  const originalRenderCatalog=window.renderEventCatalog;
+  window.renderEventCatalog=function(){if(originalRenderCatalog)originalRenderCatalog();};
+  // Add selected event relation to underwriting requests and sync decisions back to the public event card.
+  window.submitOrganizerRequest=function(){
+    const name=$('orgEventName')?.value.trim(),region=$('organizerRegion')?.value,city=$('organizerCity')?.value,capacity=+$('capacity')?.value,attendance=+$('attendance')?.value,coverages=[...document.querySelectorAll('input[name="orgCoverage"]:checked')].map(x=>x.value),msg=$('orgSubmitMsg');
+    if(!name||!region||!city||!$('orgEventDate')?.value||!capacity||attendance<0||attendance>capacity||!coverages.length){msg.className='notice warn';msg.textContent='تأكدي من اسم الفعالية والتاريخ والسعة والحضور واختيار تغطية واحدة على الأقل.';return}
+    if(typeof calculateRisk==='function')calculateRisk();
+    const selectedId=$('wfInsuranceEventSelect')?.value||'';const linked=customEvents.find(e=>e.id===selectedId);
+    const req={id:'EVT-INS-'+String((state.eventInsuranceRequests||[]).length+1).padStart(4,'0'),eventId:selectedId||null,eventName:name,type:$('organizerType').selectedOptions[0].text,category:$('organizerType').value,region,city,date:$('orgEventDate').value,capacity,attendance,crowd:$('crowd').selectedOptions[0].text,safety:$('safety').selectedOptions[0].text,medical:$('orgMedical').checked,emergency:$('orgEmergency').checked,security:$('orgSecurity').checked,risk:state.risk||0,description:$('orgEventDescription').value.trim(),coverages,notes:$('orgNotes').value.trim(),status:'قيد المراجعة',submittedAt:new Date().toLocaleString('ar-SA')};
+    state.eventInsuranceRequests.push(req);if(linked){linked.insuranceStatus='قيد المراجعة';save('organizerEvents',customEvents)}
+    save('eventInsuranceRequests',state.eventInsuranceRequests);msg.className='notice success';msg.textContent='تم إرسال طلب تأمين الفعالية إلى شركة التأمين. سيبقى نشر الفعالية مستقلًا عن قرار التأمين.';renderAll();if(typeof renderEventUnderwriting==='function')renderEventUnderwriting();
+  };
+  const oldDecision=window.decideEventInsurance;
+  window.decideEventInsurance=function(id,status){if(oldDecision)oldDecision(id,status);const r=(state.eventInsuranceRequests||[]).find(x=>x.id===id);if(r){const linkedEvent=r.eventId?findEvent(r.eventId):[...HIMA_EVENTS,...customEvents].find(e=>e.name===r.eventName);if(linkedEvent){r.eventId=linkedEvent.id;linkedEvent.insuranceStatus=status;if(customEvents.some(x=>x.id===linkedEvent.id))save('organizerEvents',customEvents);else{const statuses=load('seededInsuranceStatuses',{});statuses[linkedEvent.id]=status;save('seededInsuranceStatuses',statuses)}}}save('eventInsuranceRequests',state.eventInsuranceRequests||[]);save('eventPolicies',state.eventPolicies||[]);renderAll()};
+  // Stable navigation: bypass legacy allow-lists that block newly added pages.
+  window.showPage=function(id){
+    const allowed={customer:['overview','events','booking','payment','wallet','incident','account'],organizer:['organizer','organizerEvents','organizerCreate','organizerInsuranceRequest','organizerRequests','organizerRisk','organizerPolicies','account','incident'],insurer:['insurer','insurerRequests','insurerRisk','insurerCoverage','insurerPolicies','insurerClaims','insurerReports','account','incident']};
+    if(state.portal && !allowed[state.portal]?.includes(id)) return false;
+    const target=$(id); if(!target) return false;
+    document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p===target));
+    document.querySelectorAll('.nav button,.bottom-link').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+    if(id==='events'&&typeof renderEventCatalog==='function'){renderCategoryCards();renderEventCatalog()}
+    if(id==='wallet'&&typeof renderWallet==='function')renderWallet();
+    if(id==='incident'&&typeof renderIncidents==='function')renderIncidents();
+    if(id==='organizerEvents')renderOrganizerEventsList();
+    if(['organizerRequests','organizerRisk','organizerPolicies'].includes(id))renderRequestLists();
+    if(['insurerRisk','insurerCoverage','insurerReports'].includes(id))renderInsurerServices();
+    if(id==='insurerRequests'&&typeof renderEventUnderwriting==='function')renderEventUnderwriting();
+    if(id==='insurerClaims'&&typeof renderClaims==='function')renderClaims();
+    if(id==='insurerPolicies'&&typeof renderEventPolicies==='function')renderEventPolicies();
+    if(id==='organizer'||id==='insurer')renderAll();
+    window.scrollTo({top:0,behavior:'smooth'}); return true;
+  };
+  window.enterPortal=function(role){
+    if(!['customer','organizer','insurer'].includes(role)) return;
+    state.portal=role;
+    document.body.classList.remove('portal-customer','portal-organizer','portal-insurer');
+    document.body.classList.add('portal-active','portal-'+role);
+    const gateway=$('roleGateway'); if(gateway)gateway.hidden=true;
+    const exit=$('exitPortalBtn'); if(exit)exit.hidden=false;
+    const label=({customer:'بوابة المستفيد',organizer:'بوابة منظم الفعالية',insurer:'بوابة شركة التأمين'})[role];
+    const chip=$('portalChip'); if(chip){chip.hidden=false;chip.textContent=label}
+    const menu=$('menuTrigger'); if(menu)menu.hidden=false;
+    const subtitle=$('drawerSubtitle'); if(subtitle)subtitle.textContent=label;
+    window.showPage(({customer:'overview',organizer:'organizer',insurer:'insurer'})[role]);
+  };
+  // Keep the insurer landing page focused on navigation; request/claim records live on their own pages.
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initStructure);else initStructure();
+})();
