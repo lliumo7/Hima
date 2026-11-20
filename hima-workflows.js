@@ -120,7 +120,7 @@
     page('organizerPolicies','وثائق التأمين','الوثائق التجريبية الصادرة بعد موافقة شركة التأمين.','<div id="wfOrgPoliciesList" class="request-list"></div>');
     page('insurerRisk','تقييم مخاطر الفعاليات','مراجعة بيانات السلامة ومؤشر المخاطر التوضيحي لكل طلب وارد.','<div id="wfInsRiskList" class="request-list"></div>');
     page('insurerCoverage','التغطيات وعروض الأسعار','مراجعة التغطيات المطلوبة والقسط المقترح والقرار المرتبط بكل طلب.','<div id="wfInsCoverageList" class="request-list"></div>');
-    page('insurerReports','التقارير والإحصائيات','ملخص تجريبي لطلبات تأمين الفعاليات والوثائق ومطالبات المستفيدين.','<div id="wfInsReports" class="stats"></div><div class="card"><h3>ملخص حالة الطلبات</h3><div id="wfInsReportDetails"></div></div>');
+    page('insurerReports','التقارير والإحصائيات','ملخص تجريبي لطلبات تأمين الفعاليات والوثائق ومطالبات المستفيدين.','<div id="wfInsReports" class="stats"></div><div id="wfInsReportDetails" hidden></div>');
     // Split insurer claim review into its own service page.
     const claimsCard=$('claimsListCard'),claimStats=$('claimInsurerStats'),controls=$('reviewControls');
     const claimsPage=$('insurerClaims')||page('insurerClaims','مطالبات المستفيدين','هذا المسار مخصص لمطالبات تأمين التذاكر، ولا يختلط بطلبات تأمين الفعاليات.','<div id="wfClaimsMount"></div>');
@@ -153,11 +153,45 @@
     const pol=$('wfOrgPoliciesList');if(pol){const policies=state.eventPolicies||[];pol.innerHTML=policies.length?policies.slice().reverse().map(p=>`<article class="request-card"><h3>${safe(p.eventName)}</h3><p>رقم الوثيقة: ${safe(p.policyNo||'—')}</p><span class="pill green">وثيقة تجريبية صادرة</span></article>`).join(''):'<div class="empty">لا توجد وثائق صادرة حتى الآن.</div>'}
     const risk=$('wfOrgRiskList');if(risk)risk.innerHTML=customEvents.length?customEvents.map(e=>`<article class="request-card"><h3>${safe(e.name)}</h3><p>${safe(e.city)} · ${safe(e.date)}</p><p>السعة: ${Number(e.capacity).toLocaleString('ar-SA')} · حالة النشر: ${e.published?'منشورة':'مسودة'}</p><p>حالة تأمين الفعالية: ${safe(eventStatusLabel(e))}</p></article>`).join(''):'<div class="empty">أضيفي فعالية لعرض مؤشرات المتابعة.</div>';
   }
-  function renderInsurerServices(){const req=state.eventInsuranceRequests||[];const risk=$('wfInsRiskList');if(risk)risk.innerHTML=req.length?req.map(r=>`<article class="request-card"><h3>${safe(r.eventName)}</h3><p>مؤشر المخاطر التوضيحي: <b>${r.risk}/100</b> · الجاهزية: ${safe(r.safety)}</p><p>الإسعافات: ${r.medical?'متوفرة':'غير مؤكدة'} · الطوارئ: ${r.emergency?'متوفرة':'غير مؤكدة'} · الأمن: ${r.security?'متوفر':'غير مؤكد'}</p><span class="pill amber">${safe(r.status)}</span></article>`).join(''):'<div class="empty">لا توجد طلبات لعرض تقييم مخاطرها.</div>';
-    const cov=$('wfInsCoverageList');if(cov)cov.innerHTML=req.length?req.map(r=>`<article class="request-card"><h3>${safe(r.eventName)}</h3><p>التغطيات المطلوبة: ${(r.coverages||[]).map(safe).join('، ')}</p><p>القسط المقترح: ${r.premium??'لم يحدد بعد'} ${r.premium!==undefined?'ر.س':''}</p><p>ملاحظات القرار: ${safe(r.decisionNote||'لم يصدر قرار بعد')}</p></article>`).join(''):'<div class="empty">لا توجد طلبات تغطية واردة بعد.</div>';
-    const stats=$('wfInsReports');if(stats)stats.innerHTML=`<div class="statbox"><div class="statlabel">إجمالي الطلبات</div><div class="stat">${req.length}</div></div><div class="statbox"><div class="statlabel">مقبولة</div><div class="stat">${req.filter(r=>r.status==='مقبول').length}</div></div><div class="statbox"><div class="statlabel">مرفوضة</div><div class="stat">${req.filter(r=>r.status==='مرفوض').length}</div></div><div class="statbox"><div class="statlabel">قيد المراجعة</div><div class="stat">${req.filter(r=>r.status==='قيد المراجعة').length}</div></div>`;
-    const det=$('wfInsReportDetails');if(det)det.innerHTML=`<p>وثائق فعاليات صادرة: ${(state.eventPolicies||[]).length}</p><p>مطالبات المستفيدين: ${(state.claims||[]).length}</p><p>الفعاليات المنشورة: ${customEvents.filter(e=>e.published).length}</p>`;
+  function renderInsurerServices(){
+    const req=state.eventInsuranceRequests||[];
+    const risk=$('wfInsRiskList');
+    if(risk)risk.innerHTML=req.length?req.map(r=>`<article class="request-card"><h3>${safe(r.eventName)}</h3><p>مؤشر المخاطر التوضيحي: <b>${r.risk}/100</b> · الجاهزية: ${safe(r.safety)}</p><p>الإسعافات: ${r.medical?'متوفرة':'غير مؤكدة'} · الطوارئ: ${r.emergency?'متوفرة':'غير مؤكدة'} · الأمن: ${r.security?'متوفر':'غير مؤكد'}</p><span class="pill amber">${safe(r.status)}</span></article>`).join(''):'<div class="empty">لا توجد طلبات لعرض تقييم مخاطرها.</div>';
+    const cov=$('wfInsCoverageList');
+    if(cov){
+      const count=req.length, pending=req.filter(r=>!['مقبول','مرفوض'].includes(r.status)).length, approved=req.filter(r=>r.status==='مقبول').length;
+      cov.innerHTML=`<section class="ins-table-page">
+        <div class="ins-kpi-row">
+          <article class="ins-kpi"><span class="ins-kpi-icon purple" data-hima-icon="fileText"></span><small>طلبات التسعير</small><b>${count}</b><em>إجمالي الطلبات الواردة</em></article>
+          <article class="ins-kpi"><span class="ins-kpi-icon amber" data-hima-icon="clock"></span><small>بانتظار القرار</small><b>${pending}</b><em>تحتاج إلى مراجعة</em></article>
+          <article class="ins-kpi"><span class="ins-kpi-icon green" data-hima-icon="send"></span><small>عروض مرسلة / مقبولة</small><b>${approved}</b><em>تمت الموافقة عليها</em></article>
+        </div>
+        <section class="ins-data-card"><header class="ins-data-head"><div><span class="ins-section-kicker">UNDERWRITING & PRICING</span><h3>طلبات التغطية والتسعير</h3><p>راجعي التغطيات المطلوبة والقسط المقترح وحالة كل طلب.</p></div><div class="ins-table-tools"><label class="ins-search"><span data-hima-icon="search"></span><input id="insCoverageSearch" type="search" placeholder="البحث باسم الفعالية أو رقم الطلب..."></label><select id="insCoverageFilter" aria-label="تصفية الحالة"><option value="all">كل الحالات</option><option value="قيد المراجعة">قيد المراجعة</option><option value="مقبول">مقبولة</option><option value="مرفوض">مرفوضة</option></select></div></header>
+          <div class="ins-table-wrap"><table class="ins-coverage-table"><thead><tr><th>رقم الطلب</th><th>اسم الفعالية</th><th>التغطية المطلوبة</th><th>القسط المقترح</th><th>حالة الطلب</th><th>الإجراء</th></tr></thead><tbody id="insCoverageRows">${req.length?req.slice().reverse().map(r=>`<tr data-status="${safe(r.status)}" data-search="${safe((r.id||'')+' '+(r.eventName||''))}"><td><b class="ins-request-id">${safe(r.id||'—')}</b></td><td><strong>${safe(r.eventName)}</strong><small>${safe(r.city||r.region||'')}</small></td><td>${(r.coverages||[]).map(safe).join('، ')||'حسب الطلب'}</td><td><b class="ins-premium">${r.premium!==undefined&&r.premium!==null?Number(r.premium).toLocaleString('ar-SA')+' ر.س':'لم يحدد'}</b></td><td><span class="ins-status ${r.status==='مقبول'?'is-green':r.status==='مرفوض'?'is-red':'is-amber'}">${safe(r.status||'قيد المراجعة')}</span></td><td><button class="ins-row-action" type="button" onclick="showPage('insurerRequests')">مراجعة الطلب <span>←</span></button></td></tr>`).join(''):'<tr><td colspan="6"><div class="empty">لا توجد طلبات تغطية واردة حتى الآن.</div></td></tr>'}</tbody></table></div>
+          <footer class="ins-table-foot"><span>يعرض ${count} طلبات تأمين</span><small>يمكنك فتح صفحة طلبات التأمين لاتخاذ القرار وإصدار العرض.</small></footer>
+        </section></section>`;
+      const search=$('insCoverageSearch'),filter=$('insCoverageFilter');
+      const apply=()=>{const q=(search?.value||'').trim().toLowerCase(),f=filter?.value||'all';cov.querySelectorAll('#insCoverageRows tr[data-status]').forEach(row=>{row.hidden=!(row.dataset.search.toLowerCase().includes(q)&&(f==='all'||row.dataset.status===f));});};
+      search?.addEventListener('input',apply);filter?.addEventListener('change',apply);
+    }
+    const stats=$('wfInsReports');
+    if(stats){
+      const total=req.length, approved=req.filter(r=>r.status==='مقبول').length, rejected=req.filter(r=>r.status==='مرفوض').length, pending=req.filter(r=>!['مقبول','مرفوض'].includes(r.status)).length;
+      const max=Math.max(1,approved,rejected,pending);
+      stats.innerHTML=`<section class="ins-report-page"><div class="ins-kpi-row ins-report-kpis">
+        <article class="ins-kpi"><span class="ins-kpi-icon purple" data-hima-icon="layers"></span><small>إجمالي الطلبات</small><b>${total}</b><em>طلبات تأمين الفعاليات</em></article>
+        <article class="ins-kpi"><span class="ins-kpi-icon green" data-hima-icon="checkCircle"></span><small>مقبولة</small><b>${approved}</b><em>طلبات تمت الموافقة عليها</em></article>
+        <article class="ins-kpi"><span class="ins-kpi-icon red" data-hima-icon="xCircle"></span><small>مرفوضة</small><b>${rejected}</b><em>طلبات لم تتم الموافقة عليها</em></article>
+        <article class="ins-kpi"><span class="ins-kpi-icon amber" data-hima-icon="hourglass"></span><small>قيد المراجعة</small><b>${pending}</b><em>طلبات بانتظار القرار</em></article>
+      </div><div class="ins-report-grid">
+        <article class="ins-data-card ins-chart-card"><header><div><span class="ins-section-kicker">REQUEST OVERVIEW</span><h3>توزيع حالة الطلبات</h3></div></header><div class="ins-donut-area"><div class="ins-donut" style="--approved:${total?approved/total*100:0}%;--rejected:${total?(approved+rejected)/total*100:0}%"><div><b>${total}</b><small>طلبات</small></div></div><div class="ins-legend"><span><i class="dot green"></i> مقبولة <b>${approved}</b></span><span><i class="dot red"></i> مرفوضة <b>${rejected}</b></span><span><i class="dot amber"></i> قيد المراجعة <b>${pending}</b></span></div></div></article>
+        <article class="ins-data-card ins-chart-card"><header><div><span class="ins-section-kicker">PORTFOLIO SNAPSHOT</span><h3>ملخص الوثائق والمطالبات</h3></div></header><div class="ins-summary-list"><div><span class="ins-summary-icon" data-hima-icon="fileCheck"></span><span>وثائق تأمين الفعاليات</span><b>${(state.eventPolicies||[]).length}</b></div><div><span class="ins-summary-icon" data-hima-icon="users"></span><span>مطالبات المستفيدين</span><b>${(state.claims||[]).length}</b></div><div><span class="ins-summary-icon" data-hima-icon="calendar"></span><span>الفعاليات المنشورة</span><b>${customEvents.filter(e=>e.published).length}</b></div></div></article>
+        <article class="ins-data-card ins-activity-card"><header><div><span class="ins-section-kicker">LATEST ACTIVITY</span><h3>أحدث الطلبات</h3></div><button type="button" class="ins-link-btn" onclick="showPage('insurerRequests')">عرض الطلبات ←</button></header>${req.length?`<div class="ins-activity-list">${req.slice().reverse().slice(0,4).map(r=>`<div><span class="ins-activity-mark"></span><span><b>${safe(r.eventName)}</b><small>${safe(r.id||'')} · ${safe(r.status||'قيد المراجعة')}</small></span><time>${safe(r.date||'')}</time></div>`).join('')}</div>`:'<div class="empty">لا توجد أنشطة مسجلة حتى الآن.</div>'}</article>
+      </div><p class="ins-report-note">هذه الإحصائيات مرتبطة بالبيانات المسجلة في النموذج التجريبي، وتتحدث عند تحديث الطلبات والوثائق والمطالبات.</p></section>`;
+    }
+    const det=$('wfInsReportDetails');if(det)det.innerHTML='';
   }
+
   window.himaViewEvent=function(id){
     const e=[...HIMA_EVENTS,...customEvents].find(x=>String(x.id)===String(id));if(!e)return;
     document.getElementById('himaEventDetailDialog')?.remove();
