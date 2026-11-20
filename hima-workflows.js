@@ -199,11 +199,22 @@
   };
   const oldDecision=window.decideEventInsurance;
   window.decideEventInsurance=function(id,status){if(oldDecision)oldDecision(id,status);const r=(state.eventInsuranceRequests||[]).find(x=>x.id===id);if(r){const linkedEvent=r.eventId?findEvent(r.eventId):[...HIMA_EVENTS,...customEvents].find(e=>e.name===r.eventName);if(linkedEvent){r.eventId=linkedEvent.id;linkedEvent.insuranceStatus=status;if(customEvents.some(x=>x.id===linkedEvent.id))save('organizerEvents',customEvents);else{const statuses=load('seededInsuranceStatuses',{});statuses[linkedEvent.id]=status;save('seededInsuranceStatuses',statuses)}}}save('eventInsuranceRequests',state.eventInsuranceRequests||[]);save('eventPolicies',state.eventPolicies||[]);renderAll()};
+  // Stable navigation: every secondary page gets a consistent shortcut to its own portal home.
+  function ensurePortalHomeButton(target,id){
+    const home={customer:'overview',organizer:'organizer',insurer:'insurer'}[state.portal];
+    if(!home || id===home || target.querySelector('[data-hima-home-return]')) return;
+    const existing=target.querySelector('.page-intro .text-btn');if(existing){existing.dataset.himaHomeReturn='true';return;}
+    const btn=document.createElement('button');btn.type='button';btn.className='text-btn hima-home-return';btn.dataset.himaHomeReturn='true';btn.textContent='← العودة للرئيسية';btn.addEventListener('click',()=>window.showPage(home));
+    let intro=target.querySelector('.page-intro');
+    if(intro) intro.insertBefore(btn,intro.firstChild);
+    else {const wrap=document.createElement('div');wrap.className='page-intro hima-auto-page-intro';wrap.appendChild(btn);target.insertBefore(wrap,target.firstChild);}
+  }
   // Stable navigation: bypass legacy allow-lists that block newly added pages.
   window.showPage=function(id){
     const allowed={customer:['overview','events','booking','payment','wallet','incident','account'],organizer:['organizer','organizerEvents','organizerCreate','organizerInsuranceRequest','organizerRequests','organizerRisk','organizerPolicies','account','incident'],insurer:['insurer','insurerRequests','insurerRisk','insurerCoverage','insurerPolicies','insurerClaims','insurerReports','account','incident']};
     if(state.portal && !allowed[state.portal]?.includes(id)) return false;
     const target=$(id); if(!target) return false;
+    ensurePortalHomeButton(target,id);
     document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p===target));
     document.querySelectorAll('.nav button,.bottom-link').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
     if(id==='events'&&typeof renderEventCatalog==='function'){renderCategoryCards();renderEventCatalog()}
